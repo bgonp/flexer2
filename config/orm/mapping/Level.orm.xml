@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping">
+    <entity name="App\Entity\Level" repository-class="App\Repository\LevelRepository">
+        <field name="description" nullable="true" />
+        <field name="url" nullable="true" />
+        <field name="difficulty" type="smallint">
+            <options><option name="default">1</option></options>
+        </field>
+
+        <one-to-many field="courses" target-entity="App\Entity\Course" mapped-by="level">
+            <order-by>
+                <order-by-field name="school"/>
+            </order-by>
+        </one-to-many>
+        <one-to-many field="sessions" target-entity="App\Entity\Session" mapped-by="level">
+            <order-by>
+                <order-by-field name="day"/>
+            </order-by>
+        </one-to-many>
+    </entity>
+</doctrine-mapping>

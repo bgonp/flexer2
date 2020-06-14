@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping">
+    <entity name="App\Entity\Course" repository-class="App\Repository\CourseRepository">
+        <field name="isActive" type="boolean" />
+        <field name="weekOfMonth" type="simple_array" nullable="true" />
+        <field name="dayOfWeek" type="simple_array" nullable="true" />
+        <field name="time" type="time" nullable="true" />
+        <field name="duration" type="smallint" nullable="true" />
+
+        <many-to-one field="school" target-entity="App\Entity\School" inversed-by="courses" />
+        <many-to-one field="place" target-entity="App\Entity\Place" inversed-by="courses" fetch="EAGER" />
+        <many-to-one field="discipline" target-entity="App\Entity\Discipline" inversed-by="courses" fetch="EAGER" />
+        <many-to-one field="level" target-entity="App\Entity\Level" inversed-by="courses" fetch="EAGER" />
+        <many-to-one field="age" target-entity="App\Entity\Age" inversed-by="courses" fetch="EAGER" />
+        <many-to-one field="listing" target-entity="App\Entity\Listing" inversed-by="courses" />
+        
+        <one-to-many field="sessions" target-entity="App\Entity\Session" mapped-by="course">
+            <order-by>
+                <order-by-field name="day" />
+                <order-by-field name="time" />
+            </order-by>
+        </one-to-many>
+        <one-to-many field="assignments" target-entity="App\Entity\Assignment" mapped-by="course">
+            <order-by>
+                <order-by-field name="customer" />
+            </order-by>
+        </one-to-many>
+    </entity>
+</doctrine-mapping>

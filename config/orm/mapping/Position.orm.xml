@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping">
+    <entity name="App\Entity\Position" repository-class="App\Repository\PositionRepository">
+        <field name="isStaff" type="boolean">
+            <options><option name="default">0</option></options>
+        </field>
+
+        <one-to-many field="assignments" target-entity="App\Entity\Assignment" mapped-by="position" />
+        <one-to-many field="attendances" target-entity="App\Entity\Attendance" mapped-by="position" />
+    </entity>
+</doctrine-mapping>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping">
+    <entity name="App\Entity\Attendance" repository-class="App\Repository\AttendanceRepository">
+        <field name="isUsed" type="boolean">
+            <options><option name="default">0</option></options>
+        </field>
+        <field name="willBeUsed" type="boolean">
+            <options><option name="default">1</option></options>
+        </field>
+        <field name="isPaidHere" type="boolean">
+            <options><option name="default">0</option></options>
+        </field>
+        <field name="notes" nullable="true" />
+
+        <many-to-one field="customer" target-entity="App\Entity\Customer" inversed-by="attendances" />
+        <many-to-one field="session" target-entity="App\Entity\Session" inversed-by="attendances" fetch="EAGER" />
+        <many-to-one field="position" target-entity="App\Entity\Position" inversed-by="attendances" />
+        <many-to-one field="payment" target-entity="App\Entity\Payment" inversed-by="attendances">
+            <join-column on-delete="SET NULL" />
+        </many-to-one>
+
+        <unique-constraints>
+            <unique-constraint columns="customer_id,session_id" />
+        </unique-constraints>
+    </entity>
+</doctrine-mapping>

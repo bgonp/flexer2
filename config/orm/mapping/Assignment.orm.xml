@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping">
+    <entity name="App\Entity\Assignment" repository-class="App\Repository\AssignmentRepository">
+        <field name="notes" nullable="true" />
+
+        <many-to-one field="customer" target-entity="App\Entity\Customer" inversed-by="assignments" />
+        <many-to-one field="course" target-entity="App\Entity\Course" inversed-by="assignments" />
+        <many-to-one field="position" target-entity="App\Entity\Position" inversed-by="assignments" />
+        <many-to-one field="firstSession" target-entity="App\Entity\Session" />
+        <many-to-one field="lastSession" target-entity="App\Entity\Session" />
+    </entity>
+</doctrine-mapping>

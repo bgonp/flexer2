@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping">
+    <entity name="App\Entity\Place" repository-class="App\Repository\PlaceRepository">
+        <field name="description" nullable="true" />
+        <field name="url" nullable="true" />
+
+        <many-to-one field="zone" target-entity="App\Entity\Zone" inversed-by="places" />
+
+        <one-to-many field="courses" target-entity="App\Entity\Course" mapped-by="place">
+            <order-by>
+                <order-by-field name="school"/>
+            </order-by>
+        </one-to-many>
+        <one-to-many field="sessions" target-entity="App\Entity\Session" mapped-by="place">
+            <order-by>
+                <order-by-field name="day"/>
+            </order-by>
+        </one-to-many>
+    </entity>
+</doctrine-mapping>

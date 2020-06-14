@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping">
+    <entity name="App\Entity\Period" repository-class="App\Repository\PeriodRepository">
+        <field name="initDate" type="date" nullable="true" />
+        <field name="finishDate" type="date" nullable="true" />
+        <field name="holidays" type="simple_array" />
+
+        <many-to-one field="season" target-entity="App\Entity\Season" inversed-by="periods" />
+
+        <one-to-many field="sessions" target-entity="App\Entity\Session" mapped-by="period" />
+    </entity>
+</doctrine-mapping>

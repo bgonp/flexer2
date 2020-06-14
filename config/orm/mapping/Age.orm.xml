@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping">
+    <entity name="App\Entity\Age" repository-class="App\Repository\AgeRepository">
+        <field name="description" nullable="true" />
+        <field name="url" nullable="true" />
+        <field name="minAge" type="smallint" nullable="true" />
+        <field name="maxAge" type="smallint" nullable="true" />
+        
+        <one-to-many field="courses" target-entity="App\Entity\Course" mapped-by="age">
+            <order-by>
+                <order-by-field name="school" />
+            </order-by>
+        </one-to-many>
+        <one-to-many field="sessions" target-entity="App\Entity\Session" mapped-by="age">
+            <order-by>
+                <order-by-field name="day" />
+            </order-by>
+        </one-to-many>
+    </entity>
+</doctrine-mapping>

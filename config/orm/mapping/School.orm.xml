@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping">
+    <entity name="App\Entity\School" repository-class="App\Repository\SchoolRepository">
+        <field name="description" nullable="true" />
+        <field name="url" nullable="true" />
+
+        <one-to-many field="courses" target-entity="App\Entity\Course" mapped-by="school" />
+        <one-to-many field="seasons" target-entity="App\Entity\Season" mapped-by="school" />
+        <one-to-many field="rates" target-entity="App\Entity\Rate" mapped-by="school" />
+    </entity>
+</doctrine-mapping>
