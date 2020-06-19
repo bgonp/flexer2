@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Entity\Customer;
 use App\Repository\CustomerRepository;
+use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -44,6 +45,28 @@ class CustomerController extends BaseController
         ]);
     }
 
+    /** @Route("/new", name="customer_new", methods={"GET", "POST"}) */
+    public function new(Request $request, CustomerRepository $customerRepository): Response
+    {
+        if (!$this->canCreate(Customer::class)) {
+            return $this->redirectToRoute('customer_index');
+        }
+        if ($request->isMethod('POST')) {
+            $customerRepository->save($customer = (new Customer())
+                ->setName($request->request->get('name'))
+                ->setSurname($request->request->get('surname'))
+                ->setBirthdate(new \DateTime($request->request->get('birthdate')))
+                ->setEmail($request->request->get('email'))
+                ->setPhone($request->request->get('phone'))
+                ->setNotes($request->request->get('notes'))
+            );
+
+            return $this->redirectToRoute('customer_edit', ['id' => $customer->getId()]);
+        }
+
+        return $this->render('customer/new.html.twig');
+    }
+
     /** @Route("/{id}", name="customer_edit", methods={"GET", "POST"}) */
     public function edit(Request $request, Customer $customer, CustomerRepository $customerRepository): Response
     {
@@ -69,5 +92,22 @@ class CustomerController extends BaseController
             'familiars' => $customer->getFamily() ? $customerRepository->findByFamiliar($customer) : [],
             'canEdit' => $this->canEdit($customer),
         ]);
+    }
+
+    /** @Route("/{id}/delete", name="customer_delete", methods={"GET"}) */
+    public function delete(Customer $customer, CustomerRepository $customerRepository): Response
+    {
+        if (!$this->canDelete($customer)) {
+            return $this->redirectToRoute('customer_edit', ['id' => $customer->getId()]);
+        }
+        try {
+            $customerRepository->remove($customer);
+        } catch (ForeignKeyConstraintViolationException $e) {
+            $this->addFlash('error', 'No se puede eliminar un alumno si tiene historial.');
+
+            return $this->redirectToRoute('customer_edit', ['id' => $customer->getId()]);
+        }
+
+        return $this->redirectToRoute('customer_index');
     }
 }

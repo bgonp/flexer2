@@ -23,6 +23,18 @@ abstract class BaseController extends AbstractController
         return false;
     }
 
+    protected function canCreate(string $entityClass, bool $flash = true): bool
+    {
+        if ($this->isGranted(Role::ROLE_ADMIN)) {
+            return true;
+        }
+        if ($flash) {
+            $this->addFlash('error', 'Acceso restringido');
+        }
+
+        return false;
+    }
+
     protected function canView(Base $entity, bool $flash = true): bool
     {
         if ($this->isGranted(Role::ROLE_ADMIN)) {
@@ -39,6 +51,21 @@ abstract class BaseController extends AbstractController
     }
 
     protected function canEdit(Base $entity, bool $flash = true): bool
+    {
+        if ($this->isGranted(Role::ROLE_ADMIN)) {
+            return true;
+        }
+        if (Customer::class === get_class($entity)) {
+            return $this->getUser() && $this->getUser()->equals($entity->getUser());
+        }
+        if ($flash) {
+            $this->addFlash('error', 'Acceso restringido');
+        }
+
+        return false;
+    }
+
+    protected function canDelete(Base $entity, bool $flash = true): bool
     {
         if ($this->isGranted(Role::ROLE_ADMIN)) {
             return true;

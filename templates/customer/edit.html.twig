@@ -5,6 +5,7 @@
 {% block content %}
     <div class="row">
         <div class="col-6">
+            <h2>Editar alumno</h2>
             <form action="" method="post">
                 <div class="form-group">
                     <label for="customer-name">Nombre</label>
@@ -32,6 +33,7 @@
                 </div>
                 {% if canEdit %}
                     <button type="submit" class="btn btn-primary btn-block">Editar</button>
+                    <a href="{{ path('customer_delete', {id: customer.id}) }}" class="btn btn-danger btn-block confirmable">Borrar</a>
                 {% endif %}
             </form>
             <a href="{{ path('customer_index') }}">Volver a la lista</a>
@@ -50,7 +52,10 @@
                     </li>
                 {% endfor %}
             </ul>
-            <input type="text" class="api-caller" data-href="{{ path('api_customer_search') }}" data-callback="showCandidates" name="s" />
+            <div class="form-group">
+                <label for="search-familiar">Buscar familiares</label>
+                <input type="text" id="search-familiar" class="api-caller form-control" data-href="{{ path('api_customer_search') }}" data-callback="showCandidates" name="s" />
+            </div>
             <ul id="family-candidates"></ul>
         </div>
     </div>

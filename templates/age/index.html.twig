@@ -3,22 +3,27 @@
 {% block title %}Edades{% endblock %}
 
 {% block content %}
-    <table class="table table-sm table-hover">
-        <thead>
-        <tr>
-            <th scope="col">Nombre</th>
-            <th scope="col">Descripción</th>
-            <th scope="col">URL</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for age in ages %}
-            <tr class="clickable" data-href="{{ path('age_edit', {id: age.id}) }}">
-                <td>{{ age.name }}</td>
-                <td>{{ age.description }}</td>
-                <td>{{ age.url }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <div class="row">
+        <div class="col-12">
+            <h2>Edades <a href="{{ path('age_new') }}" class="btn btn-primary">Nueva</a></h2>
+            <table class="table table-sm table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Descripción</th>
+                    <th scope="col">URL</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for age in ages %}
+                    <tr class="clickable" data-href="{{ path('age_edit', {id: age.id}) }}">
+                        <td>{{ age.name }}</td>
+                        <td>{{ age.description }}</td>
+                        <td>{{ age.url }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}

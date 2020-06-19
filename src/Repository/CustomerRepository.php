@@ -94,4 +94,9 @@ class CustomerRepository extends PaginableRepository
     {
         $this->saveEntity($customer, $flush);
     }
+
+    public function remove(Customer $customer, bool $flush = true): void
+    {
+        $this->removeEntity($customer, $flush);
+    }
 }

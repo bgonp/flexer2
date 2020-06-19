@@ -3,32 +3,41 @@
 {% block title %}Alumnos{% endblock %}
 
 {% block content %}
-    <form action="{{ path('customer_index') }}" method="get">
-        <input type="text" name="s" value="{{ search }}"/>
-        <input type="submit" value="Buscar" />
-    </form>
-    <table class="table table-sm table-hover">
-        <thead>
-        <tr>
-            <th scope="col">Nombre</th>
-            <th scope="col">Apellidos</th>
-            <th scope="col">E-mail</th>
-            <th scope="col">Teléfono</th>
-            <th scope="col">Nacimiento</th>
-            <th scope="col">Family</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for customer in customers %}
-            <tr class="clickable" data-href="{{ path('customer_edit', {id: customer.id}) }}">
-                <td>{{ customer.name }}</td>
-                <td>{{ customer.surname }}</td>
-                <td>{{ customer.email }}</td>
-                <td>{{ customer.phone }}</td>
-                <td>{{ customer.birthdate|showDate }}</td>
-                <td>{{ customer.family ? customer.family.customers|length : '' }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <div class="row">
+        <div class="col-12">
+            <h2>Alumnos <a href="{{ path('customer_new') }}" class="btn btn-primary">Nuevo</a></h2>
+            <form action="{{ path('customer_index') }}" method="get" class="mb-3">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <input type="submit" value="Buscar" class="btn btn-primary"/>
+                    </div>
+                    <input type="text" name="s" value="{{ search }}" class="form-control"/>
+                </div>
+            </form>
+            <table class="table table-sm table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Apellidos</th>
+                    <th scope="col">E-mail</th>
+                    <th scope="col">Teléfono</th>
+                    <th scope="col">Nacimiento</th>
+                    <th scope="col">Family</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for customer in customers %}
+                    <tr class="clickable" data-href="{{ path('customer_edit', {id: customer.id}) }}">
+                        <td>{{ customer.name }}</td>
+                        <td>{{ customer.surname }}</td>
+                        <td>{{ customer.email }}</td>
+                        <td>{{ customer.phone }}</td>
+                        <td>{{ customer.birthdate|showDate }}</td>
+                        <td>{{ customer.family ? customer.family.customers|length : '' }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}
