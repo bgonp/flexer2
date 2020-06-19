@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\Assignment;
+use Doctrine\Persistence\ManagerRegistry;
 
 class AssignmentRepository extends BaseRepository
 {
-    protected static function entityClass(): string
+    public function __construct(ManagerRegistry $registry)
     {
-        return Assignment::class;
+        parent::__construct($registry, Assignment::class);
     }
 
     public function save(Assignment $assignment, bool $flush = true): void

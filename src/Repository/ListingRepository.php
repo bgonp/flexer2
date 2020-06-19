@@ -9,12 +9,13 @@ use App\Entity\Period;
 use App\Entity\Position;
 use App\Entity\Staff;
 use App\Exception\Listing\PositionMustBeStaffException;
+use Doctrine\Persistence\ManagerRegistry;
 
 class ListingRepository extends BaseRepository
 {
-    protected static function entityClass(): string
+    public function __construct(ManagerRegistry $registry)
     {
-        return Listing::class;
+        parent::__construct($registry, Listing::class);
     }
 
     /** @return Listing[] */
@@ -23,6 +24,7 @@ class ListingRepository extends BaseRepository
         if (!$position->isStaff()) {
             throw PositionMustBeStaffException::create();
         }
+
         return $this->createQueryBuilder('l')
             ->select('l', 's')
             ->join('l.sessions', 's')

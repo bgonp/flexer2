@@ -2,27 +2,16 @@
 
 namespace App\Repository;
 
+use App\Entity\Base;
 use App\Exception\Common\CannotFlushPersistOperationsException;
 use App\Exception\Common\ObjectOfClassCouldNotBeRemovedException;
 use App\Exception\Common\ObjectOfClassCouldNotBeStoredException;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\DBAL\Connection;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
-use Doctrine\Persistence\ManagerRegistry;
 
 abstract class BaseRepository extends ServiceEntityRepository
 {
-    protected Connection $connection;
-
-    public function __construct(ManagerRegistry $registry, Connection $connection)
-    {
-        parent::__construct($registry, $this->entityClass());
-        $this->connection = $connection;
-    }
-
-    abstract protected static function entityClass();
-
     public function flush(): void
     {
         try {
@@ -32,7 +21,7 @@ abstract class BaseRepository extends ServiceEntityRepository
         }
     }
 
-    protected function saveEntity($entity, bool $flush = true): void
+    protected function saveEntity(Base $entity, bool $flush = true): void
     {
         try {
             $this->getEntityManager()->persist($entity);
@@ -44,7 +33,7 @@ abstract class BaseRepository extends ServiceEntityRepository
         }
     }
 
-    protected function removeEntity($entity, bool $flush = true): void
+    protected function removeEntity(Base $entity, bool $flush = true): void
     {
         try {
             $this->getEntityManager()->remove($entity);

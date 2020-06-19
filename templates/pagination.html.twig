@@ -1,0 +1,25 @@
+{% if currentPage is defined and lastPage > 1 %}
+    {% set route = app.request.attributes.get('_route') %}
+    {% set params = app.request.attributes.get('_route_params') %}
+    {% set search = app.request.query.get('s') %}
+    <nav>
+        <ul class="pagination">
+            <li class="page-item{% if currentPage == 1 %} disabled{% endif %}">
+                <a href="{{ path(route, params|merge({page: 1, s: search})) }}" class="page-link">Inicio</a>
+            </li>
+            {% if currentPage > 3 %}<li class="page-item disabled"><a class="page-link">..</a></li>{% endif %}
+            {% for i in -2..2 %}
+                {% set page = currentPage + i %}
+                {% if page > 0 and page <= lastPage %}
+                    <li class="page-item{% if page == currentPage %} active{% endif %}">
+                        <a href="{{ path(route, params|merge({page: page, s: search})) }}" class="page-link">{{ page }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+            {% if currentPage < lastPage - 2 %}<li class="page-item"><a class="page-link">..</a></li>{% endif %}
+            <li class="page-item{% if currentPage == lastPage %} disabled{% endif %}">
+                <a href="{{ path(route, params|merge({page: lastPage, s: search})) }}" class="page-link">Final</a>
+            </li>
+        </ul>
+    </nav>
+{% endif %}

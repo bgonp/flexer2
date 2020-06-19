@@ -31,7 +31,6 @@ class ListingService
 
     /**
      * @param Course[] $courses
-     * @param bool $spread
      */
     public function createListingOfCourses(array $courses, bool $spread = false)
     {

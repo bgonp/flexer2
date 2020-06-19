@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Disciplinas{% endblock %}
+
+{% block content %}
+    <table class="table table-sm table-hover">
+        <thead>
+        <tr>
+            <th scope="col">Nombre</th>
+            <th scope="col">Descripción</th>
+            <th scope="col">URL</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for discipline in disciplines %}
+            <tr class="clickable" data-href="{{ path('discipline_edit', {id: discipline.id}) }}">
+                <td>{{ discipline.name }}</td>
+                <td>{{ discipline.description }}</td>
+                <td>{{ discipline.url }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -25,7 +25,7 @@ class AttendanceService
 
     public function createAttendances(Assignment $assignment, bool $flush = true): void
     {
-        $sessions = $this->sessionRepository->findByCourseBetweenDates(
+        $sessions = $this->sessionRepository->findByCourseBetweenSessions(
             $assignment->getCourse(),
             $assignment->getFirstSession(),
             $assignment->getLastSession()

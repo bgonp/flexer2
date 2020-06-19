@@ -74,7 +74,6 @@ class PaymentService
     }
 
     /**
-     * @param Rate $rate
      * @param Attendance[] $attendances
      */
     private function checkPaymentCount(Rate $rate, array $attendances): void

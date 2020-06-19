@@ -17,11 +17,11 @@ abstract class BaseResolver implements ParamConverterInterface
 
     private string $name;
 
-    public function __construct(ServiceEntityRepository $repository)
+    public function __construct(ServiceEntityRepository $repository, string $name = '')
     {
         $this->repository = $repository;
         $this->class = $repository->getClassName();
-        $this->name = strtolower((new \ReflectionClass($this->class))->getShortName());
+        $this->name = $name ?: strtolower((new \ReflectionClass($this->class))->getShortName());
     }
 
     public function supports(ParamConverter $configuration): bool

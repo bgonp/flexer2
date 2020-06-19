@@ -3,20 +3,13 @@
 namespace App\Repository;
 
 use App\Entity\User;
+use Doctrine\Persistence\ManagerRegistry;
 
 class UserRepository extends BaseRepository
 {
-    protected static function entityClass(): string
+    public function __construct(ManagerRegistry $registry)
     {
-        return User::class;
-    }
-
-    public function findOneById(string $id): ?User
-    {
-        /** @var User $user */
-        $user = $this->find($id);
-
-        return $user;
+        parent::__construct($registry, User::class);
     }
 
     public function findOneByEmail(string $email): ?User

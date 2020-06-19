@@ -1,0 +1,12 @@
+<div id="flash-message" class="d-flex flex-column align-items-center justify-content-center
+    {% if app.session.flashBag.peek('error')|length + app.session.flashBag.peek('success')|length == 0 %}
+        hidden
+    {% endif %}
+">
+    {% for message in app.flashes('error') %}
+        <p class="message alert alert-danger m-2">{{ message }}</p>
+    {% endfor %}
+    {% for message in app.flashes('success') %}
+        <p class="message alert alert-success m-2">{{ message }}</p>
+    {% endfor %}
+</div>

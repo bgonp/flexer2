@@ -12,15 +12,15 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20200614162403 extends AbstractMigration
 {
-    public function getDescription() : string
+    public function getDescription(): string
     {
         return '';
     }
 
-    public function up(Schema $schema) : void
+    public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
+        $this->abortIf('mysql' !== $this->connection->getDatabasePlatform()->getName(), 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('CREATE TABLE assignment (id CHAR(36) NOT NULL, customer_id CHAR(36) DEFAULT NULL, course_id CHAR(36) DEFAULT NULL, position_id CHAR(36) DEFAULT NULL, first_session_id CHAR(36) DEFAULT NULL, last_session_id CHAR(36) DEFAULT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, notes VARCHAR(255) DEFAULT NULL, INDEX IDX_30C544BA9395C3F3 (customer_id), INDEX IDX_30C544BA591CC992 (course_id), INDEX IDX_30C544BADD842E46 (position_id), INDEX IDX_30C544BAF0A78DD8 (first_session_id), INDEX IDX_30C544BA884B8635 (last_session_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE period (id CHAR(36) NOT NULL, season_id CHAR(36) DEFAULT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, name VARCHAR(255) NOT NULL, init_date DATE DEFAULT NULL, finish_date DATE DEFAULT NULL, holidays LONGTEXT NOT NULL COMMENT \'(DC2Type:simple_array)\', INDEX IDX_C5B81ECE4EC001D1 (season_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
@@ -73,10 +73,10 @@ final class Version20200614162403 extends AbstractMigration
         $this->addSql('ALTER TABLE season ADD CONSTRAINT FK_F0E45BA9C32A47EE FOREIGN KEY (school_id) REFERENCES school (id)');
     }
 
-    public function down(Schema $schema) : void
+    public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
+        $this->abortIf('mysql' !== $this->connection->getDatabasePlatform()->getName(), 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('ALTER TABLE session DROP FOREIGN KEY FK_D044D5D4EC8B7ADE');
         $this->addSql('ALTER TABLE place DROP FOREIGN KEY FK_741D53CD9F2C3FAB');

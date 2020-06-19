@@ -5,26 +5,30 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\Course;
-use App\Entity\Listing;
-use App\Entity\Period;
 use App\Entity\Session;
+use Doctrine\Persistence\ManagerRegistry;
 
 class SessionRepository extends BaseRepository
 {
-    protected static function entityClass(): string
+    public function __construct(ManagerRegistry $registry)
     {
-        return Session::class;
+        parent::__construct($registry, Session::class);
     }
 
     public function find($id, $lockMode = null, $lockVersion = null): Session
     {
         /** @var Session $session */
         $session = parent::find($id, $lockMode, $lockVersion);
+
         return $session;
     }
 
-    public function findByCourseBetweenDates(Course $course, Session $firstSession = null, Session $lastSession = null)
-    {
+    /** @return Session[] */
+    public function findByCourseBetweenSessions(
+        Course $course,
+        Session $firstSession = null,
+        Session $lastSession = null
+    ): array {
         $qb = $this->createQueryBuilder('s')
             ->where('s.course = :course')
             ->setParameter('course', $course)
@@ -43,7 +47,7 @@ class SessionRepository extends BaseRepository
      * @param string[] $coursesIds
      * @param string[] $periodsIds
      *
-     * @return Session[]
+     * @return array 'course' => course_id, 'period' => period_id, 'sessions_count' => COUNT(session)
      */
     public function getCounterByCoursesAndPeriodsIds(array $coursesIds, array $periodsIds): array
     {
@@ -56,6 +60,7 @@ class SessionRepository extends BaseRepository
             ->groupBy('s.course', 's.period')
             ->getQuery()->execute();
     }
+
     public function save(Session $session, bool $flush = true): void
     {
         $this->saveEntity($session, $flush);

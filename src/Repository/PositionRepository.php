@@ -5,19 +5,22 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\Position;
+use Doctrine\Persistence\ManagerRegistry;
 
 class PositionRepository extends BaseRepository
 {
-    protected static function entityClass(): string
+    public function __construct(ManagerRegistry $registry)
     {
-        return Position::class;
+        parent::__construct($registry, Position::class);
     }
 
+    /** @return Position[] */
     public function findAllForCustomers(): array
     {
         return $this->findBy(['isStaff' => 0], ['name' => 'ASC']);
     }
 
+    /** @return Position[] */
     public function findAllForStaffs(): array
     {
         return $this->findBy(['isStaff' => 1], ['name' => 'ASC']);

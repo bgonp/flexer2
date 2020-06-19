@@ -31,9 +31,11 @@ class Discipline extends Named
         return $this->description;
     }
 
-    public function setDescription(?string $description): void
+    public function setDescription(?string $description): self
     {
         $this->description = $description;
+
+        return $this;
     }
 
     public function getUrl(): ?string
@@ -41,9 +43,11 @@ class Discipline extends Named
         return $this->url;
     }
 
-    public function setUrl(?string $url): void
+    public function setUrl(?string $url): self
     {
         $this->url = $url;
+
+        return $this;
     }
 
     /** @return Collection|Course[] */

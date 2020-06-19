@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\Place;
+use Doctrine\Persistence\ManagerRegistry;
 
 class PlaceRepository extends BaseRepository
 {
-    protected static function entityClass(): string
+    public function __construct(ManagerRegistry $registry)
     {
-        return Place::class;
+        parent::__construct($registry, Place::class);
     }
 
     /**

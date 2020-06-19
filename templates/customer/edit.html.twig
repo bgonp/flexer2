@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Editar alumno{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-6">
+            <form action="" method="post">
+                <div class="form-group">
+                    <label for="customer-name">Nombre</label>
+                    <input id="customer-name" name="name" type="text" class="form-control" value="{{ customer.name }}"/>
+                </div>
+                <div class="form-group">
+                    <label for="customer-surname">Apellidos</label>
+                    <input id="customer-surname" name="surname" type="text" class="form-control" value="{{ customer.surname }}"/>
+                </div>
+                <div class="form-group">
+                    <label for="customer-birthdate">Fecha de nacimiento</label>
+                    <input id="customer-birthdate" name="birthdate" type="date" class="form-control" value="{{ customer.birthdate|formatDate }}"/>
+                </div>
+                <div class="form-group">
+                    <label for="customer-email">E-mail</label>
+                    <input id="customer-email" name="email" type="email" class="form-control" value="{{ customer.email }}"/>
+                </div>
+                <div class="form-group">
+                    <label for="customer-phone">Teléfono</label>
+                    <input id="customer-phone" name="phone" type="text" class="form-control" value="{{ customer.phone }}"/>
+                </div>
+                <div class="form-group">
+                    <label for="customer-notes">Observaciones</label>
+                    <input id="customer-notes" name="notes" type="text" class="form-control" value="{{ customer.notes }}"/>
+                </div>
+                {% if canEdit %}
+                    <button type="submit" class="btn btn-primary btn-block">Editar</button>
+                {% endif %}
+            </form>
+            <a href="{{ path('customer_index') }}">Volver a la lista</a>
+        </div>
+        <div class="col-6">
+            <h2>Familia</h2>
+            <ul id="family-members">
+                {% for familiar in familiars %}
+                    <li>
+                        <a href="{{ path('customer_edit', {id: familiar.id}) }}">{{ familiar|fullname }}</a>
+                        <button class="btn btn-sm api-caller confirmable" name="familiar_id" value="{{ familiar.id }}"
+                                data-href="{{ path('api_remove_familiar', {id: customer.id}) }}"
+                                data-callback="updateFamily">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </li>
+                {% endfor %}
+            </ul>
+            <input type="text" class="api-caller" data-href="{{ path('api_customer_search') }}" data-callback="showCandidates" name="s" />
+            <ul id="family-candidates"></ul>
+        </div>
+    </div>
+{% endblock %}

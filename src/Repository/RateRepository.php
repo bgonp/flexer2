@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\Rate;
+use Doctrine\Persistence\ManagerRegistry;
 
 class RateRepository extends BaseRepository
 {
-    protected static function entityClass(): string
+    public function __construct(ManagerRegistry $registry)
     {
-        return Rate::class;
+        parent::__construct($registry, Rate::class);
     }
 
     public function save(Rate $rate, bool $flush = true)

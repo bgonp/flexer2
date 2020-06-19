@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\Period;
+use Doctrine\Persistence\ManagerRegistry;
 
 class PeriodRepository extends BaseRepository
 {
-    protected static function entityClass(): string
+    public function __construct(ManagerRegistry $registry)
     {
-        return Period::class;
+        parent::__construct($registry, Period::class);
     }
 
     public function getConsecutivePeriods(int $count, Period $since)

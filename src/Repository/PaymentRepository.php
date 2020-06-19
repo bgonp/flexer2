@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\Payment;
+use Doctrine\Persistence\ManagerRegistry;
 
 class PaymentRepository extends BaseRepository
 {
-    protected static function entityClass(): string
+    public function __construct(ManagerRegistry $registry)
     {
-        return Payment::class;
+        parent::__construct($registry, Payment::class);
     }
 
     public function save(Payment $payment, bool $flush = true)

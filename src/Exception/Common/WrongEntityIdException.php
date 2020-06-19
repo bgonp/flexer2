@@ -13,6 +13,7 @@ class WrongEntityIdException extends BadRequestHttpException
     public static function create(string $class, string $id = null): self
     {
         $id = $id ?: 'NULL';
+
         return new self(sprintf(self::MESSAGE, $class, $id));
     }
 }

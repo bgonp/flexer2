@@ -198,6 +198,7 @@ class Session extends Base
     public function setListing(?Listing $listing): self
     {
         $this->listing = $listing;
+
         return $this;
     }
 }

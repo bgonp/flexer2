@@ -7,7 +7,6 @@ use App\Repository\CustomerRepository;
 use App\Repository\StaffRepository;
 use App\Repository\UserRepository;
 use App\Security\Role;
-use App\Service\EncoderService;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;

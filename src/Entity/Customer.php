@@ -7,7 +7,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
-class Customer extends Named
+class Customer extends Named implements \JsonSerializable
 {
     private ?string $surname = null;
 
@@ -130,5 +130,16 @@ class Customer extends Named
     public function getAttendances(): Collection
     {
         return $this->attendances;
+    }
+
+    public function jsonSerialize()
+    {
+        $json = [];
+        $fields = ['id', 'name', 'surname', 'birthdate', 'email', 'phone'];
+        foreach ($fields as $field) {
+            $json[$field] = $this->{$field};
+        }
+
+        return $json;
     }
 }

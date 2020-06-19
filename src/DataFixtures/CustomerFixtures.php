@@ -25,7 +25,7 @@ class CustomerFixtures extends Fixture implements DependentFixtureInterface, Fix
 
     public function load(ObjectManager $manager)
     {
-        $faker = Faker\Factory::create('es_ES');
+        $faker = Faker\Factory::create('es_ES')->unique();
         $families = $this->familyRepository->findAll();
         $maxBirthdate = (new \DateTime())->setDate(2015, 12, 31);
         for ($i = 0; $i < 100; ++$i) {

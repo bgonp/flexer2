@@ -7,16 +7,15 @@ namespace App\Repository;
 use App\Entity\Attendance;
 use App\Entity\Course;
 use App\Entity\Customer;
-use App\Entity\Listing;
 use App\Entity\Period;
-use App\Entity\Session;
 use App\Entity\Staff;
+use Doctrine\Persistence\ManagerRegistry;
 
 class AttendanceRepository extends BaseRepository
 {
-    protected static function entityClass(): string
+    public function __construct(ManagerRegistry $registry)
     {
-        return Attendance::class;
+        parent::__construct($registry, Attendance::class);
     }
 
     /** @return Attendance[] */

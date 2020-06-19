@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\Level;
+use Doctrine\Persistence\ManagerRegistry;
 
 class LevelRepository extends BaseRepository
 {
-    protected static function entityClass(): string
+    public function __construct(ManagerRegistry $registry)
     {
-        return Level::class;
+        parent::__construct($registry, Level::class);
     }
 
     /** @return Level[] */

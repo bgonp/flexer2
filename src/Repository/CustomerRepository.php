@@ -7,19 +7,66 @@ namespace App\Repository;
 use App\Entity\Customer;
 use App\Entity\Listing;
 use App\Entity\Period;
+use Doctrine\Persistence\ManagerRegistry;
 
-class CustomerRepository extends BaseRepository
+class CustomerRepository extends PaginableRepository
 {
-    protected static function entityClass(): string
+    public function __construct(ManagerRegistry $registry)
     {
-        return Customer::class;
+        parent::__construct($registry, Customer::class);
     }
 
     /** @return Customer[] */
-    public function findAll(): array
+    public function findBySearchTerm(string $search, int $page = null): array
+    {
+        $query = $this->createQueryBuilder('c')
+            ->where('c.name LIKE :search')
+            ->orWhere('c.surname LIKE :search')
+            ->orWhere('c.email LIKE :search')
+            ->orWhere('c.phone LIKE :search')
+            ->setParameter('search', "%$search%");
+        if ($page) {
+            $query
+                ->setFirstResult($this->getOffset($page))
+                ->setMaxResults(self::PER_PAGE);
+        }
+
+        return $query->getQuery()->execute();
+    }
+
+    /** @return Customer[] */
+    public function findByFamiliar(Customer $customer): array
+    {
+        return $this->createQueryBuilder('c')
+            ->where('c.family = :family')
+            ->setParameter('family', $customer->getFamily())
+            ->getQuery()->execute();
+    }
+
+    public function getLastPageBySearchTerm(string $search): int
+    {
+        $count = $this->createQueryBuilder('c')
+            ->select('COUNT(c)')
+            ->where('c.name LIKE :search')
+            ->orWhere('c.surname LIKE :search')
+            ->orWhere('c.email LIKE :search')
+            ->orWhere('c.phone LIKE :search')
+            ->setParameter('search', "%$search%")
+            ->getQuery()->getSingleScalarResult();
+
+        return (int) ceil($count / self::PER_PAGE) ?: 1;
+    }
+
+    /** @return Customer[] */
+    public function findAll(int $page = 1): array
     {
         /** @var Customer[] $customers */
-        $customers = $this->findBy([], ['surname' => 'ASC', 'name' => 'ASC']);
+        $customers = $this->findBy(
+            [],
+            ['surname' => 'ASC', 'name' => 'ASC'],
+            self::PER_PAGE,
+            $this->getOffset($page)
+        );
 
         return $customers;
     }

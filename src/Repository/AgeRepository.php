@@ -5,17 +5,16 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\Age;
+use Doctrine\Persistence\ManagerRegistry;
 
 class AgeRepository extends BaseRepository
 {
-    protected static function entityClass(): string
+    public function __construct(ManagerRegistry $registry)
     {
-        return Age::class;
+        parent::__construct($registry, Age::class);
     }
 
-    /**
-     * @return Age[]
-     */
+    /** @return Age[] */
     public function findAll(): array
     {
         /** @var Age[] $ages */
@@ -24,9 +23,7 @@ class AgeRepository extends BaseRepository
         return $ages;
     }
 
-    /**
-     * @return Age[]
-     */
+    /** @return Age[] */
     public function findCompatibleAges(int $userAge): array
     {
         return ($qb = $this->createQueryBuilder('a'))

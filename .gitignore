@@ -19,3 +19,7 @@
 /.php_cs
 /.php_cs.cache
 ###< friendsofphp/php-cs-fixer ###
+
+###> others ###
+/.idea/
+###< others ###

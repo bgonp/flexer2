@@ -7,12 +7,13 @@ namespace App\Repository;
 use App\Entity\Course;
 use App\Entity\Customer;
 use App\Entity\Period;
+use Doctrine\Persistence\ManagerRegistry;
 
 class CourseRepository extends BaseRepository
 {
-    protected static function entityClass(): string
+    public function __construct(ManagerRegistry $registry)
     {
-        return Course::class;
+        parent::__construct($registry, Course::class);
     }
 
     /** @return Course[] */

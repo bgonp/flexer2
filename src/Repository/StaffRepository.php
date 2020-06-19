@@ -6,13 +6,18 @@ namespace App\Repository;
 
 use App\Entity\Customer;
 use App\Entity\Staff;
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
+use Doctrine\Persistence\ManagerRegistry;
 
 class StaffRepository extends BaseRepository
 {
-    protected static function entityClass(): string
+    private Connection $connection;
+
+    public function __construct(ManagerRegistry $registry, Connection $connection)
     {
-        return Staff::class;
+        parent::__construct($registry, Staff::class);
+        $this->connection = $connection;
     }
 
     public function markAsStaff(Customer $customer, $unmark = false): bool

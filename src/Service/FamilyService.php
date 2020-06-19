@@ -7,37 +7,63 @@ namespace App\Service;
 use App\Entity\Customer;
 use App\Entity\Family;
 use App\Exception\Family\CustomerAlreadyHasFamilyException;
-use App\Repository\CustomerRepository;
+use App\Exception\Family\CustomersAlreadyHasTheirOwnFamilyException;
 use App\Repository\FamilyRepository;
 
 class FamilyService
 {
     private FamilyRepository $familyRepository;
 
-    private CustomerRepository $customerRepository;
-
-    public function __construct(FamilyRepository $familyRepository, CustomerRepository $customerRepository)
+    public function __construct(FamilyRepository $familyRepository)
     {
         $this->familyRepository = $familyRepository;
-        $this->customerRepository = $customerRepository;
+    }
+
+    /**
+     * @throws CustomerAlreadyHasFamilyException|CustomersAlreadyHasTheirOwnFamilyException
+     */
+    public function setCustomersAsFamily(Customer $customer, Customer $familiar): Family
+    {
+        if ($customer->getFamily() && $customer->getFamily()->equals($familiar->getFamily())) {
+            return $customer->getFamily();
+        }
+
+        if ($customer->getFamily() && $familiar->getFamily()) {
+            throw CustomersAlreadyHasTheirOwnFamilyException::create($customer, $familiar);
+        }
+
+        if (!$customer->getFamily() && !$familiar->getFamily()) {
+            return $this->createFamilyFromCustomers([$customer, $familiar]);
+        }
+
+        if ($family = $customer->getFamily()) {
+            $this->familyRepository->save($family->addCustomer($familiar));
+        } elseif ($family = $familiar->getFamily()) {
+            $this->familyRepository->save($family->addCustomer($customer));
+        }
+
+        return $family;
     }
 
     /**
      * @param Customer[] $customers
      *
-     * @return Family
+     * @return Family|null
      * @throws CustomerAlreadyHasFamilyException
      */
-    public function createFamilyFromCustomers(array $customers): Family
+    public function createFamilyFromCustomers(array $customers): ?Family
     {
+        if (1 >= count($customers)) {
+            return null;
+        }
+
         $family = new Family();
 
         foreach ($customers as $customer) {
             if ($customer->getFamily()) {
                 throw CustomerAlreadyHasFamilyException::create($customer);
             }
-
-            $this->customerRepository->save($customer->setFamily($family), false);
+            $family->addCustomer($customer);
         }
 
         $this->familyRepository->save($family);
@@ -45,18 +71,25 @@ class FamilyService
         return $family;
     }
 
-    public function subtractCustomerFromFamily(Customer $customer): void
+    public function subtractCustomerFromFamily(Customer $customer): ?Family
     {
         if (!$family = $customer->getFamily()) {
-            return;
+            return null;
         }
 
-        if ($user = $customer->getUser()) {
-            if (count($customers = $user->getCustomers()) > 1) {
-                $customer->setUser(null);
-            }
+        if (($user = $customer->getUser()) && count($customers = $user->getCustomers()) > 1) {
+            $customer->setUser(null);
+        }
+        $family->removeCustomer($customer);
+        $this->familyRepository->save($family);
+
+        if (1 === $family->getCustomers()->count()) {
+            $family->removeCustomer($family->getCustomers()->getValues()[0]);
+            $this->familyRepository->remove($family);
+
+            return null;
         }
 
-        $this->customerRepository->save($customer->setFamily(null));
+        return $family;
     }
 }

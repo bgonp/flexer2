@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\School;
+use Doctrine\Persistence\ManagerRegistry;
 
 class SchoolRepository extends BaseRepository
 {
-    protected static function entityClass(): string
+    public function __construct(ManagerRegistry $registry)
     {
-        return School::class;
+        parent::__construct($registry, School::class);
     }
 
     /** @return School[] */
