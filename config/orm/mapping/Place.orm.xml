@@ -4,7 +4,7 @@
         <field name="description" nullable="true" />
         <field name="url" nullable="true" />
 
-        <many-to-one field="zone" target-entity="App\Entity\Zone" inversed-by="places" />
+        <many-to-one field="zone" target-entity="App\Entity\Zone" inversed-by="places" fetch="EAGER" />
 
         <one-to-many field="courses" target-entity="App\Entity\Course" mapped-by="place">
             <order-by>

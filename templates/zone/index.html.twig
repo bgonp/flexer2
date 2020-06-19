@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Zonas{% endblock %}
+
+{% block content %}
+    <table class="table table-sm table-hover">
+        <thead>
+        <tr>
+            <th scope="col">Nombre</th>
+            <th scope="col">Descripción</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for zone in zones %}
+            <tr class="clickable" data-href="{{ path('zone_edit', {id: zone.id}) }}">
+                <td>{{ zone.name }}</td>
+                <td>{{ zone.description }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

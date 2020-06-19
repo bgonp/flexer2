@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Niveles{% endblock %}
+
+{% block content %}
+    <table class="table table-sm table-hover">
+        <thead>
+        <tr>
+            <th scope="col">Nombre</th>
+            <th scope="col">Descripción</th>
+            <th scope="col">URL</th>
+            <th scope="col">Zona</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for place in places %}
+            <tr class="clickable" data-href="{{ path('place_edit', {id: place.id}) }}">
+                <td>{{ place.name }}</td>
+                <td>{{ place.description }}</td>
+                <td>{{ place.url }}</td>
+                <td>{{ place.zone.name }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

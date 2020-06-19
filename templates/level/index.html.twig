@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Niveles{% endblock %}
+
+{% block content %}
+    <table class="table table-sm table-hover">
+        <thead>
+        <tr>
+            <th scope="col">Nombre</th>
+            <th scope="col">Descripción</th>
+            <th scope="col">URL</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for level in levels %}
+            <tr class="clickable" data-href="{{ path('level_edit', {id: level.id}) }}">
+                <td>{{ level.name }}</td>
+                <td>{{ level.description }}</td>
+                <td>{{ level.url }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
