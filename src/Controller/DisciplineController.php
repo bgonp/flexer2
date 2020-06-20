@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Entity\Discipline;
 use App\Repository\DisciplineRepository;
+use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -21,6 +22,25 @@ class DisciplineController extends BaseController
         }
 
         return $this->render('discipline/index.html.twig', ['disciplines' => $disciplineRepository->findAll()]);
+    }
+
+    /** @Route("/new", name="discipline_new", methods={"GET", "POST"}) */
+    public function new(Request $request, DisciplineRepository $disciplineRepository): Response
+    {
+        if (!$this->canCreate(Discipline::class)) {
+            return $this->redirectToRoute('discipline_index');
+        }
+        if ($request->isMethod('POST')) {
+            $disciplineRepository->save($discipline = (new Discipline())
+                ->setName($request->request->get('name'))
+                ->setDescription($request->request->get('description'))
+                ->setUrl($request->request->get('url'))
+            );
+
+            return $this->redirectToRoute('discipline_edit', ['id' => $discipline->getId()]);
+        }
+
+        return $this->render('discipline/new.html.twig');
     }
 
     /** @Route("/{id}", name="discipline_edit", methods={"GET", "POST"}) */
@@ -44,5 +64,22 @@ class DisciplineController extends BaseController
             'discipline' => $discipline,
             'canEdit' => $this->canEdit($discipline),
         ]);
+    }
+
+    /** @Route("/{id}/delete", name="discipline_delete", methods={"GET"}) */
+    public function delete(Discipline $discipline, DisciplineRepository $disciplineRepository): Response
+    {
+        if (!$this->canDelete($discipline)) {
+            return $this->redirectToRoute('discipline_edit', ['id' => $discipline->getId()]);
+        }
+        try {
+            $disciplineRepository->remove($discipline);
+        } catch (ForeignKeyConstraintViolationException $e) {
+            $this->addFlash('error', 'No se puede eliminar una propiedad si ya tiene cursos creados.');
+
+            return $this->redirectToRoute('discipline_edit', ['id' => $discipline->getId()]);
+        }
+
+        return $this->redirectToRoute('discipline_index');
     }
 }

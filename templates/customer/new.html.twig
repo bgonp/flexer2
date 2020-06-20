@@ -7,30 +7,24 @@
         <div class="col-6">
             <h2>Crear alumno</h2>
             <form action="" method="post">
-                <div class="form-group">
-                    <label for="customer-name">Nombre</label>
-                    <input id="customer-name" name="name" type="text" class="form-control"/>
-                </div>
-                <div class="form-group">
-                    <label for="customer-surname">Apellidos</label>
-                    <input id="customer-surname" name="surname" type="text" class="form-control"/>
-                </div>
-                <div class="form-group">
-                    <label for="customer-birthdate">Fecha de nacimiento</label>
-                    <input id="customer-birthdate" name="birthdate" type="date" class="form-control"/>
-                </div>
-                <div class="form-group">
-                    <label for="customer-email">E-mail</label>
-                    <input id="customer-email" name="email" type="email" class="form-control"/>
-                </div>
-                <div class="form-group">
-                    <label for="customer-phone">Teléfono</label>
-                    <input id="customer-phone" name="phone" type="text" class="form-control"/>
-                </div>
-                <div class="form-group">
-                    <label for="customer-notes">Observaciones</label>
-                    <input id="customer-notes" name="notes" type="text" class="form-control"/>
-                </div>
+                {% include 'form/field.html.twig' with
+                    {type: 'text', entity: 'customer', name: 'name', label: 'Nombre', required} only %}
+
+                {% include 'form/field.html.twig' with
+                    {type: 'text', entity: 'customer', name: 'surname', label: 'Apellidos'} only %}
+
+                {% include 'form/field.html.twig' with
+                    {type: 'date', entity: 'customer', name: 'birthdate', label: 'Fecha de nacimiento'} only %}
+
+                {% include 'form/field.html.twig' with
+                    {type: 'email', entity: 'customer', name: 'email', label: 'E-mail'} only %}
+
+                {% include 'form/field.html.twig' with
+                    {type: 'text', entity: 'customer', name: 'phone', label: 'Teléfono'} only %}
+
+                {% include 'form/field.html.twig' with
+                    {type: 'text', entity: 'customer', name: 'notes', label: 'Observaciones'} only %}
+
                 <button type="submit" class="btn btn-primary btn-block">Guardar</button>
             </form>
             <a href="{{ path('customer_index') }}">Volver a la lista</a>

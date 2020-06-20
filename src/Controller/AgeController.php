@@ -31,16 +31,27 @@ class AgeController extends BaseController
             return $this->redirectToRoute('age_index');
         }
         if ($request->isMethod('POST')) {
-            $ageRepository->save($age = (new Age())
-                ->setName($request->request->get('name'))
-                ->setDescription($request->request->get('description'))
-                ->setUrl($request->request->get('url'))
-            );
+            $name = $request->request->get('name');
+            $description = $request->request->get('description');
+            $url = $request->request->get('url');
+            if (empty($name)) {
+                $this->addFlash('error', 'El campo "nombre" no puede estar vacío');
+            } else {
+                $ageRepository->save($age = (new Age())
+                    ->setName($name)
+                    ->setDescription($description)
+                    ->setUrl($url)
+                );
 
-            return $this->redirectToRoute('age_edit', ['id' => $age->getId()]);
+                return $this->redirectToRoute('age_edit', ['id' => $age->getId()]);
+            }
         }
 
-        return $this->render('age/new.html.twig');
+        return $this->render('age/new.html.twig', [
+            'name' => $name ?? '',
+            'description' => $description ?? '',
+            'url' => $url ?? '',
+        ]);
     }
 
     /** @Route("/{id}", name="age_edit", methods={"GET", "POST"}) */

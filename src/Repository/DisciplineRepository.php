@@ -27,4 +27,9 @@ class DisciplineRepository extends BaseRepository
     {
         $this->saveEntity($discipline, $flush);
     }
+
+    public function remove(Discipline $discipline, bool $flush = true): void
+    {
+        $this->removeEntity($discipline, $flush);
+    }
 }
