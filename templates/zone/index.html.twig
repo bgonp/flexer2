@@ -3,20 +3,25 @@
 {% block title %}Zonas{% endblock %}
 
 {% block content %}
-    <table class="table table-sm table-hover">
-        <thead>
-        <tr>
-            <th scope="col">Nombre</th>
-            <th scope="col">Descripción</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for zone in zones %}
-            <tr class="clickable" data-href="{{ path('zone_edit', {id: zone.id}) }}">
-                <td>{{ zone.name }}</td>
-                <td>{{ zone.description }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <div class="row">
+        <div class="col-12">
+            <h2>Zonas <a href="{{ path('zone_new') }}" class="btn btn-primary">Nueva</a></h2>
+            <table class="table table-sm table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Descripción</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for zone in zones %}
+                    <tr class="clickable" data-href="{{ path('zone_edit', {id: zone.id}) }}">
+                        <td>{{ zone.name }}</td>
+                        <td>{{ zone.description }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}

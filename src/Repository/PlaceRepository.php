@@ -29,4 +29,9 @@ class PlaceRepository extends BaseRepository
     {
         $this->saveEntity($place, $flush);
     }
+
+    public function remove(Place $place, bool $flush = true): void
+    {
+        $this->removeEntity($place, $flush);
+    }
 }

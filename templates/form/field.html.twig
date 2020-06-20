@@ -12,15 +12,14 @@
                     {% if required is defined %}required{% endif %}>
                 <option></option>
                 {% for option in options %}
-                    <option value="{{ option.id }}"{% if option.equals(selected) %} selected{% endif %}>
+                    <option value="{{ option.id }}"{% if option.equals(value) %} selected{% endif %}>
                         {{ option }}
                     </option>
                 {% endfor %}
             </select>
         {% else %}
             <input id="{{ entity }}-{{ name }}" name="{{ name }}" type="{{ type }}" class="form-control"
-                    {% if value is defined %}value="{{ value }}"{% endif %}
-                    {% if required is defined %}required{% endif %}/>
+                   value="{{ value }}" {% if required is defined %}required{% endif %}/>
         {% endif %}
     </div>
 {% endif %}

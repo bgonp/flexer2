@@ -1,21 +1,21 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Editar nivel{% endblock %}
+{% block title %}Editar zona{% endblock %}
 
 {% block content %}
     <div class="row">
         <div class="col-6">
-            <form action="" method="post">
-                <div class="form-group">
-                    <label for="customer-name">Nombre</label>
-                    <input id="customer-name" name="name" type="text" class="form-control" value="{{ zone.name }}"/>
-                </div>
-                <div class="form-group">
-                    <label for="customer-name">Descripción</label>
-                    <input id="customer-name" name="description" type="text" class="form-control" value="{{ zone.description }}"/>
-                </div>
+            <h2>Editar zona</h2>
+            <form action="" method="post" class="mb-2">
+                {% include 'form/field.html.twig' with
+                    {type: 'text', entity: 'zone', name: 'name', label: 'Nombre', value: zone.name, required: true} only %}
+
+                {% include 'form/field.html.twig' with
+                    {type: 'text', entity: 'zone', name: 'description', label: 'Descripción', value: zone.description} only %}
+
                 {% if canEdit %}
                     <button type="submit" class="btn btn-primary btn-block">Editar</button>
+                    <a href="{{ path('zone_delete', {id: zone.id}) }}" class="btn btn-danger btn-block confirmable">Borrar</a>
                 {% endif %}
             </form>
             <a href="{{ path('zone_index') }}">Volver a la lista</a>

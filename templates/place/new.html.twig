@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Crear lugar{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-6">
+            <h2>Crear lugar</h2>
+            <form action="" method="post" class="mb-2">
+                {% include 'form/field.html.twig' with
+                    {type: 'text', entity: 'place', name: 'name', label: 'Nombre', value: name, required: true} only %}
+
+                {% include 'form/field.html.twig' with
+                    {type: 'text', entity: 'place', name: 'description', label: 'Descripción', value: description} only %}
+
+                {% include 'form/field.html.twig' with
+                    {type: 'text', entity: 'place', name: 'url', label: 'URL', value: url} only %}
+
+                {% include 'form/field.html.twig' with
+                    {type: 'select', entity: 'place', name: 'zone', label: 'Zona', value: zone, options: zones, required: true} only %}
+
+                <button type="submit" class="btn btn-primary btn-block">Guardar</button>
+            </form>
+            <a href="{{ path('place_index') }}">Volver a la lista</a>
+        </div>
+    </div>
+{% endblock %}

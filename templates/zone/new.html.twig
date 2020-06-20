@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Crear zona{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-6">
+            <h2>Crear zona</h2>
+            <form action="" method="post" class="mb-2">
+                {% include 'form/field.html.twig' with
+                    {type: 'text', entity: 'zone', name: 'name', label: 'Nombre', value: name, required: true} only %}
+
+                {% include 'form/field.html.twig' with
+                    {type: 'text', entity: 'zone', name: 'description', label: 'Descripción', value: description} only %}
+
+                <button type="submit" class="btn btn-primary btn-block">Guardar</button>
+            </form>
+            <a href="{{ path('zone_index') }}">Volver a la lista</a>
+        </div>
+    </div>
+{% endblock %}

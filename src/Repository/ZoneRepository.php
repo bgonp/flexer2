@@ -24,4 +24,9 @@ class ZoneRepository extends BaseRepository
     {
         $this->saveEntity($zone, $flush);
     }
+
+    public function remove(Zone $zone, bool $flush = true): void
+    {
+        $this->removeEntity($zone, $flush);
+    }
 }
