@@ -27,4 +27,9 @@ class SchoolRepository extends BaseRepository
     {
         $this->saveEntity($school, $flush);
     }
+
+    public function remove(School $school, bool $flush = true): void
+    {
+        $this->removeEntity($school, $flush);
+    }
 }

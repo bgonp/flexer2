@@ -19,10 +19,11 @@ class PlaceRepository extends BaseRepository
      */
     public function findAll(): array
     {
-        /** @var Place[] $places */
-        $places = $this->findBy([], ['name' => 'ASC']);
-
-        return $places;
+        return $this->createQueryBuilder('p')
+            ->join('p.zone', 'z')
+            ->orderBy('z.name', 'ASC')
+            ->addOrderBy('p.name', 'ASC')
+            ->getQuery()->execute();
     }
 
     public function save(Place $place, bool $flush = true): void

@@ -2,22 +2,28 @@
 <nav class="navbar navbar-expand navbar-dark bg-primary mb-3">
     <a href="{{ path('main') }}" class="navbar-brand h1 m-0">Flexer</a>
     <ul class="navbar-nav ml-auto">
-        <li class="nav-item{% if route in ['customer_index', 'customer_edit'] %} active{% endif %}">
+        <li class="nav-item{% if route in ['customer_index', 'customer_new', 'customer_edit'] %} active{% endif %}">
             <a href="{{ path('customer_index') }}" class="nav-link">Alumnos</a>
         </li>
-        <li class="nav-item{% if route in ['discipline_index', 'discipline_edit'] %} active{% endif %}">
+        <li class="nav-item{% if route in ['course_index', 'course_new', 'course_edit'] %} active{% endif %}">
+            <a href="{{ path('course_index') }}" class="nav-link">Cursos</a>
+        </li>
+        <li class="nav-item{% if route in ['school_index', 'school_new', 'school_edit'] %} active{% endif %}">
+            <a href="{{ path('school_index') }}" class="nav-link">Escuelas</a>
+        </li>
+        <li class="nav-item{% if route in ['discipline_index', 'discipline_new', 'discipline_edit'] %} active{% endif %}">
             <a href="{{ path('discipline_index') }}" class="nav-link">Disciplinas</a>
         </li>
-        <li class="nav-item{% if route in ['level_index', 'level_edit'] %} active{% endif %}">
+        <li class="nav-item{% if route in ['level_index', 'level_new', 'level_edit'] %} active{% endif %}">
             <a href="{{ path('level_index') }}" class="nav-link">Niveles</a>
         </li>
-        <li class="nav-item{% if route in ['age_index', 'age_edit'] %} active{% endif %}">
+        <li class="nav-item{% if route in ['age_index', 'age_new', 'age_edit'] %} active{% endif %}">
             <a href="{{ path('age_index') }}" class="nav-link">Edades</a>
         </li>
-        <li class="nav-item{% if route in ['place_index', 'place_edit'] %} active{% endif %}">
+        <li class="nav-item{% if route in ['place_index', 'place_new', 'place_edit'] %} active{% endif %}">
             <a href="{{ path('place_index') }}" class="nav-link">Lugares</a>
         </li>
-        <li class="nav-item{% if route in ['zone_index', 'zone_edit'] %} active{% endif %}">
+        <li class="nav-item{% if route in ['zone_index', 'zone_new', 'zone_edit'] %} active{% endif %}">
             <a href="{{ path('zone_index') }}" class="nav-link">Zonas</a>
         </li>
         {% if app.user %}

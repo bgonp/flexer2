@@ -64,11 +64,15 @@ class LevelController extends BaseController
             if (!$this->canEdit($level)) {
                 return $this->redirectToRoute('level_edit', ['id' => $level->getId()]);
             }
-            $levelRepository->save($level
+            $level
                 ->setName($request->request->get('name'))
                 ->setDescription($request->request->get('description'))
-                ->setUrl($request->request->get('url'))
-            );
+                ->setUrl($request->request->get('url'));
+            if (empty($level->getName())) {
+                $this->addFlash('error', 'El campo "nombre" no puede estar vacío');
+            } else {
+                $levelRepository->save($level);
+            }
         }
 
         return $this->render('level/edit.html.twig', [

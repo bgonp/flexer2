@@ -61,10 +61,14 @@ class ZoneController extends BaseController
             if (!$this->canEdit($zone)) {
                 return $this->redirectToRoute('zone_edit', ['id' => $zone->getId()]);
             }
-            $zoneRepository->save($zone
+            $zone
                 ->setName($request->request->get('name'))
-                ->setDescription($request->request->get('description'))
-            );
+                ->setDescription($request->request->get('description'));
+            if (empty($zone->getName())) {
+                $this->addFlash('error', 'El campo "nombre" no puede estar vacío');
+            } else {
+                $zoneRepository->save($zone);
+            }
         }
 
         return $this->render('zone/edit.html.twig', [

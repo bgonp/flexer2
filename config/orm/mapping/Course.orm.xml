@@ -7,7 +7,7 @@
         <field name="time" type="time" nullable="true" />
         <field name="duration" type="smallint" nullable="true" />
 
-        <many-to-one field="school" target-entity="App\Entity\School" inversed-by="courses" />
+        <many-to-one field="school" target-entity="App\Entity\School" inversed-by="courses" fetch="EAGER"/>
         <many-to-one field="place" target-entity="App\Entity\Place" inversed-by="courses" fetch="EAGER" />
         <many-to-one field="discipline" target-entity="App\Entity\Discipline" inversed-by="courses" fetch="EAGER" />
         <many-to-one field="level" target-entity="App\Entity\Level" inversed-by="courses" fetch="EAGER" />

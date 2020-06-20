@@ -12,3 +12,9 @@ doctrine:
                 dir: '%kernel.project_dir%/config/orm/mapping'
                 prefix: 'App\Entity'
                 alias: App
+        dql:
+            string_functions:
+                concat_ws: DoctrineExtensions\Query\Mysql\ConcatWs
+            datetime_functions:
+                date_format: DoctrineExtensions\Query\Mysql\DateFormat
+                week_day_es: App\DQL\WeekDayEs

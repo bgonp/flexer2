@@ -94,14 +94,18 @@ class CustomerController extends BaseController
             if (!$this->canEdit($customer)) {
                 return $this->redirectToRoute('customer_edit', ['id' => $customer->getId()]);
             }
-            $customerRepository->save($customer
+            $customer
                 ->setName($request->request->get('name'))
                 ->setSurname($request->request->get('surname'))
                 ->setBirthdate(new \DateTime($request->request->get('birthdate')))
                 ->setEmail($request->request->get('email'))
                 ->setPhone($request->request->get('phone'))
-                ->setNotes($request->request->get('notes'))
-            );
+                ->setNotes($request->request->get('notes'));
+            if (empty($customer->getName())) {
+                $this->addFlash('error', 'El campo "nombre" no puede estar vacío');
+            } else {
+                $customerRepository->save($customer);
+            }
         }
 
         return $this->render('customer/edit.html.twig', [

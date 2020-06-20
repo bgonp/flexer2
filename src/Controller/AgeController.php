@@ -64,11 +64,15 @@ class AgeController extends BaseController
             if (!$this->canEdit($age)) {
                 return $this->redirectToRoute('age_edit', ['id' => $age->getId()]);
             }
-            $ageRepository->save($age
+            $age
                 ->setName($request->request->get('name'))
                 ->setDescription($request->request->get('description'))
-                ->setUrl($request->request->get('url'))
-            );
+                ->setUrl($request->request->get('url'));
+            if (empty($age->getName())) {
+                $this->addFlash('error', 'El campo "nombre" no puede estar vacío');
+            } else {
+                $ageRepository->save($age);
+            }
         }
 
         return $this->render('age/edit.html.twig', [

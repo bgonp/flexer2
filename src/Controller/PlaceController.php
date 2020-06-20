@@ -75,12 +75,16 @@ class PlaceController extends BaseController
             if (!$this->canEdit($place)) {
                 return $this->redirectToRoute('place_edit', ['id' => $place->getId()]);
             }
-            $placeRepository->save($place
+            $place
                 ->setName($request->request->get('name'))
                 ->setDescription($request->request->get('description'))
                 ->setUrl($request->request->get('url'))
-                ->setZone($zoneRepository->find($request->request->get('zone')))
-            );
+                ->setZone($zoneRepository->find($request->request->get('zone')));
+            if (empty($place->getName())) {
+                $this->addFlash('error', 'El campo "nombre" no puede estar vacío');
+            } else {
+                $placeRepository->save($place);
+            }
         }
 
         return $this->render('place/edit.html.twig', [

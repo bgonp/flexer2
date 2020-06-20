@@ -64,11 +64,15 @@ class DisciplineController extends BaseController
             if (!$this->canEdit($discipline)) {
                 return $this->redirectToRoute('discipline_edit', ['id' => $discipline->getId()]);
             }
-            $disciplineRepository->save($discipline
+            $discipline
                 ->setName($request->request->get('name'))
                 ->setDescription($request->request->get('description'))
-                ->setUrl($request->request->get('url'))
-            );
+                ->setUrl($request->request->get('url'));
+            if (empty($discipline->getName())) {
+                $this->addFlash('error', 'El campo "nombre" no puede estar vacío');
+            } else {
+                $disciplineRepository->save($discipline);
+            }
         }
 
         return $this->render('discipline/edit.html.twig', [

@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Editar escuela{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-6">
+            <h2>Editar escuela</h2>
+            <form action="" method="post" class="mb-2">
+                {% include 'form/field.html.twig' with
+                    {type: 'text', entity: 'school', name: 'name', label: 'Nombre', value: school.name, required: true} only %}
+
+                {% include 'form/field.html.twig' with
+                    {type: 'text', entity: 'school', name: 'description', label: 'Descripción', value: school.description} only %}
+
+                {% include 'form/field.html.twig' with
+                    {type: 'text', entity: 'school', name: 'url', label: 'URL', value: school.url} only %}
+
+                {% if canEdit %}
+                    <button type="submit" class="btn btn-primary btn-block">Editar</button>
+                    <a href="{{ path('school_delete', {id: school.id}) }}" class="btn btn-danger btn-block confirmable">Borrar</a>
+                {% endif %}
+            </form>
+            <a href="{{ path('school_index') }}">Volver a la lista</a>
+        </div>
+    </div>
+{% endblock %}

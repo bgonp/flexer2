@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Cursos{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <h2>Cursos <a href="{{ path('course_new') }}" class="btn btn-primary">Nueva</a></h2>
+            <form action="{{ path('course_index') }}" method="get" class="mb-3">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <input type="submit" value="Buscar" class="btn btn-primary"/>
+                    </div>
+                    <input type="text" name="s" value="{{ search }}" class="form-control"/>
+                </div>
+            </form>
+            <table class="table table-sm table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">Curso</th>
+                    <th scope="col">Escuela</th>
+                    <th scope="col">Activo</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for course in courses %}
+                    <tr class="clickable" data-href="{{ path('course_edit', {id: course.id}) }}">
+                        <td>{{ course|fullname }}</td>
+                        <td>{{ course.school.name }}</td>
+                        <td>{{ course.active ? 'Si' : 'No' }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Escuelas{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <h2>Escuelas <a href="{{ path('school_new') }}" class="btn btn-primary">Nueva</a></h2>
+            <table class="table table-sm table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Descripción</th>
+                    <th scope="col">URL</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for school in schools %}
+                    <tr class="clickable" data-href="{{ path('school_edit', {id: school.id}) }}">
+                        <td>{{ school.name }}</td>
+                        <td>{{ school.description }}</td>
+                        <td>{{ school.url }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

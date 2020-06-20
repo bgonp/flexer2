@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Crear escuela{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-6">
+            <h2>Crear escuela</h2>
+            <form action="" method="post" class="mb-2">
+                {% include 'form/field.html.twig' with
+                    {type: 'text', entity: 'school', name: 'name', label: 'Nombre', value: name, required: true} only %}
+
+                {% include 'form/field.html.twig' with
+                    {type: 'text', entity: 'school', name: 'description', label: 'Descripción', value: description} only %}
+
+                {% include 'form/field.html.twig' with
+                    {type: 'text', entity: 'school', name: 'url', label: 'URL', value: url} only %}
+
+
+                <button type="submit" class="btn btn-primary btn-block">Guardar</button>
+            </form>
+            <a href="{{ path('school_index') }}">Volver a la lista</a>
+        </div>
+    </div>
+{% endblock %}

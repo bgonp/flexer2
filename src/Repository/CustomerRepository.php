@@ -19,12 +19,13 @@ class CustomerRepository extends PaginableRepository
     /** @return Customer[] */
     public function findBySearchTerm(string $search, int $page = null): array
     {
-        $query = $this->createQueryBuilder('c')
-            ->where('c.name LIKE :search')
-            ->orWhere('c.surname LIKE :search')
-            ->orWhere('c.email LIKE :search')
-            ->orWhere('c.phone LIKE :search')
-            ->setParameter('search', "%$search%");
+        $terms = explode(' ', trim($search));
+        $query = $this->createQueryBuilder('c');
+        foreach ($terms as $index => $term) {
+            $query
+                ->andWhere("CONCAT_WS(' ', c.name, c.surname, c.email, c.phone) LIKE :search$index")
+                ->setParameter("search$index", "%$term%");
+        }
         if ($page) {
             $query
                 ->setFirstResult($this->getOffset($page))
@@ -45,14 +46,14 @@ class CustomerRepository extends PaginableRepository
 
     public function getLastPageBySearchTerm(string $search): int
     {
-        $count = $this->createQueryBuilder('c')
-            ->select('COUNT(c)')
-            ->where('c.name LIKE :search')
-            ->orWhere('c.surname LIKE :search')
-            ->orWhere('c.email LIKE :search')
-            ->orWhere('c.phone LIKE :search')
-            ->setParameter('search', "%$search%")
-            ->getQuery()->getSingleScalarResult();
+        $terms = explode(' ', trim($search));
+        $query = $this->createQueryBuilder('c')->select('COUNT(c)');
+        foreach ($terms as $index => $term) {
+            $query
+                ->andWhere("CONCAT_WS(' ', c.name, c.surname, c.email, c.phone) LIKE :search$index")
+                ->setParameter("search$index", "%$term%");
+        }
+        $count = $query->getQuery()->getSingleScalarResult();
 
         return (int) ceil($count / self::PER_PAGE) ?: 1;
     }
