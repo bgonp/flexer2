@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use Ramsey\Uuid\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 abstract class Base
 {
@@ -16,7 +16,7 @@ abstract class Base
 
     public function __construct()
     {
-        $this->id = Uuid::uuid4()->toString();
+        $this->id = Uuid::v4()->toRfc4122();
         $this->createdAt = new \DateTime();
         $this->updateNow();
     }

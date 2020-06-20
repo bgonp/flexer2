@@ -52,19 +52,36 @@ class CustomerController extends BaseController
             return $this->redirectToRoute('customer_index');
         }
         if ($request->isMethod('POST')) {
-            $customerRepository->save($customer = (new Customer())
-                ->setName($request->request->get('name'))
-                ->setSurname($request->request->get('surname'))
-                ->setBirthdate(new \DateTime($request->request->get('birthdate')))
-                ->setEmail($request->request->get('email'))
-                ->setPhone($request->request->get('phone'))
-                ->setNotes($request->request->get('notes'))
-            );
+            $name = $request->request->get('name');
+            $surname = $request->request->get('surname');
+            $birthdate = new \DateTime($request->request->get('birthdate'));
+            $email = $request->request->get('email');
+            $phone = $request->request->get('phone');
+            $notes = $request->request->get('notes');
+            if (empty($name)) {
+                $this->addFlash('error', 'El campo "nombre" no puede estar vacío');
+            } else {
+                $customerRepository->save($customer = (new Customer())
+                    ->setName($name)
+                    ->setSurname($surname)
+                    ->setBirthdate($birthdate)
+                    ->setEmail($email)
+                    ->setPhone($phone)
+                    ->setNotes($notes)
+                );
 
-            return $this->redirectToRoute('customer_edit', ['id' => $customer->getId()]);
+                return $this->redirectToRoute('customer_edit', ['id' => $customer->getId()]);
+            }
         }
 
-        return $this->render('customer/new.html.twig');
+        return $this->render('customer/new.html.twig', [
+            'name' => $name ?? '',
+            'surname' => $surname ?? '',
+            'birthdate' => $birthdate ?? '',
+            'email' => $email ?? '',
+            'phone' => $phone ?? '',
+            'notes' => $notes ?? '',
+        ]);
     }
 
     /** @Route("/{id}", name="customer_edit", methods={"GET", "POST"}) */

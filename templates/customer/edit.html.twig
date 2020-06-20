@@ -8,7 +8,7 @@
             <h2>Editar alumno</h2>
             <form action="" method="post" class="mb-2">
                 {% include 'form/field.html.twig' with
-                    {type: 'text', entity: 'customer', name: 'name', label: 'Nombre', value: customer.name, required} only %}
+                    {type: 'text', entity: 'customer', name: 'name', label: 'Nombre', value: customer.name, required: true} only %}
 
                 {% include 'form/field.html.twig' with
                     {type: 'text', entity: 'customer', name: 'surname', label: 'Apellidos', value: customer.surname} only %}

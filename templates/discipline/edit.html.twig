@@ -6,19 +6,16 @@
     <div class="row">
         <div class="col-6">
             <h2>Editar disciplina</h2>
-            <form action="" method="post">
-                <div class="form-group">
-                    <label for="discipline-name">Nombre</label>
-                    <input id="discipline-name" name="name" type="text" class="form-control" value="{{ discipline.name }}"/>
-                </div>
-                <div class="form-group">
-                    <label for="discipline-name">Descripción</label>
-                    <input id="discipline-name" name="description" type="text" class="form-control" value="{{ discipline.description }}"/>
-                </div>
-                <div class="form-group">
-                    <label for="discipline-name">URL</label>
-                    <input id="discipline-name" name="url" type="text" class="form-control" value="{{ discipline.url }}"/>
-                </div>
+            <form action="" method="post" class="mb-2">
+                {% include 'form/field.html.twig' with
+                    {type: 'text', entity: 'discipline', name: 'name', label: 'Nombre', value: discipline.name, required: true} only %}
+
+                {% include 'form/field.html.twig' with
+                    {type: 'text', entity: 'discipline', name: 'description', label: 'Description', value: discipline.description} only %}
+
+                {% include 'form/field.html.twig' with
+                    {type: 'text', entity: 'discipline', name: 'url', label: 'URL', value: discipline.url} only %}
+
                 {% if canEdit %}
                     <button type="submit" class="btn btn-primary btn-block">Editar</button>
                     <a href="{{ path('discipline_delete', {id: discipline.id}) }}" class="btn btn-danger btn-block confirmable">Borrar</a>

@@ -6,19 +6,16 @@
     <div class="row">
         <div class="col-6">
             <h2>Crear disciplina</h2>
-            <form action="" method="post">
-                <div class="form-group">
-                    <label for="discipline-name">Nombre</label>
-                    <input id="discipline-name" name="name" type="text" class="form-control" />
-                </div>
-                <div class="form-group">
-                    <label for="discipline-name">Descripción</label>
-                    <input id="discipline-name" name="description" type="text" class="form-control" />
-                </div>
-                <div class="form-group">
-                    <label for="discipline-name">URL</label>
-                    <input id="discipline-name" name="url" type="text" class="form-control" />
-                </div>
+            <form action="" method="post" class="mb-2">
+                {% include 'form/field.html.twig' with
+                    {type: 'text', entity: 'discipline', name: 'name', label: 'Nombre', value: name, required: true} only %}
+
+                {% include 'form/field.html.twig' with
+                    {type: 'text', entity: 'discipline', name: 'description', label: 'Description', value: description} only %}
+
+                {% include 'form/field.html.twig' with
+                    {type: 'text', entity: 'discipline', name: 'url', label: 'URL', value: url} only %}
+
                 <button type="submit" class="btn btn-primary btn-block">Guardar</button>
             </form>
             <a href="{{ path('discipline_index') }}">Volver a la lista</a>

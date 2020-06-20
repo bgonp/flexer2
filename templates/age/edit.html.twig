@@ -8,7 +8,7 @@
             <h2>Editar edad</h2>
             <form action="" method="post" class="mb-2">
                 {% include 'form/field.html.twig' with
-                    {type: 'text', entity: 'age', name: 'name', label: 'Nombre', value: age.name, required} only %}
+                    {type: 'text', entity: 'age', name: 'name', label: 'Nombre', value: age.name, required: true} only %}
 
                 {% include 'form/field.html.twig' with
                     {type: 'text', entity: 'age', name: 'description', label: 'Descripción', value: age.description} only %}

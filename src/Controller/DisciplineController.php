@@ -31,16 +31,27 @@ class DisciplineController extends BaseController
             return $this->redirectToRoute('discipline_index');
         }
         if ($request->isMethod('POST')) {
-            $disciplineRepository->save($discipline = (new Discipline())
-                ->setName($request->request->get('name'))
-                ->setDescription($request->request->get('description'))
-                ->setUrl($request->request->get('url'))
-            );
+            $name = $request->request->get('name');
+            $description = $request->request->get('description');
+            $url = $request->request->get('url');
+            if (empty($name)) {
+                $this->addFlash('error', 'El campo "nombre" no puede estar vacío');
+            } else {
+                $disciplineRepository->save($discipline = (new Discipline())
+                    ->setName($name)
+                    ->setDescription($description)
+                    ->setUrl($url)
+                );
 
-            return $this->redirectToRoute('discipline_edit', ['id' => $discipline->getId()]);
+                return $this->redirectToRoute('discipline_edit', ['id' => $discipline->getId()]);
+            }
         }
 
-        return $this->render('discipline/new.html.twig');
+        return $this->render('discipline/new.html.twig', [
+            'name' => $name ?? '',
+            'description' => $description ?? '',
+            'url' => $url ?? '',
+        ]);
     }
 
     /** @Route("/{id}", name="discipline_edit", methods={"GET", "POST"}) */

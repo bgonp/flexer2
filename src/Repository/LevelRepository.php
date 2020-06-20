@@ -27,4 +27,9 @@ class LevelRepository extends BaseRepository
     {
         $this->saveEntity($level, $flush);
     }
+
+    public function remove(Level $level, bool $flush = true): void
+    {
+        $this->removeEntity($level, $flush);
+    }
 }
