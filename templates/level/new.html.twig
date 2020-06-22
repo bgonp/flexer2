@@ -7,13 +7,13 @@
         <div class="col-6">
             <h2>Crear nivel</h2>
             <form action="" method="post" class="mb-2">
-                {% include 'form/field.html.twig' with
+                {% include 'common/field.html.twig' with
                     {type: 'text', entity: 'level', name: 'name', label: 'Nombre', value: name, required: true} only %}
 
-                {% include 'form/field.html.twig' with
+                {% include 'common/field.html.twig' with
                     {type: 'text', entity: 'level', name: 'description', label: 'Descripción', value: description} only %}
 
-                {% include 'form/field.html.twig' with
+                {% include 'common/field.html.twig' with
                     {type: 'text', entity: 'level', name: 'url', label: 'URL', value: url} only %}
 
 

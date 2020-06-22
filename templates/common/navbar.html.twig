@@ -6,7 +6,7 @@
             <a href="{{ path('customer_index') }}" class="nav-link">Alumnos</a>
         </li>
         <li class="nav-item{% if route in ['course_index', 'course_new', 'course_edit'] %} active{% endif %}">
-            <a href="{{ path('course_index') }}" class="nav-link">Cursos</a>
+            <a href="{{ path('course_index', {type: 'active'}) }}" class="nav-link">Cursos</a>
         </li>
         <li class="nav-item{% if route in ['school_index', 'school_new', 'school_edit'] %} active{% endif %}">
             <a href="{{ path('school_index') }}" class="nav-link">Escuelas</a>

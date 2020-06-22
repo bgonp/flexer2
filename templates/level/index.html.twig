@@ -15,13 +15,17 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for level in levels %}
-                    <tr class="clickable" data-href="{{ path('level_edit', {id: level.id}) }}">
-                        <td>{{ level.name }}</td>
-                        <td>{{ level.description }}</td>
-                        <td>{{ level.url }}</td>
-                    </tr>
-                {% endfor %}
+                {% if levels|length == 0 %}
+                    <tr><td colspan="7" class="text-center">Sin resultados</td></tr>
+                {% else %}
+                    {% for level in levels %}
+                        <tr class="clickable" data-href="{{ path('level_edit', {id: level.id}) }}">
+                            <td>{{ level.name }}</td>
+                            <td>{{ level.description }}</td>
+                            <td>{{ level.url }}</td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
                 </tbody>
             </table>
         </div>

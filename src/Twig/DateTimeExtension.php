@@ -18,18 +18,18 @@ class DateTimeExtension extends AbstractExtension
         ];
     }
 
-    public function showDate(\DateTime $date): string
+    public function showDate(?\DateTime $date): string
     {
-        return $date->format('d/m/Y');
+        return $date ? $date->format('d/m/Y') : '';
     }
 
-    public function formatDate(\DateTime $date): string
+    public function formatDate(?\DateTime $date): string
     {
-        return $date->format('Y-m-d');
+        return $date ? $date->format('Y-m-d') : '';
     }
 
-    public function formatTime(\DateTime $time): string
+    public function formatTime(?\DateTime $time): string
     {
-        return $time->format('H:i');
+        return $time ? $time->format('H:i') : '';
     }
 }

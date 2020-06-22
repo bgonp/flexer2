@@ -5,15 +5,17 @@
 {% block content %}
     <div class="row">
         <div class="col-12">
-            <h2>Cursos <a href="{{ path('course_new') }}" class="btn btn-primary">Nueva</a></h2>
-            <form action="{{ path('course_index') }}" method="get" class="mb-3">
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <input type="submit" value="Buscar" class="btn btn-primary"/>
-                    </div>
-                    <input type="text" name="s" value="{{ search }}" class="form-control"/>
-                </div>
-            </form>
+            {% set params = app.request.query %}
+            {% set type = app.request.attributes.get('_route_params').type %}
+            <h2>Cursos <a href="{{ path('course_new') }}" class="btn btn-primary">Nuevo</a>
+                <a class="btn {{ 'active' == type ? 'btn-outline-primary disabled' : 'btn-link' }}"
+                   href="{{ path('course_index', params|merge({type: 'active'})) }}">Activos</a>
+                <a class="btn  {{ 'inactive' == type ? 'btn-outline-primary disabled' : 'btn-link' }}"
+                   href="{{ path('course_index', params|merge({type: 'inactive'})) }}">Inactivos</a>
+                <a class="btn  {{ 'all' == type ? 'btn-outline-primary disabled' : 'btn-link' }}"
+                   href="{{ path('course_index', params|merge({type: 'all'})) }}">Todos</a>
+            </h2>
+            {% include 'common/search.html.twig' with {search: search, route: path('course_index', {type: type})} only %}
             <table class="table table-sm table-hover">
                 <thead>
                 <tr>
@@ -23,13 +25,17 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for course in courses %}
-                    <tr class="clickable" data-href="{{ path('course_edit', {id: course.id}) }}">
-                        <td>{{ course|fullname }}</td>
-                        <td>{{ course.school.name }}</td>
-                        <td>{{ course.active ? 'Si' : 'No' }}</td>
-                    </tr>
-                {% endfor %}
+                {% if courses|length == 0 %}
+                    <tr><td colspan="7" class="text-center">Sin resultados</td></tr>
+                {% else %}
+                    {% for course in courses %}
+                        <tr class="clickable" data-href="{{ path('course_edit', {id: course.id}) }}">
+                            <td>{{ course|fullname }}</td>
+                            <td>{{ course.school.name }}</td>
+                            <td>{{ course.active ? 'Si' : 'No' }}</td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
                 </tbody>
             </table>
         </div>

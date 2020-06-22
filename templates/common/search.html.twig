@@ -1,0 +1,12 @@
+<form action="{{ route }}" method="get" class="mb-3">
+    <div class="input-group">
+        <div class="input-group-prepend">
+            <input type="submit" value="Buscar" class="btn btn-primary"/>
+        </div>
+        <label for="input-s" hidden>Buscar</label>
+        <input id="input-s" type="text" name="s" value="{{ search }}" class="form-control" autofocus/>
+        <div class="input-group-append">
+            <a href="{{ route }}" class="btn btn-outline-primary">Borrar</a>
+        </div>
+    </div>
+</form>

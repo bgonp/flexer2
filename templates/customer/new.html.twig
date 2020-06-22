@@ -7,22 +7,22 @@
         <div class="col-6">
             <h2>Crear alumno</h2>
             <form action="" method="post">
-                {% include 'form/field.html.twig' with
+                {% include 'common/field.html.twig' with
                     {type: 'text', entity: 'customer', name: 'name', label: 'Nombre', value: name, required: true} only %}
 
-                {% include 'form/field.html.twig' with
+                {% include 'common/field.html.twig' with
                     {type: 'text', entity: 'customer', name: 'surname', label: 'Apellidos', value: surname} only %}
 
-                {% include 'form/field.html.twig' with
+                {% include 'common/field.html.twig' with
                     {type: 'date', entity: 'customer', name: 'birthdate', label: 'Fecha de nacimiento', value: birthdate|formatDate} only %}
 
-                {% include 'form/field.html.twig' with
+                {% include 'common/field.html.twig' with
                     {type: 'email', entity: 'customer', name: 'email', label: 'E-mail', value: email} only %}
 
-                {% include 'form/field.html.twig' with
+                {% include 'common/field.html.twig' with
                     {type: 'text', entity: 'customer', name: 'phone', label: 'Teléfono', value: phone} only %}
 
-                {% include 'form/field.html.twig' with
+                {% include 'common/field.html.twig' with
                     {type: 'text', entity: 'customer', name: 'notes', label: 'Observaciones', value: notes} only %}
 
                 <button type="submit" class="btn btn-primary btn-block">Guardar</button>

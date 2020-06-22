@@ -1,25 +1,39 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Crear escuela{% endblock %}
+{% block title %}Crear curso{% endblock %}
 
 {% block content %}
     <div class="row">
         <div class="col-6">
-            <h2>Crear escuela</h2>
+            <h2>Crear curso</h2>
             <form action="" method="post" class="mb-2">
-                {% include 'form/field.html.twig' with
-                    {type: 'text', entity: 'school', name: 'name', label: 'Nombre', value: name, required: true} only %}
+                {% include 'common/field.html.twig' with
+                    {type: 'select', options: daysOfWeek(), entity: 'course', name: 'dayOfWeek', label: 'Día', value: dayOfWeek, required: true} only %}
 
-                {% include 'form/field.html.twig' with
-                    {type: 'text', entity: 'school', name: 'description', label: 'Descripción', value: description} only %}
+                {% include 'common/field.html.twig' with
+                    {type: 'time', entity: 'course', name: 'time', label: 'Hora', value: time|formatTime, required: true} only %}
 
-                {% include 'form/field.html.twig' with
-                    {type: 'text', entity: 'school', name: 'url', label: 'URL', value: url} only %}
+                {% include 'common/field.html.twig' with
+                    {type: 'select', options: schools, entity: 'course', name: 'school', label: 'Escuela', value: school, required: true} only %}
 
+                {% include 'common/field.html.twig' with
+                    {type: 'select', options: places, entity: 'course', name: 'place', label: 'Lugar', value: place} only %}
+
+                {% include 'common/field.html.twig' with
+                    {type: 'select', options: disciplines, entity: 'course', name: 'discipline', label: 'Disciplina', value: discipline} only %}
+
+                {% include 'common/field.html.twig' with
+                    {type: 'select', options: levels, entity: 'course', name: 'level', label: 'Nivel', value: level} only %}
+
+                {% include 'common/field.html.twig' with
+                    {type: 'select', options: ages, entity: 'course', name: 'age', label: 'Edad', value: age} only %}
+
+                {% include 'common/field.html.twig' with
+                    {type: 'checkbox', entity: 'course', name: 'active', label: 'Activo', value: active} only %}
 
                 <button type="submit" class="btn btn-primary btn-block">Guardar</button>
             </form>
-            <a href="{{ path('school_index') }}">Volver a la lista</a>
+            <a href="{{ path('course_index', {type: 'active'}) }}">Volver a la lista</a>
         </div>
     </div>
 {% endblock %}

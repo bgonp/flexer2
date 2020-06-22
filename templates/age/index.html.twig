@@ -15,13 +15,17 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for age in ages %}
-                    <tr class="clickable" data-href="{{ path('age_edit', {id: age.id}) }}">
-                        <td>{{ age.name }}</td>
-                        <td>{{ age.description }}</td>
-                        <td>{{ age.url }}</td>
-                    </tr>
-                {% endfor %}
+                {% if ages|length == 0 %}
+                    <tr><td colspan="7" class="text-center">Sin resultados</td></tr>
+                {% else %}
+                    {% for age in ages %}
+                        <tr class="clickable" data-href="{{ path('age_edit', {id: age.id}) }}">
+                            <td>{{ age.name }}</td>
+                            <td>{{ age.description }}</td>
+                            <td>{{ age.url }}</td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
                 </tbody>
             </table>
         </div>

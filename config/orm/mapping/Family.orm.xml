@@ -3,6 +3,6 @@
     <entity name="App\Entity\Family" repository-class="App\Repository\FamilyRepository">
         <field name="notes" nullable="true" />
 
-        <one-to-many field="customers" target-entity="App\Entity\Customer" mapped-by="family" />
+        <one-to-many field="customers" target-entity="App\Entity\Customer" mapped-by="family" fetch="EAGER"/>
     </entity>
 </doctrine-mapping>

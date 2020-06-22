@@ -7,16 +7,16 @@
         <div class="col-6">
             <h2>Editar lugar</h2>
             <form action="" method="post" class="mb-2">
-                {% include 'form/field.html.twig' with
+                {% include 'common/field.html.twig' with
                     {type: 'text', entity: 'place', name: 'name', label: 'Nombre', value: place.name, required: true} only %}
 
-                {% include 'form/field.html.twig' with
+                {% include 'common/field.html.twig' with
                     {type: 'text', entity: 'place', name: 'description', label: 'Descripción', value: place.description} only %}
 
-                {% include 'form/field.html.twig' with
+                {% include 'common/field.html.twig' with
                     {type: 'text', entity: 'place', name: 'url', label: 'URL', value: place.url} only %}
 
-                {% include 'form/field.html.twig' with
+                {% include 'common/field.html.twig' with
                     {type: 'select', entity: 'place', name: 'zone', label: 'Zona', value: place.zone, options: zones, required: true} only %}
 
                 {% if canEdit %}

@@ -14,12 +14,16 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for zone in zones %}
-                    <tr class="clickable" data-href="{{ path('zone_edit', {id: zone.id}) }}">
-                        <td>{{ zone.name }}</td>
-                        <td>{{ zone.description }}</td>
-                    </tr>
-                {% endfor %}
+                {% if zones|length == 0 %}
+                    <tr><td colspan="7" class="text-center">Sin resultados</td></tr>
+                {% else %}
+                    {% for zone in zones %}
+                        <tr class="clickable" data-href="{{ path('zone_edit', {id: zone.id}) }}">
+                            <td>{{ zone.name }}</td>
+                            <td>{{ zone.description }}</td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
                 </tbody>
             </table>
         </div>

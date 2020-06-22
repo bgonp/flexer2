@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Customer;
+use App\Exception\Common\PageOutOfBoundsException;
 use App\Repository\CustomerRepository;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,32 +17,37 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class CustomerController extends BaseController
 {
-    /** @Route("/{page<\d+>}", name="customer_index", methods={"GET"}) */
+    /** @Route("/{page<[1-9]\d*>}", name="customer_index", methods={"GET"}) */
     public function index(Request $request, CustomerRepository $customerRepository, int $page = 1): Response
     {
+        // TODO: Add custom order
         if (!$this->canList(Customer::class)) {
             return $this->redirectToRoute('main');
         }
+
         if ($request->query->has('s')) {
             if (!$search = $request->query->get('s')) {
                 return $this->redirectToRoute('customer_index');
             }
-            if ($page > $lastPage = $customerRepository->getLastPageBySearchTerm($search)) {
-                return $this->redirectToRoute('customer_index', ['s' => $search, 'page' => $lastPage]);
+
+            try {
+                $customers = $customerRepository->findBySearchTermPaged($search, $page);
+            } catch (PageOutOfBoundsException $e) {
+                return $this->redirectToRoute('customer_index', ['s' => $search]);
             }
-            $customers = $customerRepository->findBySearchTerm($search, $page);
         } else {
-            if ($page > $lastPage = $customerRepository->getLastPage()) {
-                return $this->redirectToRoute('customer_index', ['page' => $lastPage]);
+            try {
+                $customers = $customerRepository->findAllPaged($page);
+            } catch (PageOutOfBoundsException $e) {
+                return $this->redirectToRoute('customer_index');
             }
-            $customers = $customerRepository->findAll($page);
         }
 
         return $this->render('customer/index.html.twig', [
             'search' => $search ?? '',
-            'customers' => $customers,
-            'currentPage' => $page,
-            'lastPage' => $lastPage,
+            'customers' => $customers->getResults(),
+            'currentPage' => $customers->getPage(),
+            'lastPage' => $customers->getLastPage(),
         ]);
     }
 
@@ -58,6 +64,7 @@ class CustomerController extends BaseController
             $email = $request->request->get('email');
             $phone = $request->request->get('phone');
             $notes = $request->request->get('notes');
+
             if (empty($name)) {
                 $this->addFlash('error', 'El campo "nombre" no puede estar vacío');
             } else {
@@ -77,7 +84,7 @@ class CustomerController extends BaseController
         return $this->render('customer/new.html.twig', [
             'name' => $name ?? '',
             'surname' => $surname ?? '',
-            'birthdate' => $birthdate ?? '',
+            'birthdate' => $birthdate ?? null,
             'email' => $email ?? '',
             'phone' => $phone ?? '',
             'notes' => $notes ?? '',

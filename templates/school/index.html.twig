@@ -15,13 +15,17 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for school in schools %}
-                    <tr class="clickable" data-href="{{ path('school_edit', {id: school.id}) }}">
-                        <td>{{ school.name }}</td>
-                        <td>{{ school.description }}</td>
-                        <td>{{ school.url }}</td>
-                    </tr>
-                {% endfor %}
+                {% if schools|length == 0 %}
+                    <tr><td colspan="7" class="text-center">Sin resultados</td></tr>
+                {% else %}
+                    {% for school in schools %}
+                        <tr class="clickable" data-href="{{ path('school_edit', {id: school.id}) }}">
+                            <td>{{ school.name }}</td>
+                            <td>{{ school.description }}</td>
+                            <td>{{ school.url }}</td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
                 </tbody>
             </table>
         </div>

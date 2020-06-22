@@ -9,13 +9,13 @@
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
-        {% include 'navbar.html.twig' %}
+        {% include 'common/navbar.html.twig' %}
         <div class="container-fluid">
             {% block content %}{% endblock %}
-            {% include 'pagination.html.twig' %}
+            {% include 'common/pagination.html.twig' %}
         </div>
-        {% include 'loading.html.twig' %}
-        {% include 'flash.html.twig' %}
+        {% include 'common/loading.html.twig' %}
+        {% include 'common/flash.html.twig' %}
         <script src="{{ asset('js/main.js') }}"></script>
         {% block javascripts %}{% endblock %}
     </body>

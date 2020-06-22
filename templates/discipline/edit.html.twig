@@ -7,13 +7,13 @@
         <div class="col-6">
             <h2>Editar disciplina</h2>
             <form action="" method="post" class="mb-2">
-                {% include 'form/field.html.twig' with
+                {% include 'common/field.html.twig' with
                     {type: 'text', entity: 'discipline', name: 'name', label: 'Nombre', value: discipline.name, required: true} only %}
 
-                {% include 'form/field.html.twig' with
+                {% include 'common/field.html.twig' with
                     {type: 'text', entity: 'discipline', name: 'description', label: 'Description', value: discipline.description} only %}
 
-                {% include 'form/field.html.twig' with
+                {% include 'common/field.html.twig' with
                     {type: 'text', entity: 'discipline', name: 'url', label: 'URL', value: discipline.url} only %}
 
                 {% if canEdit %}

@@ -1,7 +1,7 @@
 {% if type == 'checkbox' %}
     <div class="form-check">
-        <input type="checkbox" class="form-check-input" id="{{ entity }}-{{ name }}"
-                {% if required is defined %}required{% endif %}>
+        <input id="{{ entity }}-{{ name }}" name="{{ name }}" type="checkbox" class="form-check-input"
+            {% if required is defined %}required{% endif %}{% if value %} checked{% endif %}/>
         <label class="form-check-label" for="{{ entity }}-{{ name }}">{{ label }}</label>
     </div>
 {% else %}
@@ -18,8 +18,8 @@
                 {% endfor %}
             </select>
         {% else %}
-            <input id="{{ entity }}-{{ name }}" name="{{ name }}" type="{{ type }}" class="form-control"
-                   value="{{ value }}" {% if required is defined %}required{% endif %}/>
+            <input id="{{ entity }}-{{ name }}" name="{{ name }}" type="{{ type }}"{{ 'time' == type ? ' step="300"' : '' }}
+                   class="form-control" value="{{ value }}" {% if required is defined %}required{% endif %}/>
         {% endif %}
     </div>
 {% endif %}

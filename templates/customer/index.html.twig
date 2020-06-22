@@ -6,14 +6,7 @@
     <div class="row">
         <div class="col-12">
             <h2>Alumnos <a href="{{ path('customer_new') }}" class="btn btn-primary">Nuevo</a></h2>
-            <form action="{{ path('customer_index') }}" method="get" class="mb-3">
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <input type="submit" value="Buscar" class="btn btn-primary"/>
-                    </div>
-                    <input type="text" name="s" value="{{ search }}" class="form-control"/>
-                </div>
-            </form>
+            {% include 'common/search.html.twig' with {search: search, route: path('customer_index')} only %}
             <table class="table table-sm table-hover">
                 <thead>
                 <tr>
@@ -23,19 +16,25 @@
                     <th scope="col">Teléfono</th>
                     <th scope="col">Nacimiento</th>
                     <th scope="col">Family</th>
+                    <th scope="col">Registro</th>
                 </tr>
                 </thead>
                 <tbody>
-                {% for customer in customers %}
-                    <tr class="clickable" data-href="{{ path('customer_edit', {id: customer.id}) }}">
-                        <td>{{ customer.name }}</td>
-                        <td>{{ customer.surname }}</td>
-                        <td>{{ customer.email }}</td>
-                        <td>{{ customer.phone }}</td>
-                        <td>{{ customer.birthdate|showDate }}</td>
-                        <td>{{ customer.family ? customer.family.customers|length : '' }}</td>
-                    </tr>
-                {% endfor %}
+                {% if customers|length == 0 %}
+                    <tr><td colspan="7" class="text-center">Sin resultados</td></tr>
+                {% else %}
+                    {% for customer in customers %}
+                        <tr class="clickable" data-href="{{ path('customer_edit', {id: customer.id}) }}">
+                            <td>{{ customer.name }}</td>
+                            <td>{{ customer.surname }}</td>
+                            <td>{{ customer.email }}</td>
+                            <td>{{ customer.phone }}</td>
+                            <td>{{ customer.birthdate|showDate }}</td>
+                            <td>{{ customer.family ? customer.family.customers|length : '' }}</td>
+                            <td>{{ customer.createdAt|formatDate }}</td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
                 </tbody>
             </table>
         </div>
