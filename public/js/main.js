@@ -17,6 +17,17 @@
         })
     }
 
+    const autoSubmits = document.getElementsByClassName('auto-submit')
+    for (const autoSubmit of autoSubmits) {
+        const eventType = autoSubmit.tagName === 'SELECT' ? 'change' : 'input'
+        const form = autoSubmit.form
+        let timeout
+        autoSubmit.addEventListener(eventType, () => {
+            clearTimeout(timeout)
+            timeout = setTimeout(() => form.submit(), 500)
+        })
+    }
+
     const messagesContainer = document.getElementById('flash-message')
     messagesContainer.addEventListener('click', () => {
         const messages = messagesContainer.getElementsByClassName('message')
@@ -111,5 +122,10 @@
                 ))
             }
         }
+    }
+
+    const activeElement = document.activeElement
+    if (activeElement && activeElement.tagName === 'INPUT') {
+        activeElement.selectionStart = activeElement.value.length
     }
 })()

@@ -5,9 +5,9 @@
         </div>
         <label for="input-s" hidden>Buscar</label>
         {% if not type is defined or type == 'text' %}
-            <input id="input-s" type="text" name="s" value="{{ search }}" class="form-control" autofocus/>
+            <input id="input-s" type="text" name="s" value="{{ search }}" class="form-control auto-submit" autofocus/>
         {% elseif type == 'select' %}
-            <select id="input-s" name="s" class="form-control">
+            <select id="input-s" name="s" class="form-control auto-submit" autofocus>
                 <option></option>
                 {% for option in options %}
                     <option value="{{ option.id }}"{% if option.equals(search) %} selected{% endif %}>{{ option }}</option>
