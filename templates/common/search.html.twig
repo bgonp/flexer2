@@ -4,7 +4,16 @@
             <input type="submit" value="Buscar" class="btn btn-primary"/>
         </div>
         <label for="input-s" hidden>Buscar</label>
-        <input id="input-s" type="text" name="s" value="{{ search }}" class="form-control" autofocus/>
+        {% if not type is defined or type == 'text' %}
+            <input id="input-s" type="text" name="s" value="{{ search }}" class="form-control" autofocus/>
+        {% elseif type == 'select' %}
+            <select id="input-s" name="s" class="form-control">
+                <option></option>
+                {% for option in options %}
+                    <option value="{{ option.id }}"{% if option.equals(search) %} selected{% endif %}>{{ option }}</option>
+                {% endfor %}
+            </select>
+        {% endif %}
         <div class="input-group-append">
             <a href="{{ route }}" class="btn btn-outline-primary">Borrar</a>
         </div>

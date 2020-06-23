@@ -40,6 +40,7 @@ class DayOfWeek
                 return $day;
             }
         }
+
         return null;
     }
 
@@ -57,6 +58,7 @@ class DayOfWeek
                 new self(7, 'Domingo'),
             ];
         }
+
         return self::$all;
     }
 }

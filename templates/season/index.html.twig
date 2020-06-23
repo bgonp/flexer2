@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Temporadas{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <h2>Temporadas <a href="{{ path('season_new') }}" class="btn btn-primary">Nueva</a></h2>
+            {% include 'common/search.html.twig' with {type: 'select', options: schools, search: school, route: path('season_index')} only %}
+            <table class="table table-sm table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">Escuela</th>
+                    <th scope="col">Inicio</th>
+                    <th scope="col">Final</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% if seasons|length == 0 %}
+                    <tr><td colspan="7" class="text-center">Sin resultados</td></tr>
+                {% else %}
+                    {% for season in seasons %}
+                        <tr class="clickable" data-href="{{ path('season_edit', {id: season.id}) }}">
+                            <td>{{ season.school }}</td>
+                            <td>{{ season.initDate|showDate }}</td>
+                            <td>{{ season.finishDate|showDate }}</td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

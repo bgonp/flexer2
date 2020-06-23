@@ -48,7 +48,6 @@ class FamilyService
     /**
      * @param Customer[] $customers
      *
-     * @return Family|null
      * @throws CustomerAlreadyHasFamilyException
      */
     public function createFamilyFromCustomers(array $customers): ?Family
