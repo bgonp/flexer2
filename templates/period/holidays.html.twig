@@ -1,0 +1,29 @@
+{% set calendar = initDate|getCalendarUntil(finishDate) %}
+<div id="period-holidays">
+    {% for month in calendar %}
+        <table>
+            <thead class="text-center">
+                <tr><th colspan="7">{{ month['name'] }}</th></tr>
+                <tr><th>L</th><th>M</th><th>X</th><th>J</th><th>V</th><th>S</th><th>D</th></tr>
+            </thead>
+            <tbody class="text-right">
+            {% for week in month['weeks'] %}
+                <tr>
+                    {% for day in week %}
+                        <td>
+                            {% if day %}
+                                <button class="btn btn-link api-caller day-btn day-{{ day|formatDate }}{% if period.holiday(day) %} is-holiday{% endif %}"
+                                        name="holiday" value="{{ day|formatDate }}"
+                                        data-href="{{ path(period.holiday(day) ? 'api_remove_holiday' : 'api_add_holiday', {id: period.id}) }}"
+                                        data-callback="updateHolidays">
+                                    {{ day|getDay }}
+                                </button>
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endfor %}
+</div>

@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Editar periodo{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-6">
+            <h2>Editar periodo</h2>
+            <form action="{{ path('period_edit', {id: period.id}) }}" method="post" class="mb-2">
+                {% include 'common/field.html.twig' with
+                    {type: 'text', entity: 'period', name: 'name', label: 'Nombre', value: period.name, required: true} only %}
+
+                {% include 'common/field.html.twig' with
+                    {type: 'date', entity: 'period', name: 'initDate', label: 'Inicio', value: period.initDate|formatDate, required: true} only %}
+
+                {% include 'common/field.html.twig' with
+                    {type: 'date', entity: 'period', name: 'finishDate', label: 'Final', value: period.finishDate|formatDate, required: true} only %}
+
+                {% if canEdit %}
+                    <button type="submit" class="btn btn-primary btn-block">Editar</button>
+                    <a href="{{ path('period_delete', {id: period.id}) }}" class="btn btn-danger btn-block confirmable">Borrar</a>
+                {% endif %}
+            </form>
+            <a href="{{ path('season_edit', {id: period.season.id}) }}">Volver a la temporada</a>
+        </div>
+        <div class="col-6">
+            <h2>Festivos</h2>
+            {% include 'period/holidays.html.twig' with {initDate: period.initDate, finishDate: period.finishDate, period: period} only %}
+        </div>
+    </div>
+{% endblock %}

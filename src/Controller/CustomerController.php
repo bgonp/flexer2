@@ -60,7 +60,7 @@ class CustomerController extends BaseController
         if ($request->isMethod('POST')) {
             $name = $request->request->get('name');
             $surname = $request->request->get('surname');
-            $birthdate = new \DateTime($request->request->get('birthdate'));
+            $birthdate = $request->request->get('birthdate');
             $email = $request->request->get('email');
             $phone = $request->request->get('phone');
             $notes = $request->request->get('notes');
@@ -71,7 +71,7 @@ class CustomerController extends BaseController
                 $customerRepository->save($customer = (new Customer())
                     ->setName($name)
                     ->setSurname($surname)
-                    ->setBirthdate($birthdate)
+                    ->setBirthdate($birthdate ? new \DateTime($birthdate) : null)
                     ->setEmail($email)
                     ->setPhone($phone)
                     ->setNotes($notes)
@@ -84,7 +84,7 @@ class CustomerController extends BaseController
         return $this->render('customer/new.html.twig', [
             'name' => $name ?? '',
             'surname' => $surname ?? '',
-            'birthdate' => $birthdate ?? null,
+            'birthdate' => $birthdate ?? '',
             'email' => $email ?? '',
             'phone' => $phone ?? '',
             'notes' => $notes ?? '',

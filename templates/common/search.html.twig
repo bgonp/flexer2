@@ -1,9 +1,9 @@
 <form action="{{ route }}" method="get" class="mb-3">
     <div class="input-group">
         <div class="input-group-prepend">
-            <input type="submit" value="Buscar" class="btn btn-primary"/>
+            <input type="submit" value="Filtrar" class="btn btn-primary"/>
         </div>
-        <label for="input-s" hidden>Buscar</label>
+        <label for="input-s" hidden>Filtrar</label>
         {% if not type is defined or type == 'text' %}
             <input id="input-s" type="text" name="s" value="{{ search }}" class="form-control auto-submit" autofocus/>
         {% elseif type == 'select' %}

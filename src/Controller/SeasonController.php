@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Season;
+use App\Repository\PeriodRepository;
 use App\Repository\SchoolRepository;
 use App\Repository\SeasonRepository;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
@@ -45,22 +46,28 @@ class SeasonController extends BaseController
     }
 
     /** @Route("/new", name="season_new", methods={"GET", "POST"}) */
-    public function new(Request $request, SeasonRepository $seasonRepository): Response
-    {
+    public function new(
+        Request $request,
+        SeasonRepository $seasonRepository,
+        SchoolRepository $schoolRepository
+    ): Response {
         if (!$this->canCreate(Season::class)) {
             return $this->redirectToRoute('season_index');
         }
         if ($request->isMethod('POST')) {
-            $name = $request->request->get('name');
-            $description = $request->request->get('description');
-            $url = $request->request->get('url');
-            if (empty($name)) {
-                $this->addFlash('error', 'El campo "nombre" no puede estar vacío');
+            if (!$school = $schoolRepository->find($request->request->get('school'))) {
+                $this->addFlash('error', 'El campo "escuela" es obligatorio');
+            } elseif (!$initDate = $request->request->get('initDate')) {
+                $this->addFlash('error', 'El campo "inicio" es obligatorio');
+            } elseif (!$finishDate = $request->request->get('finishDate')) {
+                $this->addFlash('error', 'El campo "final" es obligatorio');
+            } elseif ($finishDate < $initDate) {
+                $this->addFlash('error', 'La fecha final no puede ser menor que la inicial');
             } else {
                 $seasonRepository->save($season = (new Season())
-                    ->setName($name)
-                    ->setDescription($description)
-                    ->setUrl($url)
+                    ->setSchool($school)
+                    ->setInitDate(new \DateTime($initDate))
+                    ->setFinishDate(new \DateTime($finishDate))
                 );
 
                 return $this->redirectToRoute('season_edit', ['id' => $season->getId()]);
@@ -68,15 +75,21 @@ class SeasonController extends BaseController
         }
 
         return $this->render('season/new.html.twig', [
-            'name' => $name ?? '',
-            'description' => $description ?? '',
-            'url' => $url ?? '',
+            'school' => $school ?? null,
+            'initDate' => $initDate ?? '',
+            'finishDate' => $finishDate ?? '',
+            'schools' => $schoolRepository->findAll(),
         ]);
     }
 
     /** @Route("/{id}", name="season_edit", methods={"GET", "POST"}) */
-    public function edit(Request $request, Season $season, SeasonRepository $seasonRepository): Response
-    {
+    public function edit(
+        Request $request,
+        Season $season,
+        SeasonRepository $seasonRepository,
+        SchoolRepository $schoolRepository,
+        PeriodRepository $periodRepository
+    ): Response {
         if (!$this->canView($season)) {
             return $this->redirectToRoute('season_index');
         }
@@ -84,19 +97,28 @@ class SeasonController extends BaseController
             if (!$this->canEdit($season)) {
                 return $this->redirectToRoute('season_edit', ['id' => $season->getId()]);
             }
-            $season
-                ->setName($request->request->get('name'))
-                ->setDescription($request->request->get('description'))
-                ->setUrl($request->request->get('url'));
-            if (empty($season->getName())) {
-                $this->addFlash('error', 'El campo "nombre" no puede estar vacío');
+
+            if (!$school = $schoolRepository->find($request->request->get('school'))) {
+                $this->addFlash('error', 'El campo "escuela" es obligatorio');
+            } elseif (!$initDate = $request->request->get('initDate')) {
+                $this->addFlash('error', 'El campo "inicio" es obligatorio');
+            } elseif (!$finishDate = $request->request->get('finishDate')) {
+                $this->addFlash('error', 'El campo "final" es obligatorio');
+            } elseif ($finishDate < $initDate) {
+                $this->addFlash('error', 'La fecha final no puede ser menor que la inicial');
             } else {
-                $seasonRepository->save($season);
+                $seasonRepository->save($season
+                    ->setSchool($school)
+                    ->setInitDate(new \DateTime($initDate))
+                    ->setFinishDate(new \DateTime($finishDate))
+                );
             }
         }
 
         return $this->render('season/edit.html.twig', [
             'season' => $season,
+            'schools' => $schoolRepository->findAll(),
+            'periods' => $periodRepository->findBySeason($season),
             'canEdit' => $this->canEdit($season),
         ]);
     }

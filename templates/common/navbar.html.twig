@@ -11,6 +11,9 @@
         <li class="nav-item{% if route in ['school_index', 'school_new', 'school_edit'] %} active{% endif %}">
             <a href="{{ path('school_index') }}" class="nav-link">Escuelas</a>
         </li>
+        <li class="nav-item{% if route in ['season_index', 'season_new', 'season_edit'] %} active{% endif %}">
+            <a href="{{ path('season_index') }}" class="nav-link">Temporadas</a>
+        </li>
         <li class="nav-item{% if route in ['discipline_index', 'discipline_new', 'discipline_edit'] %} active{% endif %}">
             <a href="{{ path('discipline_index') }}" class="nav-link">Disciplinas</a>
         </li>

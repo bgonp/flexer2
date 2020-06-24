@@ -6,7 +6,7 @@ namespace App\Entity;
 
 use Symfony\Component\Uid\Uuid;
 
-abstract class Base
+abstract class Base implements \JsonSerializable
 {
     protected string $id;
 
@@ -44,5 +44,10 @@ abstract class Base
     public function equals(?Base $object): bool
     {
         return $object && get_called_class() === get_class($object) && $this->getId() === $object->getId();
+    }
+
+    public function jsonSerialize()
+    {
+        return ['entity' => get_called_class(), 'id' => $this->getId()];
     }
 }

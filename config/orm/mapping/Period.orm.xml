@@ -3,7 +3,7 @@
     <entity name="App\Entity\Period" repository-class="App\Repository\PeriodRepository">
         <field name="initDate" type="date" nullable="true" />
         <field name="finishDate" type="date" nullable="true" />
-        <field name="holidays" type="simple_array" />
+        <field name="holidays" type="simple_array" nullable="true" />
 
         <many-to-one field="season" target-entity="App\Entity\Season" inversed-by="periods" />
 

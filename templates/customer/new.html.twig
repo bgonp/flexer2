@@ -6,7 +6,7 @@
     <div class="row">
         <div class="col-6">
             <h2>Crear alumno</h2>
-            <form action="" method="post">
+            <form action="{{ path('customer_new') }}" method="post">
                 {% include 'common/field.html.twig' with
                     {type: 'text', entity: 'customer', name: 'name', label: 'Nombre', value: name, required: true} only %}
 
@@ -14,7 +14,7 @@
                     {type: 'text', entity: 'customer', name: 'surname', label: 'Apellidos', value: surname} only %}
 
                 {% include 'common/field.html.twig' with
-                    {type: 'date', entity: 'customer', name: 'birthdate', label: 'Fecha de nacimiento', value: birthdate|formatDate} only %}
+                    {type: 'date', entity: 'customer', name: 'birthdate', label: 'Fecha de nacimiento', value: birthdate} only %}
 
                 {% include 'common/field.html.twig' with
                     {type: 'email', entity: 'customer', name: 'email', label: 'E-mail', value: email} only %}

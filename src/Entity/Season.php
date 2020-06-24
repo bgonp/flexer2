@@ -65,4 +65,12 @@ class Season extends Base
     {
         return $this->periods;
     }
+
+    public function addPeriod(Period $period): self
+    {
+        $this->periods->add($period);
+        $period->setSeason($this);
+
+        return $this;
+    }
 }

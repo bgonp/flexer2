@@ -8,6 +8,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 abstract class BaseResolver implements ParamConverterInterface
 {
@@ -40,7 +41,7 @@ abstract class BaseResolver implements ParamConverterInterface
         }
 
         if (!$object = $this->repository->find($id)) {
-            throw new \InvalidArgumentException('No existe entidad con ese ID');
+            throw new HttpException(404, 'No existe entidad con ese ID');
         }
 
         $request->attributes->set($configuration->getName(), $object);

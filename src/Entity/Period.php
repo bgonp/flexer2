@@ -7,7 +7,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
-class Period extends Named
+class Period extends Named implements \JsonSerializable
 {
     private Season $season;
 
@@ -16,7 +16,7 @@ class Period extends Named
     private ?\DateTime $finishDate = null;
 
     /** @var int[] */
-    private array $holidays = [];
+    private ?array $holidays = null;
 
     /** @var Collection|Session[] */
     private Collection $sessions;
@@ -72,16 +72,17 @@ class Period extends Named
     {
         $timestamp = $date->setTime(0, 0, 0)->getTimestamp();
 
-        return in_array($timestamp, $this->holidays, true);
+        return in_array($timestamp, $this->holidays);
     }
 
     public function addHoliday(\DateTime $holiday): self
     {
         $timestamp = $holiday->setTime(0, 0, 0)->getTimestamp();
         for ($i = 0; $i < count($this->holidays); ++$i) {
-            if ($this->holidays[$i] === $timestamp) {
+            $holiday = (int) $this->holidays[$i];
+            if ($holiday === $timestamp) {
                 return $this;
-            } elseif ($timestamp > $this->holidays[$i]) {
+            } elseif ($holiday < $timestamp) {
                 break;
             }
         }
@@ -106,5 +107,16 @@ class Period extends Named
     public function getSessions(): Collection
     {
         return $this->sessions;
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+            'initDate' => $this->getInitDate(),
+            'finishDate' => $this->getFinishDate(),
+            'season' => $this->getSeason()->getId(),
+        ];
     }
 }

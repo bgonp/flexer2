@@ -8,25 +8,25 @@
             <h2>Editar curso</h2>
             <form action="" method="post" class="mb-2">
                 {% include 'common/field.html.twig' with
-                    {type: 'select', options: daysOfWeek(), entity: 'course', name: 'dayOfWeek', label: 'Día', value: course.dayOfWeek[0], required: true} only %}
+                    {type: 'select', entity: 'course', name: 'dayOfWeek', label: 'Día', options: daysOfWeek(), value: course.dayOfWeek[0], required: true} only %}
 
                 {% include 'common/field.html.twig' with
                     {type: 'time', entity: 'course', name: 'time', label: 'Hora', value: course.time|formatTime, required: true} only %}
 
                 {% include 'common/field.html.twig' with
-                    {type: 'select', options: schools, entity: 'course', name: 'school', label: 'Escuela', value: course.school, required: true} only %}
+                    {type: 'select', entity: 'course', name: 'school', label: 'Escuela', options: schools, value: course.school, required: true} only %}
 
                 {% include 'common/field.html.twig' with
-                    {type: 'select', options: places, entity: 'course', name: 'place', label: 'Lugar', value: course.place} only %}
+                    {type: 'select', entity: 'course', name: 'place', label: 'Lugar', options: places, value: course.place} only %}
 
                 {% include 'common/field.html.twig' with
-                    {type: 'select', options: disciplines, entity: 'course', name: 'discipline', label: 'Disciplina', value: course.discipline} only %}
+                    {type: 'select', entity: 'course', name: 'discipline', label: 'Disciplina', options: disciplines, value: course.discipline} only %}
 
                 {% include 'common/field.html.twig' with
-                    {type: 'select', options: levels, entity: 'course', name: 'level', label: 'Nivel', value: course.level} only %}
+                    {type: 'select', entity: 'course', name: 'level', label: 'Nivel', options: levels, value: course.level} only %}
 
                 {% include 'common/field.html.twig' with
-                    {type: 'select', options: ages, entity: 'course', name: 'age', label: 'Edad', value: course.age} only %}
+                    {type: 'select', entity: 'course', name: 'age', label: 'Edad', options: ages, value: course.age} only %}
 
                 {% include 'common/field.html.twig' with
                     {type: 'checkbox', entity: 'course', name: 'active', label: 'Activo', value: course.active} only %}

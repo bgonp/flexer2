@@ -1,6 +1,19 @@
 .clickable {
     cursor: pointer;
 }
+#period-holidays .day-btn {
+    display: block;
+    font-size: 1rem;
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    border-radius: 3px;
+    text-decoration: none;
+}
+#period-holidays .day-btn.is-holiday {
+    color: var(--white);
+    background: var(--primary);
+}
 #flash-message,
 #loading {
     position: fixed;

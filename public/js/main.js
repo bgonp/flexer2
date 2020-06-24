@@ -38,7 +38,7 @@
     const loading = document.getElementById('loading')
     const showLoading = (show = true) => loading.hidden = !show
 
-    const apiCallers = document.querySelectorAll('.api-caller')
+    const apiCallers = document.getElementsByClassName('api-caller')
     for (const apiCaller of apiCallers) {
         if (apiCaller.nodeName === 'INPUT') {
             let timeout
@@ -60,7 +60,7 @@
         if (response.status === 200) {
             actions[element.dataset.callback](data)
         } else {
-            showError(data.message)
+            showError(data.message || 'Ocurrió un error');
         }
         showLoading(false)
     }
@@ -121,6 +121,44 @@
                     'confirmable',
                 ))
             }
+        },
+
+        updatePeriods: (periods) => {
+            const list = document.getElementById('season-periods')
+            list.innerHTML = ''
+            if (periods.length === 0) {
+                document.getElementById('generate-periods').hidden = false
+            } else {
+                document.getElementById('generate-periods').hidden = true
+                for (const period of periods) {
+                    list.appendChild(createListElement(
+                        `/period/${period.id}`,
+                        `${period.name} (${formatDate(period.initDate.date)} - ${formatDate(period.finishDate.date)})`,
+                        { href: `/api/period/remove`, callback: 'updatePeriods' },
+                        'period_id',
+                        period.id,
+                        'times',
+                        'confirmable',
+                    ))
+                }
+            }
+        },
+
+        updateHolidays: (holidays) => {
+            const buttons = document.getElementsByClassName('day-btn')
+            const formattedHolidays = [];
+            for (const holiday of holidays) {
+                formattedHolidays.push(formatDate(new Date(holiday * 1000), true))
+            }
+            for (const button of buttons) {
+                if (formattedHolidays.includes(button.value)) {
+                    button.dataset.href = button.dataset.href.replace('/add_holiday', '/remove_holiday')
+                    button.classList.add('is-holiday')
+                } else {
+                    button.dataset.href = button.dataset.href.replace('/remove_holiday', '/add_holiday')
+                    button.classList.remove('is-holiday')
+                }
+            }
         }
     }
 
@@ -128,4 +166,14 @@
     if (activeElement && activeElement.tagName === 'INPUT') {
         activeElement.selectionStart = activeElement.value.length
     }
+
+    const formatDate = (date, iso = false) => {
+        const d = new Date(date)
+        if (iso) {
+            return d.getFullYear() + '-' + twoDigits(d.getMonth() + 1) + '-' + twoDigits(d.getDate())
+        }
+        return twoDigits(d.getDate()) + '/' + twoDigits(d.getMonth() + 1) + '/' + d.getFullYear()
+    }
+
+    const twoDigits = (number) => ('0' + number).slice(-2)
 })()

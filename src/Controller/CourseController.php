@@ -134,12 +134,14 @@ class CourseController extends BaseController
             if (!$this->canEdit($course)) {
                 return $this->redirectToRoute('course_edit', ['id' => $course->getId()]);
             }
+
             $course
                 ->setPlace($placeRepository->find($request->request->get('place')))
                 ->setDiscipline($disciplineRepository->find($request->request->get('discipline')))
                 ->setLevel($levelRepository->find($request->request->get('level')))
                 ->setAge($ageRepository->find($request->request->get('age')))
                 ->setIsActive((bool) $request->request->get('active'));
+
             if (!$school = $schoolRepository->find($request->request->get('school'))) {
                 $this->addFlash('error', 'El campo "escuela" es obligatorio');
             } elseif (empty($time = explode(':', $request->request->get('time')))) {

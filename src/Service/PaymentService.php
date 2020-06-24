@@ -57,7 +57,7 @@ class PaymentService
         $rate = $payment->getRate();
         $course = 1 === $rate->getCoursesCount() ? $attendance->getSession()->getCourse() : null;
         $period = $attendance->getSession()->getPeriod();
-        $periods = $this->periodRepository->getConsecutivePeriods($rate->getPeriodsCount(), $period);
+        $periods = $this->periodRepository->findConsecutivePeriods($rate->getPeriodsCount(), $period);
         $customers = $attendance->getCustomer()->getFamily()->getCustomers();
 
         $attendances = $this->attendanceRepository->findUnpaidByCustomersAndPeriods($customers, $periods, $course);
