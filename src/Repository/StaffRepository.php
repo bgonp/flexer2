@@ -8,6 +8,7 @@ use App\Entity\Customer;
 use App\Entity\Listing;
 use App\Entity\Period;
 use App\Entity\Staff;
+use App\Entity\StaffPosition;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
 use Doctrine\Persistence\ManagerRegistry;
@@ -48,9 +49,10 @@ class StaffRepository extends BaseRepository
             ->join('a.position', 'po')
             ->where('se.listing = :listing')
             ->andWhere('se.period = :period')
-            ->andWhere('po.isStaff = 0')
+            ->andWhere('po INSTANCE OF :position_class')
             ->setParameter('listing', $listing)
             ->setParameter('period', $period)
+            ->setParameter('position_class', $this->getClassQueryData(StaffPosition::class))
             ->orderBy('s.surname', 'ASC')
             ->addOrderBy('s.name', 'ASC')
             ->addOrderBy('se.day', 'ASC')

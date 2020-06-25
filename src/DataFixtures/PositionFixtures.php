@@ -2,27 +2,34 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Position;
-use App\Repository\PositionRepository;
+use App\Entity\CustomerPosition;
+use App\Entity\StaffPosition;
+use App\Repository\CustomerPositionRepository;
+use App\Repository\StaffPositionRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
 
 class PositionFixtures extends Fixture implements FixtureGroupInterface
 {
-    private PositionRepository $positionRepository;
+    private CustomerPositionRepository $customerPositionRepository;
 
-    public function __construct(PositionRepository $positionRepository)
-    {
-        $this->positionRepository = $positionRepository;
+    private StaffPositionRepository $staffPositionRepository;
+
+    public function __construct(
+        CustomerPositionRepository $customerPositionRepository,
+        StaffPositionRepository $staffPositionRepository
+    ) {
+        $this->customerPositionRepository = $customerPositionRepository;
+        $this->staffPositionRepository = $staffPositionRepository;
     }
 
     public function load(ObjectManager $manager)
     {
-        $this->positionRepository->save((new Position())->setName('Monitor')->setIsStaff(true));
-        $this->positionRepository->save((new Position())->setName('Apoyo')->setIsStaff(true));
-        $this->positionRepository->save((new Position())->setName('Alumno'));
-        $this->positionRepository->save((new Position())->setName('Becado'));
+        $this->staffPositionRepository->save((new StaffPosition())->setName('Monitor'));
+        $this->staffPositionRepository->save((new StaffPosition())->setName('Apoyo'));
+        $this->customerPositionRepository->save((new CustomerPosition())->setName('Alumno'));
+        $this->customerPositionRepository->save((new CustomerPosition())->setName('Becado'));
     }
 
     public static function getGroups(): array

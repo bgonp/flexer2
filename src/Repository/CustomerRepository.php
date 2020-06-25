@@ -6,6 +6,7 @@ namespace App\Repository;
 
 use App\DQL\PaginableQuery;
 use App\Entity\Customer;
+use App\Entity\CustomerPosition;
 use App\Entity\Listing;
 use App\Entity\Period;
 use Doctrine\ORM\QueryBuilder;
@@ -58,9 +59,10 @@ class CustomerRepository extends BaseRepository
             ->join('a.position', 'po')
             ->where('s.listing = :listing')
             ->andWhere('s.period = :period')
-            ->andWhere('po.isStaff = 0')
+            ->andWhere('po INSTANCE OF :position_class')
             ->setParameter('listing', $listing)
             ->setParameter('period', $period)
+            ->setParameter('position_class', $this->getClassQueryData(CustomerPosition::class))
             ->orderBy('c.surname', 'ASC')
             ->addOrderBy('c.name', 'ASC')
             ->addOrderBy('s.day', 'ASC')

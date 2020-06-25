@@ -7,8 +7,10 @@ namespace App\Repository;
 use App\Entity\Attendance;
 use App\Entity\Course;
 use App\Entity\Customer;
+use App\Entity\CustomerPosition;
 use App\Entity\Period;
 use App\Entity\Staff;
+use App\Entity\StaffPosition;
 use Doctrine\Persistence\ManagerRegistry;
 
 class AttendanceRepository extends BaseRepository
@@ -19,30 +21,32 @@ class AttendanceRepository extends BaseRepository
     }
 
     /** @return Attendance[] */
-    public function findByCustomerOrdered(Customer $customer): array
+    public function findByCustomer(Customer $customer): array
     {
         return $this->createQueryBuilder('a')
             ->select('a', 's')
             ->join('a.session', 's')
             ->join('a.position', 'p')
             ->where('a.customer = :customer')
-            ->andWhere('p.isStaff = 0')
+            ->andWhere('p INSTANCE OF :position_class')
             ->setParameter('customer', $customer)
+            ->setParameter('position_class', $this->getClassQueryData(CustomerPosition::class))
             ->orderBy('s.day')
             ->addOrderBy('s.time')
             ->getQuery()->execute();
     }
 
     /* @return Attendance[] */
-    public function findByStaffOrdered(Staff $staff): array
+    public function findByStaff(Staff $staff): array
     {
         return $this->createQueryBuilder('a')
             ->select('a', 's')
             ->join('a.session', 's')
             ->join('a.position', 'p')
             ->where('a.customer = :staff')
-            ->andWhere('p.isStaff = 1')
+            ->andWhere('p INSTANCE OF :position_class')
             ->setParameter('staff', $staff)
+            ->setParameter('position_class', $this->getClassQueryData(StaffPosition::class))
             ->orderBy('s.day')
             ->addOrderBy('s.time')
             ->getQuery()->execute();

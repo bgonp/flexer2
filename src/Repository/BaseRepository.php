@@ -7,6 +7,7 @@ use App\Exception\Common\CannotFlushPersistOperationsException;
 use App\Exception\Common\ObjectOfClassCouldNotBeRemovedException;
 use App\Exception\Common\ObjectOfClassCouldNotBeStoredException;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 
@@ -43,5 +44,10 @@ abstract class BaseRepository extends ServiceEntityRepository
         if ($flush) {
             $this->flush();
         }
+    }
+
+    protected function getClassQueryData(string $className): ClassMetadata
+    {
+        return $this->getEntityManager()->getClassMetadata($className);
     }
 }

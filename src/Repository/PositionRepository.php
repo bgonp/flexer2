@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
+use App\Entity\CustomerPosition;
 use App\Entity\Position;
+use App\Entity\StaffPosition;
 use Doctrine\Persistence\ManagerRegistry;
 
+// TODO: BORRAR
 class PositionRepository extends BaseRepository
 {
     public function __construct(ManagerRegistry $registry)
@@ -15,19 +18,11 @@ class PositionRepository extends BaseRepository
     }
 
     /** @return Position[] */
-    public function findAllForCustomers(): array
+    public function test()
     {
-        return $this->findBy(['isStaff' => 0], ['name' => 'ASC']);
-    }
-
-    /** @return Position[] */
-    public function findAllForStaffs(): array
-    {
-        return $this->findBy(['isStaff' => 1], ['name' => 'ASC']);
-    }
-
-    public function save(Position $position, bool $flush = true): void
-    {
-        $this->saveEntity($position, $flush);
+        return $this->createQueryBuilder('p')
+            ->where('p INSTANCE OF :position_class')
+            ->setParameter('position_class', $this->getClassQueryData(CustomerPosition::class))
+            ->getQuery()->execute();
     }
 }

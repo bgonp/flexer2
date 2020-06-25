@@ -6,9 +6,8 @@ namespace App\Repository;
 
 use App\Entity\Listing;
 use App\Entity\Period;
-use App\Entity\Position;
 use App\Entity\Staff;
-use App\Exception\Listing\PositionMustBeStaffException;
+use App\Entity\StaffPosition;
 use Doctrine\Persistence\ManagerRegistry;
 
 class ListingRepository extends BaseRepository
@@ -19,12 +18,8 @@ class ListingRepository extends BaseRepository
     }
 
     /** @return Listing[] */
-    public function findByStaffPositionAndPeriod(Staff $staff, Position $position, Period $period): array
+    public function findByStaffPositionAndPeriod(Staff $staff, StaffPosition $position, Period $period): array
     {
-        if (!$position->isStaff()) {
-            throw PositionMustBeStaffException::create();
-        }
-
         return $this->createQueryBuilder('l')
             ->select('l', 's')
             ->join('l.sessions', 's')

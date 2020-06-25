@@ -7,10 +7,8 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
-class Position extends Named
+abstract class Position extends Named
 {
-    private bool $isStaff = false;
-
     /** @var Collection|Assignment[] */
     private Collection $assignments;
 
@@ -22,18 +20,6 @@ class Position extends Named
         parent::__construct();
         $this->assignments = new ArrayCollection();
         $this->attendances = new ArrayCollection();
-    }
-
-    public function isStaff(): bool
-    {
-        return $this->isStaff;
-    }
-
-    public function setIsStaff(bool $isStaff): self
-    {
-        $this->isStaff = $isStaff;
-
-        return $this;
     }
 
     /** @return Collection|Assignment[] */

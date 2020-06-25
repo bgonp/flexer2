@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Repository\CustomerRepository;
+use App\Repository\PositionRepository;
 use App\Repository\StaffRepository;
 use App\Service\FamilyService;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,11 +20,13 @@ class MainController extends BaseController
     }
 
     /** @Route("/test", name="test") */
-    public function test(
+    public function test( // TODO: BORRAR
         StaffRepository $staffRepository,
         CustomerRepository $customerRepository,
-        FamilyService $familyService
+        FamilyService $familyService,
+        PositionRepository $positionRepository
     ): Response {
+        dd($positionRepository->test());
         dump($staff = $staffRepository->findAll());
         dd($attendances = $staff[5]->getAssignments());
     }

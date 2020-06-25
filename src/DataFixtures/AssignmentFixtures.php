@@ -4,10 +4,12 @@ namespace App\DataFixtures;
 
 use App\Entity\Assignment;
 use App\Entity\Position;
+use App\Entity\StaffPosition;
 use App\Repository\AssignmentRepository;
 use App\Repository\CourseRepository;
+use App\Repository\CustomerPositionRepository;
 use App\Repository\CustomerRepository;
-use App\Repository\PositionRepository;
+use App\Repository\StaffPositionRepository;
 use App\Repository\StaffRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -15,28 +17,32 @@ use Doctrine\Persistence\ObjectManager;
 
 class AssignmentFixtures extends Fixture implements DependentFixtureInterface
 {
-    private AssignmentRepository $assignmentRepository;
-
     private CustomerRepository $customerRepository;
 
     private StaffRepository $staffRepository;
 
     private CourseRepository $courseRepository;
 
-    private PositionRepository $positionRepository;
+    private CustomerPositionRepository $customerPositionRepository;
+
+    private StaffPositionRepository $staffPositionRepository;
+
+    private AssignmentRepository $assignmentRepository;
 
     public function __construct(
         AssignmentRepository $assignmentRepository,
         CustomerRepository $customerRepository,
         StaffRepository $staffRepository,
         CourseRepository $courseRepository,
-        PositionRepository $positionRepository
+        CustomerPositionRepository $customerPositionRepository,
+        StaffPositionRepository $staffPositionRepository
     ) {
         $this->assignmentRepository = $assignmentRepository;
         $this->customerRepository = $customerRepository;
         $this->staffRepository = $staffRepository;
         $this->courseRepository = $courseRepository;
-        $this->positionRepository = $positionRepository;
+        $this->customerPositionRepository = $customerPositionRepository;
+        $this->staffPositionRepository = $staffPositionRepository;
     }
 
     public function load(ObjectManager $manager)
@@ -44,44 +50,29 @@ class AssignmentFixtures extends Fixture implements DependentFixtureInterface
         $customers = $this->customerRepository->findAll();
         $staffs = $this->staffRepository->findAll();
         $courses = $this->courseRepository->findAll();
-        $customerPosition = $this->positionRepository->findAllForCustomers()[0];
-        $staffPosition = $this->positionRepository->findAllForStaffs()[0];
-        foreach ($customers as $customer) {
-            if (!rand(0, 20)) {
-                continue;
-            }
-            $this->assignmentRepository->save(
-                (new Assignment())
-                    ->setCustomer($customer)
-                    ->setCourse($courses[rand(0, count($courses) - 1)])
-                    ->setPosition($customerPosition),
-                false
-            );
-        }
+        $customerPosition = $this->customerPositionRepository->findAll()[0];
+        $staffPosition = $this->staffPositionRepository->findAll()[0];
+
+        $this->setAssignments($courses, $customers, $customerPosition);
+        $this->setAssignments($courses, $staffs, $staffPosition);
         $this->assignmentRepository->flush();
-        $this->setStaff($courses, $staffs, $staffPosition);
     }
 
-    private function setStaff(array $courses, array $staffs, Position $position)
+    private function setAssignments(array $courses, array $customers, Position $position): void
     {
-        $this->assignmentRepository->save((new Assignment())
-            ->setCustomer($staffs[0])
-            ->setCourse($courses[0])
-            ->setPosition($position));
-        /*foreach ($courses as $course) {
-            $assignment = new Assignment($staffs[rand(0, count($staffs) - 1)], $course, $position);
-            if (!rand(0, 5) && $sessions = $course->getSessions()) {
-                $operation = rand(0, 2);
-                if ($operation > 0) {
-                    $assignment->setFirstSession($sessions[rand(0, (count($sessions) - 1) / 2)]);
-                }
-                if ($operation < 2) {
-                    $assignment->setLastSession($sessions[rand((count($sessions) - 1) / 2, count($sessions) - 1)]);
-                }
+        foreach ($courses as $course) {
+            shuffle($customers);
+            $count = StaffPosition::class === get_class($position) ? 1 : rand(4, 12);
+            for ($i = 0; $i < $count; ++$i) {
+                $this->assignmentRepository->save(
+                    (new Assignment())
+                        ->setCourse($course)
+                        ->setCustomer($customers[$i])
+                        ->setPosition($position),
+                    false
+                );
             }
-            $this->assignmentRepository->save($assignment, false);
         }
-        $this->assignmentRepository->flush();*/
     }
 
     public function getDependencies()
