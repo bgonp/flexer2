@@ -6,6 +6,8 @@ namespace App\Repository;
 
 use App\DQL\PaginableQuery;
 use App\Entity\Customer;
+use App\Entity\Listing;
+use App\Entity\Period;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -45,24 +47,25 @@ class CustomerRepository extends BaseRepository
             ->getQuery()->execute();
     }
 
-    // TODO: Ver si al final hace falta
-    /*public function findByListingAndPeriod(Listing $listing, Period $period): array
+    /** @return Customer[] */
+    public function findByListingAndPeriod(Listing $listing, Period $period): array
     {
         return $this->createQueryBuilder('c')
-            ->select('c', 'a', 's', 'p', 'o')
+            ->select('c', 'a', 's', 'p', 'po')
             ->join('c.attendances', 'a')
             ->join('a.session', 's')
             ->join('a.payment', 'p')
-            ->join('a.position', 'o')
+            ->join('a.position', 'po')
             ->where('s.listing = :listing')
             ->andWhere('s.period = :period')
+            ->andWhere('po.isStaff = 0')
             ->setParameter('listing', $listing)
             ->setParameter('period', $period)
-            ->orderBy('c.surname')
-            ->addOrderBy('c.name')
-            ->addOrderBy('s.day')
+            ->orderBy('c.surname', 'ASC')
+            ->addOrderBy('c.name', 'ASC')
+            ->addOrderBy('s.day', 'ASC')
             ->getQuery()->execute();
-    }*/
+    }
 
     public function save(Customer $customer, bool $flush = true): void
     {

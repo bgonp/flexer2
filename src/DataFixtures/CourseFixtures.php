@@ -3,10 +3,12 @@
 namespace App\DataFixtures;
 
 use App\Entity\Course;
+use App\Entity\Listing;
 use App\Repository\AgeRepository;
 use App\Repository\CourseRepository;
 use App\Repository\DisciplineRepository;
 use App\Repository\LevelRepository;
+use App\Repository\ListingRepository;
 use App\Repository\PlaceRepository;
 use App\Repository\SchoolRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -28,13 +30,16 @@ class CourseFixtures extends Fixture implements DependentFixtureInterface, Fixtu
 
     private PlaceRepository $placeRepository;
 
+    private ListingRepository $listingRepository;
+
     public function __construct(
         CourseRepository $courseRepository,
         SchoolRepository $schoolRepository,
         AgeRepository $ageRepository,
         DisciplineRepository $disciplineRepository,
         LevelRepository $levelRepository,
-        PlaceRepository $placeRepository
+        PlaceRepository $placeRepository,
+        ListingRepository $listingRepository
     ) {
         $this->courseRepository = $courseRepository;
         $this->schoolRepository = $schoolRepository;
@@ -42,6 +47,7 @@ class CourseFixtures extends Fixture implements DependentFixtureInterface, Fixtu
         $this->disciplineRepository = $disciplineRepository;
         $this->levelRepository = $levelRepository;
         $this->placeRepository = $placeRepository;
+        $this->listingRepository = $listingRepository;
     }
 
     public function load(ObjectManager $manager)
@@ -52,6 +58,7 @@ class CourseFixtures extends Fixture implements DependentFixtureInterface, Fixtu
         $levels = $this->levelRepository->findAll();
         $places = $this->placeRepository->findAll();
         for ($i = 0; $i < 15; ++$i) {
+            $this->listingRepository->save($listing = new Listing(), false);
             $course = (new Course())
                 ->setSchool($school)
                 ->setPlace($places[rand(0, count($places) - 1)])
@@ -60,7 +67,8 @@ class CourseFixtures extends Fixture implements DependentFixtureInterface, Fixtu
                 ->setAge($ages[rand(0, count($ages) - 1)])
                 ->setDayOfWeek([rand(1, 7)])
                 ->setTime((new \DateTime())->setTime(rand(10, 20), rand(0, 1) ? 0 : 30))
-                ->setDuration(60);
+                ->setDuration(60)
+                ->setListing($listing);
             if (2 == $i) {
                 $course->setWeekOfMonth([-1]);
             }

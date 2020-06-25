@@ -10,8 +10,10 @@ use App\Repository\AgeRepository;
 use App\Repository\CourseRepository;
 use App\Repository\DisciplineRepository;
 use App\Repository\LevelRepository;
+use App\Repository\PeriodRepository;
 use App\Repository\PlaceRepository;
 use App\Repository\SchoolRepository;
+use App\Repository\SeasonRepository;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -125,7 +127,8 @@ class CourseController extends BaseController
         PlaceRepository $placeRepository,
         DisciplineRepository $disciplineRepository,
         LevelRepository $levelRepository,
-        AgeRepository $ageRepository
+        AgeRepository $ageRepository,
+        SeasonRepository $seasonRepository
     ): Response {
         if (!$this->canView($course)) {
             return $this->redirectToRoute('course_index', ['type' => 'active']);
@@ -164,6 +167,7 @@ class CourseController extends BaseController
             'disciplines' => $disciplineRepository->findAll(),
             'levels' => $levelRepository->findAll(),
             'ages' => $ageRepository->findAll(),
+            'seasons' => $seasonRepository->findByCourseWithPeriods($course),
             'canEdit' => $this->canEdit($course),
         ]);
     }

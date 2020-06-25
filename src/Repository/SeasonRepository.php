@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\DQL\PaginableQuery;
+use App\Entity\Course;
+use App\Entity\Period;
 use App\Entity\School;
 use App\Entity\Season;
 use Doctrine\Persistence\ManagerRegistry;
@@ -34,6 +36,20 @@ class SeasonRepository extends BaseRepository
         }
 
         return new PaginableQuery($query->getQuery(), $page);
+    }
+
+    /** @return Season[] */
+    public function findByCourseWithPeriods(Course $course): array
+    {
+        return $this->createQueryBuilder('s')
+            ->select('s', 'p')
+            ->join('s.periods', 'p')
+            ->join('p.sessions', 'se')
+            ->where('se.course = :course')
+            ->setParameter('course', $course)
+            ->orderBy('s.initDate', 'DESC')
+            ->addOrderBy('p.initDate', 'DESC')
+            ->getQuery()->execute();
     }
 
     public function save(Season $season, bool $flush = true): void

@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\Course;
+use App\Entity\Listing;
+use App\Entity\Period;
 use App\Entity\Session;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -15,12 +17,16 @@ class SessionRepository extends BaseRepository
         parent::__construct($registry, Session::class);
     }
 
-    public function find($id, $lockMode = null, $lockVersion = null): Session
+    /** @return Session[] */
+    public function findByListingAndPeriod(Listing $listing, Period $period): array
     {
-        /** @var Session $session */
-        $session = parent::find($id, $lockMode, $lockVersion);
-
-        return $session;
+        return $this->createQueryBuilder('s')
+            ->where('s.listing = :listing')
+            ->andWhere('s.period = :period')
+            ->orderBy('s.day')
+            ->setParameter('listing', $listing)
+            ->setParameter('period', $period)
+            ->getQuery()->execute();
     }
 
     /** @return Session[] */

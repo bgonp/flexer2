@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\Customer;
+use App\Entity\Listing;
+use App\Entity\Period;
 use App\Entity\Staff;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
@@ -33,6 +35,26 @@ class StaffRepository extends BaseRepository
         }
 
         return true;
+    }
+
+    /** @return Staff[] */
+    public function findByListingAndPeriod(Listing $listing, Period $period): array
+    {
+        return $this->createQueryBuilder('s')
+            ->select('s', 'a', 'se', 'p', 'po')
+            ->join('s.attendances', 'a')
+            ->join('a.session', 'se')
+            ->join('a.payment', 'p')
+            ->join('a.position', 'po')
+            ->where('se.listing = :listing')
+            ->andWhere('se.period = :period')
+            ->andWhere('po.isStaff = 0')
+            ->setParameter('listing', $listing)
+            ->setParameter('period', $period)
+            ->orderBy('s.surname', 'ASC')
+            ->addOrderBy('s.name', 'ASC')
+            ->addOrderBy('se.day', 'ASC')
+            ->getQuery()->execute();
     }
 
     /** @return Staff[] */

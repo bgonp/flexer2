@@ -38,5 +38,19 @@
             </form>
             <a href="{{ path('course_index', {type: 'active'}) }}">Volver a la lista</a>
         </div>
+        <div class="col-6">
+            <h2>Listados</h2>
+            {% for season in seasons %}
+                <ul>
+                    {% for period in season.periods %}
+                        <li>
+                            <a href="{{ path('listing_edit', {listing_id: course.listing.id, period_id: period.id}) }}">
+                                {{ period.name }} ({{ period.initDate|showDate }} - {{ period.finishDate|showDate }})
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endfor %}
+        </div>
     </div>
 {% endblock %}

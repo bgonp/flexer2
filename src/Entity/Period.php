@@ -16,7 +16,7 @@ class Period extends Named implements \JsonSerializable
     private ?\DateTime $finishDate = null;
 
     /** @var int[] */
-    private ?array $holidays = null;
+    private ?array $holidays = [];
 
     /** @var Collection|Session[] */
     private Collection $sessions;
