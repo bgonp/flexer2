@@ -23,6 +23,7 @@ class AttendanceService
         $this->sessionRepository = $sessionRepository;
     }
 
+    /** @throws DuplicateAttendanceException */
     public function createAttendances(Assignment $assignment, bool $flush = true): void
     {
         $sessions = $this->sessionRepository->findByCourseBetweenSessions(

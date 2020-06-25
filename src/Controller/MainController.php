@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Repository\CustomerPositionRepository;
 use App\Repository\CustomerRepository;
-use App\Repository\PositionRepository;
 use App\Repository\StaffRepository;
 use App\Service\FamilyService;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,10 +24,9 @@ class MainController extends BaseController
         StaffRepository $staffRepository,
         CustomerRepository $customerRepository,
         FamilyService $familyService,
-        PositionRepository $positionRepository
+        CustomerPositionRepository $customerPositionRepository
     ): Response {
-        dd($positionRepository->test());
-        dump($staff = $staffRepository->findAll());
-        dd($attendances = $staff[5]->getAssignments());
+        dump($customerPositionRepository->findAll());
+        return $this->render('main/index.html.twig');
     }
 }

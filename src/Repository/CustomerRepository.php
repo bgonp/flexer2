@@ -9,6 +9,7 @@ use App\Entity\Customer;
 use App\Entity\CustomerPosition;
 use App\Entity\Listing;
 use App\Entity\Period;
+use App\Entity\Staff;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -40,6 +41,15 @@ class CustomerRepository extends BaseRepository
     }
 
     /** @return Customer[] */
+    public function findAllNoStaff(): array
+    {
+        return $this->createQueryBuilder('c')
+            ->where('c NOT INSTANCE OF :staff_class')
+            ->setParameter('staff_class', $this->getClassQueryData(Staff::class))
+            ->getQuery()->execute();
+    }
+
+    /** @return Customer[] */
     public function findByFamiliar(Customer $customer): array
     {
         return $this->createQueryBuilder('c')
@@ -52,14 +62,14 @@ class CustomerRepository extends BaseRepository
     public function findByListingAndPeriod(Listing $listing, Period $period): array
     {
         return $this->createQueryBuilder('c')
-            ->select('c', 'a', 's', 'p', 'po')
+            ->select('c', 'a', 's', 'p', 'pa')
             ->join('c.attendances', 'a')
             ->join('a.session', 's')
-            ->join('a.payment', 'p')
-            ->join('a.position', 'po')
+            ->join('a.position', 'p')
+            ->leftJoin('a.payment', 'pa')
             ->where('s.listing = :listing')
             ->andWhere('s.period = :period')
-            ->andWhere('po INSTANCE OF :position_class')
+            ->andWhere('p INSTANCE OF :position_class')
             ->setParameter('listing', $listing)
             ->setParameter('period', $period)
             ->setParameter('position_class', $this->getClassQueryData(CustomerPosition::class))

@@ -47,7 +47,7 @@ class AssignmentFixtures extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager)
     {
-        $customers = $this->customerRepository->findAll();
+        $customers = $this->customerRepository->findAllNoStaff();
         $staffs = $this->staffRepository->findAll();
         $courses = $this->courseRepository->findAll();
         $customerPosition = $this->customerPositionRepository->findAll()[0];

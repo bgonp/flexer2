@@ -45,7 +45,8 @@ class UserFixtures extends Fixture implements DependentFixtureInterface, Fixture
             $this->userRepository->save($user);
             $this->staffRepository->save($staff->setUser($user));
         }
-        $customers = $this->customerRepository->findAll();
+        // TODO
+        /*$customers = $this->customerRepository->findAll();
         foreach ($customers as $customer) {
             if (!rand(0, 10)) {
                 $user = (new User())->setEmail($customer->getEmail());
@@ -54,7 +55,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface, Fixture
                 $this->userRepository->save($user);
                 $this->customerRepository->save($customer->setUser($user));
             }
-        }
+        }*/
     }
 
     public function getDependencies()

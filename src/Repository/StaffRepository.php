@@ -42,14 +42,14 @@ class StaffRepository extends BaseRepository
     public function findByListingAndPeriod(Listing $listing, Period $period): array
     {
         return $this->createQueryBuilder('s')
-            ->select('s', 'a', 'se', 'p', 'po')
+            ->select('s', 'a', 'se', 'p', 'pa')
             ->join('s.attendances', 'a')
             ->join('a.session', 'se')
-            ->join('a.payment', 'p')
-            ->join('a.position', 'po')
+            ->join('a.position', 'p')
+            ->leftJoin('a.payment', 'pa')
             ->where('se.listing = :listing')
             ->andWhere('se.period = :period')
-            ->andWhere('po INSTANCE OF :position_class')
+            ->andWhere('p INSTANCE OF :position_class')
             ->setParameter('listing', $listing)
             ->setParameter('period', $period)
             ->setParameter('position_class', $this->getClassQueryData(StaffPosition::class))
