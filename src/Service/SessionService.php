@@ -54,7 +54,12 @@ class SessionService
         foreach ($season->getPeriods() as $period) {
             $dates = new \DatePeriod($period->getInitDate(), $this->interval, $period->getFinishDate());
             foreach ($dates as $date) {
-                $this->createSession($course, $period, $date, false);
+                if (
+                    (!$course->getInitDate() || $date >= $course->getInitDate()) &&
+                    (!$course->getFinishDate() || $date <= $course->getFinishDate())
+                ) {
+                    $this->createSession($course, $period, $date, false);
+                }
             }
         }
 
