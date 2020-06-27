@@ -45,7 +45,7 @@ class PeriodFixtures extends Fixture implements DependentFixtureInterface, Fixtu
                         ->setSeason($season)
                         ->setInitDate($dates[0])
                         ->setFinishDate($dates[1]);
-                    for ($i = 0; $i < 7; ++$i) {
+                    for ($i = 0; $i < 4; ++$i) {
                         $period->addHoliday((new \DateTime())->setTimestamp(rand($dates[0]->getTimestamp(), $dates[1]->getTimestamp())));
                     }
                     $this->periodRepository->save($period, false);

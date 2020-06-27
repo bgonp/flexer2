@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Entity\Period;
 use App\Entity\Season;
+use App\Repository\ListingRepository;
 use App\Repository\PeriodRepository;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,7 +20,7 @@ class PeriodController extends BaseController
     public function new(Request $request, Season $season, PeriodRepository $periodRepository): Response
     {
         if (!$this->canCreate(Period::class)) {
-            return $this->redirectToRoute('season_edit', ['id' => $season->getId()]);
+            return $this->redirectToRoute('season_edit', ['season_id' => $season->getId()]);
         } elseif (!$this->canEdit($season)) {
             return $this->redirectToRoute('season_index');
         }
@@ -45,7 +46,7 @@ class PeriodController extends BaseController
                     ->setSeason($season);
                 $periodRepository->save($period);
 
-                return $this->redirectToRoute('season_edit', ['id' => $season->getId()]);
+                return $this->redirectToRoute('season_edit', ['season_id' => $season->getId()]);
             }
         }
 
@@ -57,16 +58,20 @@ class PeriodController extends BaseController
         ]);
     }
 
-    /** @Route("/{id}", name="period_edit", methods={"GET", "POST"}) */
-    public function edit(Request $request, Period $period, PeriodRepository $periodRepository): Response
-    {
+    /** @Route("/{period_id}", name="period_edit", methods={"GET", "POST"}) */
+    public function edit(
+        Request $request,
+        Period $period,
+        PeriodRepository $periodRepository,
+        ListingRepository $listingRepository
+    ): Response {
         if (!$this->canView($period)) {
-            return $this->redirectToRoute('season_edit', ['id' => $period->getSeason()->getId()]);
+            return $this->redirectToRoute('season_edit', ['season_id' => $period->getSeason()->getId()]);
         }
 
         if ($request->isMethod('POST')) {
             if (!$this->canEdit($period)) {
-                return $this->redirectToRoute('season_edit', ['id' => $period->getSeason()->getId()]);
+                return $this->redirectToRoute('season_edit', ['season_id' => $period->getSeason()->getId()]);
             }
 
             $name = $request->request->get('name');
@@ -92,24 +97,25 @@ class PeriodController extends BaseController
 
         return $this->render('period/edit.html.twig', [
             'period' => $period,
+            'listings' => $listingRepository->findByPeriod($period),
             'canEdit' => $this->canEdit($period),
         ]);
     }
 
-    /** @Route("/{id}/delete", name="period_delete", methods={"GET"}) */
+    /** @Route("/{period_id}/delete", name="period_delete", methods={"GET"}) */
     public function delete(Period $period, PeriodRepository $periodRepository): Response
     {
         if (!$this->canDelete($period)) {
-            return $this->redirectToRoute('period_edit', ['id' => $period->getId()]);
+            return $this->redirectToRoute('period_edit', ['period_id' => $period->getId()]);
         }
         try {
             $periodRepository->remove($period);
         } catch (ForeignKeyConstraintViolationException $e) {
             $this->addFlash('error', 'No se puede eliminar un periodo si tiene clases asociadas.');
 
-            return $this->redirectToRoute('period_edit', ['id' => $period->getId()]);
+            return $this->redirectToRoute('period_edit', ['period_id' => $period->getId()]);
         }
 
-        return $this->redirectToRoute('season_edit', ['id' => $period->getSeason()->getId()]);
+        return $this->redirectToRoute('season_edit', ['season_id' => $period->getSeason()->getId()]);
     }
 }

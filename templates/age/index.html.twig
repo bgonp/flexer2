@@ -19,7 +19,7 @@
                     <tr><td colspan="7" class="text-center">Sin resultados</td></tr>
                 {% else %}
                     {% for age in ages %}
-                        <tr class="clickable" data-href="{{ path('age_edit', {id: age.id}) }}">
+                        <tr class="clickable" data-href="{{ path('age_edit', {age_id: age.id|encodeUuid}) }}">
                             <td>{{ age.name }}</td>
                             <td>{{ age.description }}</td>
                             <td>{{ age.url }}</td>

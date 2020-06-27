@@ -27,7 +27,7 @@
 
                 {% if canEdit %}
                     <button type="submit" class="btn btn-primary btn-block">Editar</button>
-                    <a href="{{ path('customer_delete', {id: customer.id}) }}" class="btn btn-danger btn-block confirmable">Borrar</a>
+                    <a href="{{ path('customer_delete', {customer_id: customer.id|encodeUuid}) }}" class="btn btn-danger btn-block confirmable">Borrar</a>
                 {% endif %}
             </form>
             <a href="{{ path('customer_index') }}">Volver a la lista</a>
@@ -37,9 +37,9 @@
             <ul id="family-members">
                 {% for familiar in familiars %}
                     <li>
-                        <a href="{{ path('customer_edit', {id: familiar.id}) }}">{{ familiar|fullname }}</a>
+                        <a href="{{ path('customer_edit', {customer_id: familiar.id|encodeUuid}) }}">{{ familiar|fullname }}</a>
                         <button class="btn btn-sm api-caller confirmable" name="familiar_id" value="{{ familiar.id }}"
-                                data-href="{{ path('api_remove_familiar', {id: customer.id}) }}"
+                                data-href="{{ path('api_remove_familiar', {customer_id: customer.id|encodeUuid}) }}"
                                 data-callback="updateFamily">
                             <i class="fa fa-times"></i>
                         </button>

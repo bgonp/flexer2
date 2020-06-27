@@ -10,7 +10,6 @@ use App\Repository\AgeRepository;
 use App\Repository\CourseRepository;
 use App\Repository\DisciplineRepository;
 use App\Repository\LevelRepository;
-use App\Repository\PeriodRepository;
 use App\Repository\PlaceRepository;
 use App\Repository\SchoolRepository;
 use App\Repository\SeasonRepository;
@@ -76,6 +75,8 @@ class CourseController extends BaseController
             $discipline = $disciplineRepository->find($request->request->get('discipline'));
             $level = $levelRepository->find($request->request->get('level'));
             $age = $ageRepository->find($request->request->get('age'));
+            $initDate = ($initDate = $request->request->get('initDate')) ? new \DateTime($initDate) : null;
+            $finishDate = ($finishDate = $request->request->get('finishDate')) ? new \DateTime($finishDate) : null;
             $active = (bool) $request->request->get('active');
 
             if (!$school) {
@@ -94,10 +95,12 @@ class CourseController extends BaseController
                     ->setDiscipline($discipline)
                     ->setLevel($level)
                     ->setAge($age)
+                    ->setInitDate($initDate)
+                    ->setFinishDate($finishDate)
                     ->setIsActive($active)
                 );
 
-                return $this->redirectToRoute('course_edit', ['id' => $course->getId()]);
+                return $this->redirectToRoute('course_edit', ['course_id' => $course->getId()]);
             }
         }
 
@@ -109,6 +112,8 @@ class CourseController extends BaseController
             'discipline' => $discipline ?? null,
             'level' => $level ?? null,
             'age' => $age ?? null,
+            'initDate' => $initDate ?? null,
+            'finishDate' => $finishDate ?? null,
             'active' => $isActive ?? true,
             'schools' => $schoolRepository->findAll(),
             'places' => $placeRepository->findAll(),
@@ -118,10 +123,10 @@ class CourseController extends BaseController
         ]);
     }
 
-    /** @Route("/{id}", name="course_edit", methods={"GET", "POST"}) */
+    /** @Route("/{course_id}", name="course_edit", methods={"GET", "POST"}) */
     public function edit(
-        Request $request,
         Course $course,
+        Request $request,
         CourseRepository $courseRepository,
         SchoolRepository $schoolRepository,
         PlaceRepository $placeRepository,
@@ -135,7 +140,7 @@ class CourseController extends BaseController
         }
         if ($request->isMethod('POST')) {
             if (!$this->canEdit($course)) {
-                return $this->redirectToRoute('course_edit', ['id' => $course->getId()]);
+                return $this->redirectToRoute('course_edit', ['course_id' => $course->getId()]);
             }
 
             $course
@@ -143,6 +148,8 @@ class CourseController extends BaseController
                 ->setDiscipline($disciplineRepository->find($request->request->get('discipline')))
                 ->setLevel($levelRepository->find($request->request->get('level')))
                 ->setAge($ageRepository->find($request->request->get('age')))
+                ->setInitDate(($initDate = $request->request->get('initDate')) ? new \DateTime($initDate) : null)
+                ->setFinishDate(($finishDate = $request->request->get('finishDate')) ? new \DateTime($finishDate) : null)
                 ->setIsActive((bool) $request->request->get('active'));
 
             if (!$school = $schoolRepository->find($request->request->get('school'))) {
@@ -172,18 +179,18 @@ class CourseController extends BaseController
         ]);
     }
 
-    /** @Route("/{id}/delete", name="course_delete", methods={"GET"}) */
+    /** @Route("/{course_id}/delete", name="course_delete", methods={"GET"}) */
     public function delete(Course $course, CourseRepository $courseRepository): Response
     {
         if (!$this->canDelete($course)) {
-            return $this->redirectToRoute('course_edit', ['id' => $course->getId()]);
+            return $this->redirectToRoute('course_edit', ['course_id' => $course->getId()]);
         }
         try {
             $courseRepository->remove($course);
         } catch (ForeignKeyConstraintViolationException $e) {
             $this->addFlash('error', 'No se puede eliminar una escuela si tiene cursos asociados.');
 
-            return $this->redirectToRoute('course_edit', ['id' => $course->getId()]);
+            return $this->redirectToRoute('course_edit', ['course_id' => $course->getId()]);
         }
 
         return $this->redirectToRoute('course_index', ['type' => 'active']);

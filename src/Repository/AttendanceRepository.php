@@ -80,4 +80,9 @@ class AttendanceRepository extends BaseRepository
     {
         $this->saveEntity($attendance, $flush);
     }
+
+    public function remove(Attendance $attendance, bool $flush = true): void
+    {
+        $this->removeEntity($attendance, $flush);
+    }
 }

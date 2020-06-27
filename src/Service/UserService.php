@@ -7,7 +7,7 @@ namespace App\Service;
 use App\Entity\Customer;
 use App\Entity\User;
 use App\Exception\Customer\CustomerAlreadyHasUserException;
-use App\Exception\Customer\CustomerRequiresEmailToPerformActionException;
+use App\Exception\Customer\CustomerRequiresEmailException;
 use App\Exception\User\UserAlreadyExistsException;
 use App\Repository\CustomerRepository;
 use App\Repository\UserRepository;
@@ -28,7 +28,7 @@ class UserService
     public function createUserFromCustomer(Customer $customer, string $password): void
     {
         if (!$email = $customer->getEmail()) {
-            throw CustomerRequiresEmailToPerformActionException::create($customer);
+            throw CustomerRequiresEmailException::create($customer);
         }
 
         $user = (new User())->setEmail($customer->getEmail())->setPassword($password);

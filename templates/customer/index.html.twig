@@ -24,7 +24,7 @@
                     <tr><td colspan="7" class="text-center">Sin resultados</td></tr>
                 {% else %}
                     {% for customer in customers %}
-                        <tr class="clickable" data-href="{{ path('customer_edit', {id: customer.id}) }}">
+                        <tr class="clickable" data-href="{{ path('customer_edit', {customer_id: customer.id|encodeUuid}) }}">
                             <td>{{ customer.name }}</td>
                             <td>{{ customer.surname }}</td>
                             <td>{{ customer.email }}</td>

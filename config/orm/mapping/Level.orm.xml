@@ -7,11 +7,7 @@
             <options><option name="default">1</option></options>
         </field>
 
-        <one-to-many field="courses" target-entity="App\Entity\Course" mapped-by="level">
-            <order-by>
-                <order-by-field name="school"/>
-            </order-by>
-        </one-to-many>
+        <one-to-many field="courses" target-entity="App\Entity\Course" mapped-by="level" />
         <one-to-many field="sessions" target-entity="App\Entity\Session" mapped-by="level">
             <order-by>
                 <order-by-field name="day"/>

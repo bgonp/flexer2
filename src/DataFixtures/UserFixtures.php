@@ -38,11 +38,12 @@ class UserFixtures extends Fixture implements DependentFixtureInterface, Fixture
     public function load(ObjectManager $manager)
     {
         $staffs = $this->staffRepository->findAll();
-        foreach ($staffs as $staff) {
-            $user = (new User())->setEmail($staff->getEmail());
-            $user->setRoles([Role::ROLE_USER, Role::ROLE_ADMIN]);
+        foreach ($staffs as $index => $staff) {
+            $user = (new User())
+                ->setEmail(0 === $index ? 'admin@admin.com' : $staff->getEmail())
+                ->setRoles([Role::ROLE_USER, Role::ROLE_ADMIN]);
             $user->setPassword($this->passwordEncoder->encodePassword($user, 'password'));
-            $this->userRepository->save($user);
+            $this->userRepository->save($user, false);
             $this->staffRepository->save($staff->setUser($user));
         }
         // TODO

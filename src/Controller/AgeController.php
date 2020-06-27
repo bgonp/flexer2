@@ -43,7 +43,7 @@ class AgeController extends BaseController
                     ->setUrl($url)
                 );
 
-                return $this->redirectToRoute('age_edit', ['id' => $age->getId()]);
+                return $this->redirectToRoute('age_edit', ['age_id' => $age->getId()]);
             }
         }
 
@@ -54,7 +54,7 @@ class AgeController extends BaseController
         ]);
     }
 
-    /** @Route("/{id}", name="age_edit", methods={"GET", "POST"}) */
+    /** @Route("/{age_id}", name="age_edit", methods={"GET", "POST"}) */
     public function edit(Request $request, Age $age, AgeRepository $ageRepository): Response
     {
         if (!$this->canView($age)) {
@@ -62,7 +62,7 @@ class AgeController extends BaseController
         }
         if ($request->isMethod('POST')) {
             if (!$this->canEdit($age)) {
-                return $this->redirectToRoute('age_edit', ['id' => $age->getId()]);
+                return $this->redirectToRoute('age_edit', ['age_id' => $age->getId()]);
             }
             $age
                 ->setName($request->request->get('name'))
@@ -81,18 +81,18 @@ class AgeController extends BaseController
         ]);
     }
 
-    /** @Route("/{id}/delete", name="age_delete", methods={"GET"}) */
+    /** @Route("/{age_id}/delete", name="age_delete", methods={"GET"}) */
     public function delete(Age $age, AgeRepository $ageRepository): Response
     {
         if (!$this->canDelete($age)) {
-            return $this->redirectToRoute('age_edit', ['id' => $age->getId()]);
+            return $this->redirectToRoute('age_edit', ['age_id' => $age->getId()]);
         }
         try {
             $ageRepository->remove($age);
         } catch (ForeignKeyConstraintViolationException $e) {
             $this->addFlash('error', 'No se puede eliminar una propiedad si ya tiene cursos creados.');
 
-            return $this->redirectToRoute('age_edit', ['id' => $age->getId()]);
+            return $this->redirectToRoute('age_edit', ['age_id' => $age->getId()]);
         }
 
         return $this->redirectToRoute('age_index');

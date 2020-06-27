@@ -43,7 +43,7 @@ class LevelController extends BaseController
                     ->setUrl($url)
                 );
 
-                return $this->redirectToRoute('level_edit', ['id' => $level->getId()]);
+                return $this->redirectToRoute('level_edit', ['level_id' => $level->getId()]);
             }
         }
 
@@ -54,7 +54,7 @@ class LevelController extends BaseController
         ]);
     }
 
-    /** @Route("/{id}", name="level_edit", methods={"GET", "POST"}) */
+    /** @Route("/{level_id}", name="level_edit", methods={"GET", "POST"}) */
     public function edit(Request $request, Level $level, LevelRepository $levelRepository): Response
     {
         if (!$this->canView($level)) {
@@ -62,7 +62,7 @@ class LevelController extends BaseController
         }
         if ($request->isMethod('POST')) {
             if (!$this->canEdit($level)) {
-                return $this->redirectToRoute('level_edit', ['id' => $level->getId()]);
+                return $this->redirectToRoute('level_edit', ['level_id' => $level->getId()]);
             }
             $level
                 ->setName($request->request->get('name'))
@@ -81,18 +81,18 @@ class LevelController extends BaseController
         ]);
     }
 
-    /** @Route("/{id}/delete", name="level_delete", methods={"GET"}) */
+    /** @Route("/{level_id}/delete", name="level_delete", methods={"GET"}) */
     public function delete(Level $level, LevelRepository $levelRepository): Response
     {
         if (!$this->canDelete($level)) {
-            return $this->redirectToRoute('level_edit', ['id' => $level->getId()]);
+            return $this->redirectToRoute('level_edit', ['level_id' => $level->getId()]);
         }
         try {
             $levelRepository->remove($level);
         } catch (ForeignKeyConstraintViolationException $e) {
             $this->addFlash('error', 'No se puede eliminar una propiedad si ya tiene cursos creados.');
 
-            return $this->redirectToRoute('level_edit', ['id' => $level->getId()]);
+            return $this->redirectToRoute('level_edit', ['level_id' => $level->getId()]);
         }
 
         return $this->redirectToRoute('level_index');

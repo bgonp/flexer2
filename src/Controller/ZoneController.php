@@ -41,7 +41,7 @@ class ZoneController extends BaseController
                     ->setDescription($description)
                 );
 
-                return $this->redirectToRoute('zone_edit', ['id' => $zone->getId()]);
+                return $this->redirectToRoute('zone_edit', ['zone_id' => $zone->getId()]);
             }
         }
 
@@ -51,7 +51,7 @@ class ZoneController extends BaseController
         ]);
     }
 
-    /** @Route("/{id}", name="zone_edit", methods={"GET", "POST"}) */
+    /** @Route("/{zone_id}", name="zone_edit", methods={"GET", "POST"}) */
     public function edit(Request $request, Zone $zone, ZoneRepository $zoneRepository): Response
     {
         if (!$this->canView($zone)) {
@@ -59,7 +59,7 @@ class ZoneController extends BaseController
         }
         if ($request->isMethod('POST')) {
             if (!$this->canEdit($zone)) {
-                return $this->redirectToRoute('zone_edit', ['id' => $zone->getId()]);
+                return $this->redirectToRoute('zone_edit', ['zone_id' => $zone->getId()]);
             }
             $zone
                 ->setName($request->request->get('name'))
@@ -77,18 +77,18 @@ class ZoneController extends BaseController
         ]);
     }
 
-    /** @Route("/{id}/delete", name="zone_delete", methods={"GET"}) */
+    /** @Route("/{zone_id}/delete", name="zone_delete", methods={"GET"}) */
     public function delete(Zone $zone, ZoneRepository $zoneRepository): Response
     {
         if (!$this->canDelete($zone)) {
-            return $this->redirectToRoute('zone_edit', ['id' => $zone->getId()]);
+            return $this->redirectToRoute('zone_edit', ['zone_id' => $zone->getId()]);
         }
         try {
             $zoneRepository->remove($zone);
         } catch (ForeignKeyConstraintViolationException $e) {
             $this->addFlash('error', 'No se puede eliminar una zona si tiene lugares asociados.');
 
-            return $this->redirectToRoute('zone_edit', ['id' => $zone->getId()]);
+            return $this->redirectToRoute('zone_edit', ['zone_id' => $zone->getId()]);
         }
 
         return $this->redirectToRoute('zone_index');

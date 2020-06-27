@@ -14,7 +14,7 @@
                             {% if day %}
                                 <button class="btn btn-link api-caller day-btn day-{{ day|formatDate }}{% if period.holiday(day) %} is-holiday{% endif %}"
                                         name="holiday" value="{{ day|formatDate }}"
-                                        data-href="{{ path(period.holiday(day) ? 'api_remove_holiday' : 'api_add_holiday', {id: period.id}) }}"
+                                        data-href="{{ path(period.holiday(day) ? 'api_remove_holiday' : 'api_add_holiday', {period_id: period.id|encodeUuid}) }}"
                                         data-callback="updateHolidays">
                                     {{ day|getDay }}
                                 </button>

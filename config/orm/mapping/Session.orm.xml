@@ -7,6 +7,9 @@
         <field name="isCancelled" type="boolean">
             <options><option name="default">0</option></options>
         </field>
+        <field name="isRetrievalSession" type="boolean">
+            <options><option name="default">0</option></options>
+        </field>
 
         <many-to-one field="course" target-entity="App\Entity\Course" inversed-by="sessions" />
         <many-to-one field="period" target-entity="App\Entity\Period" inversed-by="sessions" />
@@ -20,9 +23,7 @@
         <one-to-many field="retrievalSessionOf" target-entity="App\Entity\Session" mapped-by="retrievalSession">
             <order-by><order-by-field name="day" /></order-by>
         </one-to-many>
-        <one-to-many field="attendances" target-entity="App\Entity\Attendance" mapped-by="session">
-            <order-by><order-by-field name="customer" /></order-by>
-        </one-to-many>
+        <one-to-many field="attendances" target-entity="App\Entity\Attendance" mapped-by="session" />
 
         <unique-constraints>
             <unique-constraint columns="course_id,day,time" />

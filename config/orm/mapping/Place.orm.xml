@@ -7,14 +7,10 @@
         <many-to-one field="zone" target-entity="App\Entity\Zone" inversed-by="places" fetch="EAGER" />
 
         <one-to-many field="courses" target-entity="App\Entity\Course" mapped-by="place">
-            <order-by>
-                <order-by-field name="school"/>
-            </order-by>
+            <order-by><order-by-field name="initDate"/></order-by>
         </one-to-many>
         <one-to-many field="sessions" target-entity="App\Entity\Session" mapped-by="place">
-            <order-by>
-                <order-by-field name="day"/>
-            </order-by>
+            <order-by><order-by-field name="day"/></order-by>
         </one-to-many>
     </entity>
 </doctrine-mapping>

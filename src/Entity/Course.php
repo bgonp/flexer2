@@ -13,6 +13,10 @@ class Course extends Base
 
     private bool $isActive = true;
 
+    private ?\DateTime $initDate = null;
+
+    private ?\DateTime $finishDate = null;
+
     private ?Place $place = null;
 
     private ?Discipline $discipline = null;
@@ -64,6 +68,30 @@ class Course extends Base
     public function setIsActive(bool $isActive): self
     {
         $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    public function getInitDate(): ?\DateTime
+    {
+        return $this->initDate;
+    }
+
+    public function setInitDate(?\DateTime $initDate): self
+    {
+        $this->initDate = $initDate;
+
+        return $this;
+    }
+
+    public function getFinishDate(): ?\DateTime
+    {
+        return $this->finishDate;
+    }
+
+    public function setFinishDate(?\DateTime $finishDate): self
+    {
+        $this->finishDate = $finishDate;
 
         return $this;
     }

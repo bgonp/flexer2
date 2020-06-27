@@ -77,7 +77,7 @@ class CustomerController extends BaseController
                     ->setNotes($notes)
                 );
 
-                return $this->redirectToRoute('customer_edit', ['id' => $customer->getId()]);
+                return $this->redirectToRoute('customer_edit', ['customer_id' => $customer->getId()]);
             }
         }
 
@@ -91,7 +91,7 @@ class CustomerController extends BaseController
         ]);
     }
 
-    /** @Route("/{id}", name="customer_edit", methods={"GET", "POST"}) */
+    /** @Route("/{customer_id}", name="customer_edit", methods={"GET", "POST"}) */
     public function edit(Request $request, Customer $customer, CustomerRepository $customerRepository): Response
     {
         if (!$this->canView($customer)) {
@@ -99,7 +99,7 @@ class CustomerController extends BaseController
         }
         if ($request->isMethod('POST')) {
             if (!$this->canEdit($customer)) {
-                return $this->redirectToRoute('customer_edit', ['id' => $customer->getId()]);
+                return $this->redirectToRoute('customer_edit', ['customer_id' => $customer->getId()]);
             }
             $customer
                 ->setName($request->request->get('name'))
@@ -122,18 +122,18 @@ class CustomerController extends BaseController
         ]);
     }
 
-    /** @Route("/{id}/delete", name="customer_delete", methods={"GET"}) */
+    /** @Route("/{customer_id}/delete", name="customer_delete", methods={"GET"}) */
     public function delete(Customer $customer, CustomerRepository $customerRepository): Response
     {
         if (!$this->canDelete($customer)) {
-            return $this->redirectToRoute('customer_edit', ['id' => $customer->getId()]);
+            return $this->redirectToRoute('customer_edit', ['customer_id' => $customer->getId()]);
         }
         try {
             $customerRepository->remove($customer);
         } catch (ForeignKeyConstraintViolationException $e) {
             $this->addFlash('error', 'No se puede eliminar un alumno si tiene historial.');
 
-            return $this->redirectToRoute('customer_edit', ['id' => $customer->getId()]);
+            return $this->redirectToRoute('customer_edit', ['customer_id' => $customer->getId()]);
         }
 
         return $this->redirectToRoute('customer_index');

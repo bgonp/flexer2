@@ -70,7 +70,7 @@ class SeasonController extends BaseController
                     ->setFinishDate(new \DateTime($finishDate))
                 );
 
-                return $this->redirectToRoute('season_edit', ['id' => $season->getId()]);
+                return $this->redirectToRoute('season_edit', ['season_id' => $season->getId()]);
             }
         }
 
@@ -82,7 +82,7 @@ class SeasonController extends BaseController
         ]);
     }
 
-    /** @Route("/{id}", name="season_edit", methods={"GET", "POST"}) */
+    /** @Route("/{season_id}", name="season_edit", methods={"GET", "POST"}) */
     public function edit(
         Request $request,
         Season $season,
@@ -95,7 +95,7 @@ class SeasonController extends BaseController
         }
         if ($request->isMethod('POST')) {
             if (!$this->canEdit($season)) {
-                return $this->redirectToRoute('season_edit', ['id' => $season->getId()]);
+                return $this->redirectToRoute('season_edit', ['season_id' => $season->getId()]);
             }
 
             if (!$school = $schoolRepository->find($request->request->get('school'))) {
@@ -123,18 +123,18 @@ class SeasonController extends BaseController
         ]);
     }
 
-    /** @Route("/{id}/delete", name="season_delete", methods={"GET"}) */
+    /** @Route("/{season_id}/delete", name="season_delete", methods={"GET"}) */
     public function delete(Season $season, SeasonRepository $seasonRepository): Response
     {
         if (!$this->canDelete($season)) {
-            return $this->redirectToRoute('season_edit', ['id' => $season->getId()]);
+            return $this->redirectToRoute('season_edit', ['season_id' => $season->getId()]);
         }
         try {
             $seasonRepository->remove($season);
         } catch (ForeignKeyConstraintViolationException $e) {
             $this->addFlash('error', 'No se puede eliminar una escuela si tiene cursos asociados.');
 
-            return $this->redirectToRoute('season_edit', ['id' => $season->getId()]);
+            return $this->redirectToRoute('season_edit', ['season_id' => $season->getId()]);
         }
 
         return $this->redirectToRoute('season_index');

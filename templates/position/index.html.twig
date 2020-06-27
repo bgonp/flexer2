@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Cargos{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            {% set params = app.request.query %}
+            {% set type = app.request.attributes.get('_route_params').type %}
+            <h2>Cargos <a href="{{ path('position_new', {type: type}) }}" class="btn btn-primary">Nuevo</a>
+                <a class="btn  {{ 'staff' == type ? 'btn-outline-primary disabled' : 'btn-link' }}"
+                   href="{{ path('position_index', params|merge({type: 'staff'})) }}">Monitores</a>
+                <a class="btn {{ 'customer' == type ? 'btn-outline-primary disabled' : 'btn-link' }}"
+                   href="{{ path('position_index', params|merge({type: 'customer'})) }}">Alumnos</a>
+            </h2>
+            <table class="table table-sm table-hover">
+                <tr>
+                    <th scope="col">Cargo</th>
+                </tr>
+                {% if positions|length == 0 %}
+                    <tr><td class="text-center">Sin resultados</td></tr>
+                {% else %}
+                    {% for position in positions %}
+                        <tr class="clickable" data-href="{{ path('position_edit', {position_id: position.id|encodeUuid}) }}">
+                            <td>{{ position }}</td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+            </table>
+        </div>
+    </div>
+{% endblock %}

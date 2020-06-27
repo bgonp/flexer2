@@ -48,7 +48,7 @@ class PlaceController extends BaseController
                     ->setZone($zone)
                 );
 
-                return $this->redirectToRoute('place_edit', ['id' => $place->getId()]);
+                return $this->redirectToRoute('place_edit', ['place_id' => $place->getId()]);
             }
         }
 
@@ -61,7 +61,7 @@ class PlaceController extends BaseController
         ]);
     }
 
-    /** @Route("/{id}", name="place_edit", methods={"GET", "POST"}) */
+    /** @Route("/{place_id}", name="place_edit", methods={"GET", "POST"}) */
     public function edit(
         Request $request,
         Place $place,
@@ -73,7 +73,7 @@ class PlaceController extends BaseController
         }
         if ($request->isMethod('POST')) {
             if (!$this->canEdit($place)) {
-                return $this->redirectToRoute('place_edit', ['id' => $place->getId()]);
+                return $this->redirectToRoute('place_edit', ['place_id' => $place->getId()]);
             }
             $place
                 ->setName($request->request->get('name'))
@@ -94,18 +94,18 @@ class PlaceController extends BaseController
         ]);
     }
 
-    /** @Route("/{id}/delete", name="place_delete", methods={"GET"}) */
+    /** @Route("/{place_id}/delete", name="place_delete", methods={"GET"}) */
     public function delete(Place $place, PlaceRepository $placeRepository): Response
     {
         if (!$this->canDelete($place)) {
-            return $this->redirectToRoute('place_edit', ['id' => $place->getId()]);
+            return $this->redirectToRoute('place_edit', ['place_id' => $place->getId()]);
         }
         try {
             $placeRepository->remove($place);
         } catch (ForeignKeyConstraintViolationException $e) {
             $this->addFlash('error', 'No se puede eliminar una propiedad si ya tiene cursos creados.');
 
-            return $this->redirectToRoute('place_edit', ['id' => $place->getId()]);
+            return $this->redirectToRoute('place_edit', ['place_id' => $place->getId()]);
         }
 
         return $this->redirectToRoute('place_index');

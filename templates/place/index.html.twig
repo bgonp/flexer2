@@ -20,7 +20,7 @@
                     <tr><td colspan="7" class="text-center">Sin resultados</td></tr>
                 {% else %}
                     {% for place in places %}
-                        <tr class="clickable" data-href="{{ path('place_edit', {id: place.id}) }}">
+                        <tr class="clickable" data-href="{{ path('place_edit', {place_id: place.id|encodeUuid}) }}">
                             <td>{{ place.name }}</td>
                             <td>{{ place.description }}</td>
                             <td>{{ place.url }}</td>

@@ -18,7 +18,7 @@
 
                 {% if canEdit %}
                     <button type="submit" class="btn btn-primary btn-block">Editar</button>
-                    <a href="{{ path('level_delete', {id: level.id}) }}" class="btn btn-danger btn-block confirmable">Borrar</a>
+                    <a href="{{ path('level_delete', {level_id: level.id|encodeUuid}) }}" class="btn btn-danger btn-block confirmable">Borrar</a>
                 {% endif %}
             </form>
             <a href="{{ path('level_index') }}">Volver a la lista</a>

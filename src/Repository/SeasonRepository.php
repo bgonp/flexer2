@@ -6,7 +6,6 @@ namespace App\Repository;
 
 use App\DQL\PaginableQuery;
 use App\Entity\Course;
-use App\Entity\Period;
 use App\Entity\School;
 use App\Entity\Season;
 use Doctrine\Persistence\ManagerRegistry;

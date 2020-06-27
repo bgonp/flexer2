@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Exception\Assignment\CannotAssignStaffPositionToCustomerException;
+
 class Assignment extends Base
 {
     private ?string $notes = null;
@@ -35,8 +37,16 @@ class Assignment extends Base
         return $this->customer;
     }
 
+    /** @throws CannotAssignStaffPositionToCustomerException */
     public function setCustomer(Customer $customer): self
     {
+        if (
+            isset($this->position) &&
+            StaffPosition::class === get_class($this->position) &&
+            Staff::class !== get_class($customer)
+        ) {
+            throw CannotAssignStaffPositionToCustomerException::create();
+        }
         $this->customer = $customer;
 
         return $this;
@@ -59,8 +69,16 @@ class Assignment extends Base
         return $this->position;
     }
 
+    /** @throws CannotAssignStaffPositionToCustomerException */
     public function setPosition(Position $position): self
     {
+        if (
+            isset($this->customer) &&
+            StaffPosition::class === get_class($position) &&
+            Staff::class !== get_class($this->customer)
+        ) {
+            throw CannotAssignStaffPositionToCustomerException::create();
+        }
         $this->position = $position;
 
         return $this;

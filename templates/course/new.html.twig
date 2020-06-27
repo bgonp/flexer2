@@ -29,6 +29,12 @@
                     {type: 'select', options: ages, entity: 'course', name: 'age', label: 'Edad', value: age} only %}
 
                 {% include 'common/field.html.twig' with
+                    {type: 'date', entity: 'course', name: 'initDate', label: 'Fecha inicio', value: initDate|formatDate} only %}
+
+                {% include 'common/field.html.twig' with
+                    {type: 'date', entity: 'course', name: 'finishDate', label: 'Fecha final', value: finishDate|formatDate} only %}
+
+                {% include 'common/field.html.twig' with
                     {type: 'checkbox', entity: 'course', name: 'active', label: 'Activo', value: active} only %}
 
                 <button type="submit" class="btn btn-primary btn-block">Guardar</button>

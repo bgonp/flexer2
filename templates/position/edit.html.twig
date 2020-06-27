@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Editar cargo ({{ type == 'staff' ? 'monitor' : 'alumno' }}){% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-6">
+            <h2>Editar cargo ({{ type == 'staff' ? 'monitor' : 'alumno' }})</h2>
+            <form action="" method="post" class="mb-2">
+                {% include 'common/field.html.twig' with
+                    {type: 'text', entity: 'position', name: 'name', label: 'Nombre', value: position.name, required: true} only %}
+
+                {% if canEdit %}
+                    <button type="submit" class="btn btn-primary btn-block">Editar</button>
+                    <a href="{{ path('position_delete', {position_id: position.id|encodeUuid}) }}" class="btn btn-danger btn-block confirmable">Borrar</a>
+                {% endif %}
+            </form>
+            <a href="{{ path('position_index', {type: type}) }}">Volver a la lista</a>
+        </div>
+    </div>
+{% endblock %}

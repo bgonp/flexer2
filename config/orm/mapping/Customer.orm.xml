@@ -10,11 +10,7 @@
         <many-to-one field="family" target-entity="App\Entity\Family" inversed-by="customers" />
         <many-to-one field="user" target-entity="App\Entity\User" inversed-by="customers" />
 
-        <one-to-many field="assignments" target-entity="App\Entity\Assignment" mapped-by="customer">
-            <order-by>
-                <order-by-field name="course" />
-            </order-by>
-        </one-to-many>
+        <one-to-many field="assignments" target-entity="App\Entity\Assignment" mapped-by="customer" />
         <one-to-many field="attendances" target-entity="App\Entity\Attendance" mapped-by="customer" />
 
         <discriminator-column name="staff" type="integer" />

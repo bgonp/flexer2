@@ -7,14 +7,10 @@
         <field name="maxAge" type="smallint" nullable="true" />
         
         <one-to-many field="courses" target-entity="App\Entity\Course" mapped-by="age">
-            <order-by>
-                <order-by-field name="school" />
-            </order-by>
+            <order-by><order-by-field name="initDate" /></order-by>
         </one-to-many>
         <one-to-many field="sessions" target-entity="App\Entity\Session" mapped-by="age">
-            <order-by>
-                <order-by-field name="day" />
-            </order-by>
+            <order-by><order-by-field name="day" /></order-by>
         </one-to-many>
     </entity>
 </doctrine-mapping>

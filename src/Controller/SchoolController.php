@@ -43,7 +43,7 @@ class SchoolController extends BaseController
                     ->setUrl($url)
                 );
 
-                return $this->redirectToRoute('school_edit', ['id' => $school->getId()]);
+                return $this->redirectToRoute('school_edit', ['school_id' => $school->getId()]);
             }
         }
 
@@ -54,7 +54,7 @@ class SchoolController extends BaseController
         ]);
     }
 
-    /** @Route("/{id}", name="school_edit", methods={"GET", "POST"}) */
+    /** @Route("/{school_id}", name="school_edit", methods={"GET", "POST"}) */
     public function edit(Request $request, School $school, SchoolRepository $schoolRepository): Response
     {
         if (!$this->canView($school)) {
@@ -62,7 +62,7 @@ class SchoolController extends BaseController
         }
         if ($request->isMethod('POST')) {
             if (!$this->canEdit($school)) {
-                return $this->redirectToRoute('school_edit', ['id' => $school->getId()]);
+                return $this->redirectToRoute('school_edit', ['school_id' => $school->getId()]);
             }
             $school
                 ->setName($request->request->get('name'))
@@ -81,18 +81,18 @@ class SchoolController extends BaseController
         ]);
     }
 
-    /** @Route("/{id}/delete", name="school_delete", methods={"GET"}) */
+    /** @Route("/{school_id}/delete", name="school_delete", methods={"GET"}) */
     public function delete(School $school, SchoolRepository $schoolRepository): Response
     {
         if (!$this->canDelete($school)) {
-            return $this->redirectToRoute('school_edit', ['id' => $school->getId()]);
+            return $this->redirectToRoute('school_edit', ['school_id' => $school->getId()]);
         }
         try {
             $schoolRepository->remove($school);
         } catch (ForeignKeyConstraintViolationException $e) {
             $this->addFlash('error', 'No se puede eliminar una escuela si tiene cursos asociados.');
 
-            return $this->redirectToRoute('school_edit', ['id' => $school->getId()]);
+            return $this->redirectToRoute('school_edit', ['school_id' => $school->getId()]);
         }
 
         return $this->redirectToRoute('school_index');

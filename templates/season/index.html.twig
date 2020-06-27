@@ -20,7 +20,7 @@
                     <tr><td colspan="7" class="text-center">Sin resultados</td></tr>
                 {% else %}
                     {% for season in seasons %}
-                        <tr class="clickable" data-href="{{ path('season_edit', {id: season.id}) }}">
+                        <tr class="clickable" data-href="{{ path('season_edit', {season_id: season.id|encodeUuid}) }}">
                             <td>{{ season.school }}</td>
                             <td>{{ season.initDate|showDate }}</td>
                             <td>{{ season.finishDate|showDate }}</td>

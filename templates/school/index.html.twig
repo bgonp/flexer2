@@ -19,7 +19,7 @@
                     <tr><td colspan="7" class="text-center">Sin resultados</td></tr>
                 {% else %}
                     {% for school in schools %}
-                        <tr class="clickable" data-href="{{ path('school_edit', {id: school.id}) }}">
+                        <tr class="clickable" data-href="{{ path('school_edit', {school_id: school.id|encodeUuid}) }}">
                             <td>{{ school.name }}</td>
                             <td>{{ school.description }}</td>
                             <td>{{ school.url }}</td>

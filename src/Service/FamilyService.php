@@ -29,7 +29,7 @@ class FamilyService
         }
 
         if ($customer->getFamily() && $familiar->getFamily()) {
-            throw CustomersAlreadyHasTheirOwnFamilyException::create($customer, $familiar);
+            throw CustomersAlreadyHasTheirOwnFamilyException::create();
         }
 
         if (!$customer->getFamily() && !$familiar->getFamily()) {

@@ -17,26 +17,22 @@
             </h2>
             {% include 'common/search.html.twig' with {search: search, route: path('course_index', {type: type})} only %}
             <table class="table table-sm table-hover">
-                <thead>
                 <tr>
                     <th scope="col">Curso</th>
                     <th scope="col">Escuela</th>
                     <th scope="col">Activo</th>
                 </tr>
-                </thead>
-                <tbody>
                 {% if courses|length == 0 %}
-                    <tr><td colspan="7" class="text-center">Sin resultados</td></tr>
+                    <tr><td colspan="3" class="text-center">Sin resultados</td></tr>
                 {% else %}
                     {% for course in courses %}
-                        <tr class="clickable" data-href="{{ path('course_edit', {id: course.id}) }}">
+                        <tr class="clickable" data-href="{{ path('course_edit', {course_id: course.id|encodeUuid}) }}">
                             <td>{{ course|fullname }}</td>
                             <td>{{ course.school.name }}</td>
                             <td>{{ course.active ? 'Si' : 'No' }}</td>
                         </tr>
                     {% endfor %}
                 {% endif %}
-                </tbody>
             </table>
         </div>
     </div>

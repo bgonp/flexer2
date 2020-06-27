@@ -19,7 +19,7 @@
                     <tr><td colspan="7" class="text-center">Sin resultados</td></tr>
                 {% else %}
                     {% for level in levels %}
-                        <tr class="clickable" data-href="{{ path('level_edit', {id: level.id}) }}">
+                        <tr class="clickable" data-href="{{ path('level_edit', {level_id: level.id|encodeUuid}) }}">
                             <td>{{ level.name }}</td>
                             <td>{{ level.description }}</td>
                             <td>{{ level.url }}</td>

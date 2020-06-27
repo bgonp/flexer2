@@ -29,6 +29,8 @@ class Session extends Base
 
     private bool $isCancelled = false;
 
+    private bool $isRetrievalSession = false;
+
     private ?Session $retrievalSession = null;
 
     private ?Listing $listing = null;
@@ -157,6 +159,18 @@ class Session extends Base
     public function isCancelled(): bool
     {
         return $this->isCancelled;
+    }
+
+    public function isRetrievalSession(): bool
+    {
+        return $this->isRetrievalSession;
+    }
+
+    public function setIsRetrievalSession(bool $isRetrievalSession): self
+    {
+        $this->isRetrievalSession = $isRetrievalSession;
+
+        return $this;
     }
 
     public function setIsCancelled(bool $isCancelled): self

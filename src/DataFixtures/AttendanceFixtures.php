@@ -33,7 +33,7 @@ class AttendanceFixtures extends Fixture implements DependentFixtureInterface
         foreach ($customers as $customer) {
             $assignments = $customer->getAssignments();
             foreach ($assignments as $assignment) {
-                $this->attendanceService->createAttendances($assignment, false);
+                $this->attendanceService->createFromAssignment($assignment, false);
             }
         }
         $this->attendanceRepository->flush();

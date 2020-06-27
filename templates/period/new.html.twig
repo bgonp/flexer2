@@ -6,7 +6,7 @@
     <div class="row">
         <div class="col-6">
             <h2>Crear periodo</h2>
-            <form action="{{ path('period_new', {season_id: season.id}) }}" method="post" class="mb-2">
+            <form action="{{ path('period_new', {season_id: season.id|encodeUuid}) }}" method="post" class="mb-2">
                 {% include 'common/field.html.twig' with
                     {type: 'text', entity: 'period', name: 'name', label: 'Nombre', value: name, required: true} only %}
 
@@ -18,7 +18,7 @@
 
                 <button type="submit" class="btn btn-primary btn-block">Guardar</button>
             </form>
-            <a href="{{ path('season_edit', {id: season.id}) }}">Volver a la temporada</a>
+            <a href="{{ path('season_edit', {season_id: season.id|encodeUuid}) }}">Volver a la temporada</a>
         </div>
     </div>
 {% endblock %}

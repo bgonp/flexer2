@@ -21,7 +21,7 @@
 
                 {% if canEdit %}
                     <button type="submit" class="btn btn-primary btn-block">Editar</button>
-                    <a href="{{ path('place_delete', {id: place.id}) }}" class="btn btn-danger btn-block confirmable">Borrar</a>
+                    <a href="{{ path('place_delete', {place_id: place.id|encodeUuid}) }}" class="btn btn-danger btn-block confirmable">Borrar</a>
                 {% endif %}
             </form>
             <a href="{{ path('place_index') }}">Volver a la lista</a>

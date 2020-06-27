@@ -18,7 +18,7 @@
 
                 {% if canEdit %}
                     <button type="submit" class="btn btn-primary btn-block">Editar</button>
-                    <a href="{{ path('school_delete', {id: school.id}) }}" class="btn btn-danger btn-block confirmable">Borrar</a>
+                    <a href="{{ path('school_delete', {school_id: school.id|encodeUuid}) }}" class="btn btn-danger btn-block confirmable">Borrar</a>
                 {% endif %}
             </form>
             <a href="{{ path('school_index') }}">Volver a la lista</a>

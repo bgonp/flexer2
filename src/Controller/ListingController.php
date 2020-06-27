@@ -4,21 +4,11 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Entity\Course;
 use App\Entity\Listing;
 use App\Entity\Period;
-use App\Exception\Common\PageOutOfBoundsException;
-use App\Repository\AgeRepository;
-use App\Repository\CourseRepository;
 use App\Repository\CustomerRepository;
-use App\Repository\DisciplineRepository;
-use App\Repository\LevelRepository;
-use App\Repository\PlaceRepository;
-use App\Repository\SchoolRepository;
 use App\Repository\SessionRepository;
 use App\Repository\StaffRepository;
-use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 

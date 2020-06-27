@@ -18,7 +18,7 @@ class ListingRepository extends BaseRepository
     }
 
     /** @return Listing[] */
-    public function findByStaffPositionAndPeriod(Staff $staff, StaffPosition $position, Period $period): array
+    public function findByStaffStaffPositionAndPeriod(Staff $staff, StaffPosition $position, Period $period): array
     {
         return $this->createQueryBuilder('l')
             ->select('l', 's')
@@ -32,6 +32,18 @@ class ListingRepository extends BaseRepository
             ->setParameter('position', $position)
             ->orderBy('s.day')
             ->addOrderBy('s.time')
+            ->getQuery()->execute();
+    }
+
+    /** @return Listing[] */
+    public function findByPeriod(Period $period): array
+    {
+        return $this->createQueryBuilder('l')
+            ->select('l', 'c')
+            ->join('l.courses', 'c')
+            ->join('l.sessions', 's')
+            ->where('s.period = :period')
+            ->setParameter('period', $period)
             ->getQuery()->execute();
     }
 

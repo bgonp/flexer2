@@ -29,11 +29,17 @@
                     {type: 'select', entity: 'course', name: 'age', label: 'Edad', options: ages, value: course.age} only %}
 
                 {% include 'common/field.html.twig' with
+                    {type: 'date', entity: 'course', name: 'initDate', label: 'Fecha inicio', value: course.initDate|formatDate} only %}
+
+                {% include 'common/field.html.twig' with
+                    {type: 'date', entity: 'course', name: 'finishDate', label: 'Fecha final', value: course.finishDate|formatDate} only %}
+
+                {% include 'common/field.html.twig' with
                     {type: 'checkbox', entity: 'course', name: 'active', label: 'Activo', value: course.active} only %}
 
                 {% if canEdit %}
                     <button type="submit" class="btn btn-primary btn-block">Editar</button>
-                    <a href="{{ path('course_delete', {id: course.id}) }}" class="btn btn-danger btn-block confirmable">Borrar</a>
+                    <a href="{{ path('course_delete', {course_id: course.id|encodeUuid}) }}" class="btn btn-danger btn-block confirmable">Borrar</a>
                 {% endif %}
             </form>
             <a href="{{ path('course_index', {type: 'active'}) }}">Volver a la lista</a>
@@ -44,9 +50,10 @@
                 <ul>
                     {% for period in season.periods %}
                         <li>
-                            <a href="{{ path('listing_edit', {listing_id: course.listing.id, period_id: period.id}) }}">
+                            <a href="{{ path('listing_edit', {listing_id: course.listing.id|encodeUuid, period_id: period.id|encodeUuid}) }}">
                                 {{ period.name }} ({{ period.initDate|showDate }} - {{ period.finishDate|showDate }})
                             </a>
+                            <a href="{{ path('period_edit', {period_id: period.id|encodeUuid}) }}"><i class="fa fa-pencil-square-o"></i></a>
                         </li>
                     {% endfor %}
                 </ul>

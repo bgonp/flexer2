@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Exception\Family;
+namespace App\Exception\Period;
 
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
-class CustomersAlreadyHasTheirOwnFamilyException extends BadRequestHttpException
+class FutureDateException extends BadRequestHttpException
 {
-    private const MESSAGE = 'Los alumnos ya pertenecen a diferentes familias.';
+    private const MESSAGE = 'Date cannot be future.';
 
     public static function create(): self
     {

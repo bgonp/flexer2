@@ -49,6 +49,19 @@ class SessionRepository extends BaseRepository
         return $qb->getQuery()->execute();
     }
 
+    /** @return Session[] */
+    public function findByPeriodAndDate(Period $period, \DateTime $date): array
+    {
+        return $this->createQueryBuilder('s')
+            ->select('s', 'a')
+            ->leftJoin('s.attendances', 'a')
+            ->where('s.period = :period')
+            ->andWhere('s.day = :date')
+            ->setParameter('period', $period)
+            ->setParameter('date', $date)
+            ->getQuery()->execute();
+    }
+
     /**
      * @param string[] $coursesIds
      * @param string[] $periodsIds
@@ -70,5 +83,10 @@ class SessionRepository extends BaseRepository
     public function save(Session $session, bool $flush = true): void
     {
         $this->saveEntity($session, $flush);
+    }
+
+    public function remove(Session $session, bool $flush = true): void
+    {
+        $this->removeEntity($session, $flush);
     }
 }

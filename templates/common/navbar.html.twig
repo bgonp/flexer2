@@ -5,6 +5,9 @@
         <li class="nav-item{% if route in ['customer_index', 'customer_new', 'customer_edit'] %} active{% endif %}">
             <a href="{{ path('customer_index') }}" class="nav-link">Alumnos</a>
         </li>
+        <li class="nav-item{% if route in ['position_index', 'position_new', 'position_edit'] %} active{% endif %}">
+            <a href="{{ path('position_index', {type: 'staff'}) }}" class="nav-link">Cargos</a>
+        </li>
         <li class="nav-item{% if route in ['course_index', 'course_new', 'course_edit'] %} active{% endif %}">
             <a href="{{ path('course_index', {type: 'active'}) }}" class="nav-link">Cursos</a>
         </li>

@@ -43,7 +43,7 @@ class DisciplineController extends BaseController
                     ->setUrl($url)
                 );
 
-                return $this->redirectToRoute('discipline_edit', ['id' => $discipline->getId()]);
+                return $this->redirectToRoute('discipline_edit', ['discipline_id' => $discipline->getId()]);
             }
         }
 
@@ -54,7 +54,7 @@ class DisciplineController extends BaseController
         ]);
     }
 
-    /** @Route("/{id}", name="discipline_edit", methods={"GET", "POST"}) */
+    /** @Route("/{discipline_id}", name="discipline_edit", methods={"GET", "POST"}) */
     public function edit(Request $request, Discipline $discipline, DisciplineRepository $disciplineRepository): Response
     {
         if (!$this->canView($discipline)) {
@@ -62,7 +62,7 @@ class DisciplineController extends BaseController
         }
         if ($request->isMethod('POST')) {
             if (!$this->canEdit($discipline)) {
-                return $this->redirectToRoute('discipline_edit', ['id' => $discipline->getId()]);
+                return $this->redirectToRoute('discipline_edit', ['discipline_id' => $discipline->getId()]);
             }
             $discipline
                 ->setName($request->request->get('name'))
@@ -81,18 +81,18 @@ class DisciplineController extends BaseController
         ]);
     }
 
-    /** @Route("/{id}/delete", name="discipline_delete", methods={"GET"}) */
+    /** @Route("/{discipline_id}/delete", name="discipline_delete", methods={"GET"}) */
     public function delete(Discipline $discipline, DisciplineRepository $disciplineRepository): Response
     {
         if (!$this->canDelete($discipline)) {
-            return $this->redirectToRoute('discipline_edit', ['id' => $discipline->getId()]);
+            return $this->redirectToRoute('discipline_edit', ['discipline_id' => $discipline->getId()]);
         }
         try {
             $disciplineRepository->remove($discipline);
         } catch (ForeignKeyConstraintViolationException $e) {
             $this->addFlash('error', 'No se puede eliminar una propiedad si ya tiene cursos creados.');
 
-            return $this->redirectToRoute('discipline_edit', ['id' => $discipline->getId()]);
+            return $this->redirectToRoute('discipline_edit', ['discipline_id' => $discipline->getId()]);
         }
 
         return $this->redirectToRoute('discipline_index');

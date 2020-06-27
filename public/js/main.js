@@ -1,6 +1,13 @@
 ;(() => {
-    let hrefMatch = window.location.href.match(/[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}/)
-    const currentId = hrefMatch ? hrefMatch[0] : ''
+    const currentIds = (() => {
+        const uuidRegExp = /\/([0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}|[0-9a-zA-Z]{22})/g
+        const currentIds = []
+        let match;
+        while (match = uuidRegExp.exec(window.location.href)) {
+            currentIds.push(match[1])
+        }
+        return currentIds
+    })()
 
     const clickables = document.getElementsByClassName('clickable')
     for (const clickable of clickables) {
@@ -99,7 +106,7 @@
                 list.appendChild(createListElement(
                     `/customer/${candidate.id}`,
                     `${candidate.name} ${candidate.surname}`,
-                    { href: `/api/customer/${currentId}/add_familiar`, callback: 'updateFamily' },
+                    { href: `/api/customer/${currentIds[0]}/add_familiar`, callback: 'updateFamily' },
                     'familiar_id',
                     candidate.id,
                     'plus'
@@ -114,7 +121,7 @@
                 list.appendChild(createListElement(
                     `/customer/${familiar.id}`,
                     `${familiar.name} ${familiar.surname}`,
-                    { href: `/api/customer/${currentId}/remove_familiar`, callback: 'updateFamily' },
+                    { href: `/api/customer/${currentIds[0]}/remove_familiar`, callback: 'updateFamily' },
                     'familiar_id',
                     familiar.id,
                     'times',

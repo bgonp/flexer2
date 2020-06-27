@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Crear cargo ({{ type == 'staff' ? 'monitor' : 'alumno' }}){% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-6">
+            <h2>Crear cargo ({{ type == 'staff' ? 'monitor' : 'alumno' }})</h2>
+            <form action="{{ path('position_new', {type: type}) }}" method="post" class="mb-2">
+                {% include 'common/field.html.twig' with
+                    {type: 'text', entity: 'position', name: 'name', label: 'Nombre', value: name, required: true} only %}
+
+                <button type="submit" class="btn btn-primary btn-block">Guardar</button>
+            </form>
+            <a href="{{ path('position_index', {type: type}) }}">Volver a la lista</a>
+        </div>
+    </div>
+{% endblock %}

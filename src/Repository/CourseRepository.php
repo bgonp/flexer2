@@ -6,6 +6,7 @@ namespace App\Repository;
 
 use App\DQL\PaginableQuery;
 use App\Entity\Course;
+use App\Entity\School;
 use App\Exception\Course\WrongCourseTypeException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
@@ -29,6 +30,26 @@ class CourseRepository extends BaseRepository
         $query = $this->addSearchTerms($search, $this->addTypeTerm($type, $this->getMainQuery()));
 
         return new PaginableQuery($query->getQuery(), $page);
+    }
+
+    /** @return Course[] */
+    public function findBySchoolAndDate(School $school, \DateTime $date): array
+    {
+        $qb = $this->createQueryBuilder('c');
+
+        return $qb
+            ->where('c.school = :school')
+            ->andWhere($qb->expr()->orX(
+                $qb->expr()->isNull('c.initDate'),
+                $qb->expr()->lte('c.initDate', ':date')
+            ))
+            ->andWhere($qb->expr()->orX(
+                $qb->expr()->isNull('c.finishDate'),
+                $qb->expr()->gte('c.finishDate', ':date')
+            ))
+            ->setParameter('school', $school)
+            ->setParameter('date', $date)
+            ->getQuery()->execute();
     }
 
     public function save(Course $course, bool $flush = true): void

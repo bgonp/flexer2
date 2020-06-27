@@ -28,3 +28,7 @@ services:
     App\Controller\Listener\ExceptionListener:
         tags:
             - { name: kernel.event_listener, event: kernel.exception, method: onKernelException, priority: 100 }
+
+    App\ArgumentResolver\MainResolver:
+        tags:
+            - { name: controller.argument_value_resolver, priority: 50 }

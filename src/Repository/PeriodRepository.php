@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
-use App\Entity\Course;
 use App\Entity\Period;
 use App\Entity\Season;
 use Doctrine\Persistence\ManagerRegistry;

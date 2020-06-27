@@ -28,7 +28,7 @@ class CustomerApiController extends BaseController
         return new JsonResponse($customers, JsonResponse::HTTP_OK);
     }
 
-    /** @Route("/{id}/add_familiar", name="api_add_familiar", methods={"POST"}) */
+    /** @Route("/{customer_id}/add_familiar", name="api_add_familiar", methods={"POST"}) */
     public function add(Customer $customer, Customer $familiar, FamilyService $familyService): JsonResponse
     {
         try {
@@ -40,7 +40,7 @@ class CustomerApiController extends BaseController
         return new JsonResponse($family->getCustomers()->toArray(), JsonResponse::HTTP_OK);
     }
 
-    /** @Route("/{id}/remove_familiar", name="api_remove_familiar", methods={"POST"}) */
+    /** @Route("/{customer_id}/remove_familiar", name="api_remove_familiar", methods={"POST"}) */
     public function remove(Customer $customer, Customer $familiar, FamilyService $familyService): JsonResponse
     {
         $family = $familyService->subtractCustomerFromFamily($familiar);

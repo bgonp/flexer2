@@ -19,7 +19,7 @@
                     <tr><td colspan="7" class="text-center">Sin resultados</td></tr>
                 {% else %}
                     {% for discipline in disciplines %}
-                        <tr class="clickable" data-href="{{ path('discipline_edit', {id: discipline.id}) }}">
+                        <tr class="clickable" data-href="{{ path('discipline_edit', {discipline_id: discipline.id|encodeUuid}) }}">
                             <td>{{ discipline.name }}</td>
                             <td>{{ discipline.description }}</td>
                             <td>{{ discipline.url }}</td>
