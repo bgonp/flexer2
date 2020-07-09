@@ -4,7 +4,7 @@
 
 {% block content %}
     <div class="row">
-        <div class="col-6">
+        <div class="col-4">
             <h2>Editar curso</h2>
             <form action="" method="post" class="mb-2">
                 {% include 'common/field.html.twig' with
@@ -44,13 +44,14 @@
             </form>
             <a href="{{ path('course_index', {type: 'active'}) }}">Volver a la lista</a>
         </div>
-        <div class="col-6">
+        <div class="col-4">
             <h2>Listados</h2>
+            <a class="btn btn-sm btn-primary" href="{{ path('listing_edit', {listing_id: course.listing.id|encodeUuid}) }}">Ver listado</a>
             {% for season in seasons %}
                 <ul>
                     {% for period in season.periods %}
                         <li>
-                            <a href="{{ path('listing_edit', {listing_id: course.listing.id|encodeUuid, period_id: period.id|encodeUuid}) }}">
+                            <a href="{{ path('listing_show', {listing_id: course.listing.id|encodeUuid, period_id: period.id|encodeUuid}) }}">
                                 {{ period.name }} ({{ period.initDate|showDate }} - {{ period.finishDate|showDate }})
                             </a>
                             <a href="{{ path('period_edit', {period_id: period.id|encodeUuid}) }}"><i class="fa fa-pencil-square-o"></i></a>
@@ -58,6 +59,14 @@
                     {% endfor %}
                 </ul>
             {% endfor %}
+        </div>
+        <div class="col-4">
+            <h2>Asignaciones</h2>
+            <ul id="course-assignments">
+                {% for assignment in assignments %}
+                    <li><a href="{{ path('customer_edit', {customer_id: assignment.customer.id}) }}">{{ assignment.customer|fullname }}</a></li>
+                {% endfor %}
+            </ul>
         </div>
     </div>
 {% endblock %}

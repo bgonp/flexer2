@@ -7,6 +7,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
+// TODO: Orphan removal
 class Listing extends Base
 {
     /** @var Collection|Course[] */
@@ -26,6 +27,26 @@ class Listing extends Base
     public function getCourses(): Collection
     {
         return $this->courses;
+    }
+
+    public function addCourse(Course $course): self
+    {
+        if (!$this->courses->contains($course)) {
+            $this->courses->add($course);
+            $course->setListing($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCourse(Course $course): self
+    {
+        if ($this->courses->contains($course)) {
+            $this->courses->removeElement($course);
+            $course->setListing(new self());
+        }
+
+        return $this;
     }
 
     /** @return Session[]|Collection */

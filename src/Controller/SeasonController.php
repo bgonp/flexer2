@@ -54,6 +54,7 @@ class SeasonController extends BaseController
         if (!$this->canCreate(Season::class)) {
             return $this->redirectToRoute('season_index');
         }
+
         if ($request->isMethod('POST')) {
             if (!$school = $schoolRepository->find($request->request->get('school'))) {
                 $this->addFlash('error', 'El campo "escuela" es obligatorio');
@@ -93,6 +94,7 @@ class SeasonController extends BaseController
         if (!$this->canView($season)) {
             return $this->redirectToRoute('season_index');
         }
+
         if ($request->isMethod('POST')) {
             if (!$this->canEdit($season)) {
                 return $this->redirectToRoute('season_edit', ['season_id' => $season->getId()]);

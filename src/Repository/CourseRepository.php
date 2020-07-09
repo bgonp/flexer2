@@ -25,6 +25,31 @@ class CourseRepository extends BaseRepository
         return new PaginableQuery($query->getQuery(), $page);
     }
 
+    /** @return Course[] */
+    public function findBySearchTerm(string $search, string $type = 'active'): array
+    {
+        $query = $this->addSearchTerms($search, $this->addTypeTerm($type, $this->getMainQuery()));
+
+        return $query->getQuery()->execute();
+    }
+
+    /** @return Course[] */
+    public function findCompatibleBySearchTerm(Course $course, string $search, string $type = 'active'): array
+    {
+        $query = $this->addSearchTerms($search, $this->addTypeTerm($type, $this->getMainQuery()));
+
+        return $query
+            ->andWhere('c.dayOfWeek = :dayOfWeek')
+            ->andWhere('c.time = :time')
+            ->andWhere('c.school = :school')
+            ->andWhere('c.place = :place')
+            ->setParameter('dayOfWeek', $course->getDayOfWeek())
+            ->setParameter('time', $course->getTime())
+            ->setParameter('school', $course->getSchool())
+            ->setParameter('place', $course->getPlace())
+            ->getQuery()->execute();
+    }
+
     public function findBySearchTermPaged(string $search, string $type = 'active', int $page = 1): PaginableQuery
     {
         $query = $this->addSearchTerms($search, $this->addTypeTerm($type, $this->getMainQuery()));

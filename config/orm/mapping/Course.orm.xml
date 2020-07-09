@@ -14,7 +14,11 @@
         <many-to-one field="discipline" target-entity="App\Entity\Discipline" inversed-by="courses" fetch="EAGER" />
         <many-to-one field="level" target-entity="App\Entity\Level" inversed-by="courses" fetch="EAGER" />
         <many-to-one field="age" target-entity="App\Entity\Age" inversed-by="courses" fetch="EAGER" />
-        <many-to-one field="listing" target-entity="App\Entity\Listing" inversed-by="courses" />
+        <many-to-one field="listing" target-entity="App\Entity\Listing" inversed-by="courses">
+            <cascade>
+                <cascade-persist />
+            </cascade>
+        </many-to-one>
         
         <one-to-many field="sessions" target-entity="App\Entity\Session" mapped-by="course">
             <order-by>

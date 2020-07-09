@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tarifas{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            {% set params = app.request.query %}
+            <h2>Tarifas <a href="{{ path('rate_new') }}" class="btn btn-primary">Nueva</a></h2>
+            {% include 'common/search.html.twig' with {type: 'select', options: schools, search: school, route: path('rate_index')} only %}
+            <table class="table table-sm table-hover">
+                <tr>
+                    <th scope="col">Tarifa</th>
+                    <th scope="col">Cantidad</th>
+                    <th scope="col">Escuela</th>
+                </tr>
+                {% if rates|length == 0 %}
+                    <tr><td colspan="3" class="text-center">Sin resultados</td></tr>
+                {% else %}
+                    {% for rate in rates %}
+                        <tr class="clickable" data-href="{{ path('rate_edit', {rate_id: rate.id|encodeUuid}) }}">
+                            <td>{{ rate.name }}</td>
+                            <td>{{ rate.amount }}</td>
+                            <td>{{ rate.school.name }}</td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+            </table>
+        </div>
+    </div>
+{% endblock %}

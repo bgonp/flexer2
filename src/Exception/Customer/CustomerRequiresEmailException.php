@@ -9,7 +9,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class CustomerRequiresEmailException extends BadRequestHttpException
 {
-    private const MESSAGE = 'Costumer %s has no email, wich is required to perform this action';
+    private const MESSAGE = 'Costumer %s has no email, which is required to perform this action';
 
     public static function create(Customer $customer): self
     {

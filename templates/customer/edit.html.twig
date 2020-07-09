@@ -4,7 +4,7 @@
 
 {% block content %}
     <div class="row">
-        <div class="col-6">
+        <div class="col-4">
             <h2>Editar alumno</h2>
             <form action="" method="post" class="mb-2">
                 {% include 'common/field.html.twig' with
@@ -32,7 +32,7 @@
             </form>
             <a href="{{ path('customer_index') }}">Volver a la lista</a>
         </div>
-        <div class="col-6">
+        <div class="col-4">
             <h2>Familia</h2>
             <ul id="family-members">
                 {% for familiar in familiars %}
@@ -47,10 +47,18 @@
                 {% endfor %}
             </ul>
             <div class="form-group">
-                <label for="search-familiar">Buscar familiares</label>
-                <input type="text" id="search-familiar" class="api-caller form-control" data-href="{{ path('api_customer_search') }}" data-callback="showCandidates" name="s" />
+                <label for="search-familiar">Añadir familiares</label>
+                <input type="text" id="search-familiar" class="api-caller form-control" data-href="{{ path('api_customer_search') }}" data-callback="showCandidates" name="s" placeholder="Buscar..." />
             </div>
             <ul id="family-candidates"></ul>
+        </div>
+        <div class="col-4">
+            <h2>Asignaciones</h2>
+            <ul id="customer-assignments">
+                {% for assignment in assignments %}
+                    <li><a href="{{ path('course_edit', {course_id: assignment.course.id}) }}">{{ assignment.course|fullname }}</a></li>
+                {% endfor %}
+            </ul>
         </div>
     </div>
 {% endblock %}

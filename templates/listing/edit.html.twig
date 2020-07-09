@@ -5,56 +5,82 @@
 {% block content %}
     <div class="row">
         <div class="col-12">
-            <h2>Listado {{ period.name }} ({{ period.initDate|showDate }} - {{ period.finishDate|showDate }})</h2>
-            <table>
+            <h2>Listado</h2>
+        </div>
+        <div class="col-8">
+            <table id="courses-list" class="table table-sm table-hover">
+                <thead>
                 <tr>
-                    <th colspan="2">Alumnos</th>
-                    <th colspan="{{ sessions|length }}">{{ period.name }}</th>
+                    <th>Curso</th>
+                    <th>Escuela</th>
+                    <th></th>
                 </tr>
+                </thead>
+                <tbody>
+                {% for course in listing.courses %}
+                    <tr>
+                        <td class="align-middle">
+                            <a href="{{ path('course_edit', {course_id: course.id|encodeUuid}) }}">
+                                {{ course|fullname }}
+                            </a>
+                        </td>
+                        <td class="align-middle">
+                            <a href="{{ path('school_edit', {school_id: course.school.id}) }}">
+                                {{ course.school.name }}
+                            </a>
+                        </td>
+                        <td class="align-middle">
+                            <button name="course_id" value="{{ course.id }}" class="api-caller btn btn-sm"
+                                    data-href="{{ path('api_listing_remove_course', {listing_id: listing.id}) }}"
+                                    data-callback="updateCourses">
+                                <i class="fa fa-times"></i>
+                            </button>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <div class="form-group">
+                <label for="search-course">Añadir cursos</label>
+                <input type="text" id="search-course" class="api-caller form-control"
+                       data-href="{{ path('api_course_compatible_search', {listing_id: listing.id}) }}" data-callback="showCourses"
+                       name="s" placeholder="Buscar..." />
+            </div>
+            <table id="courses-candidates" class="table table-sm table-hover"></table>
+        </div>
+        <div class="col-4">
+            <form class="mb-3" method="post" action="{{ path('listing_generate', {listing_id: listing.id|encodeUuid}) }}">
+                <div class="form-group">
+                    <label for="select-season">Generar clases para temporada</label>
+                    <select name="season_id" id="select-season" class="form-control" required>
+                        <option></option>
+                        {% for season in generableSeasons %}
+                            <option value="{{ season.id|encodeUuid }}">{{ season.initDate|showDate }} - {{ season.finishDate|showDate }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button class="btn btn-primary btn-block" type="submit">Generar clases</button>
+            </form>
+            <table class="table table-sm table-hover">
+                <thead>
                 <tr>
-                    <th>Nombre</th>
-                    <th>Apellidos</th>
-                    {% for session in sessions %}
-                        <th>{{ session.day|getDay }}</th>
+                    <th>Periodo</th>
+                    <th>Inicio</th>
+                    <th>Final</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for season in seasons %}
+                    {% for period in season.periods %}
+                        <tr class="clickable" data-href="{{ path('listing_show', {listing_id: listing.id, period_id: period.id}) }}">
+                            <td>{{ period.name }}</td>
+                            <td>{{ period.initDate|showDate }}</td>
+                            <td>{{ period.finishDate|showDate }}</td>
+                        </tr>
                     {% endfor %}
-                </tr>
-                {% for customer in customers %}
-                    <tr>
-                        <td>{{ customer.name }}</td>
-                        <td>{{ customer.surname }}</td>
-                        {% for session in sessions %}
-                            {% set break = false %}
-                            <td>
-                                {% for attendance in customer.attendances %}
-                                    {% if not break and attendance.session.equals(session) %}
-                                        {{ attendance.used ? 'X' : 'F' }}
-                                        {# TODO: Poner boton #}
-                                        {% set break = true %}
-                                    {% endif %}
-                                {% endfor %}
-                            </td>
-                        {% endfor %}
-                    </tr>
+                    <tr><td colspan="3"></td></tr>
                 {% endfor %}
-                <tr><td colspan="{{ sessions|length + 2 }}"><strong>Profesores</strong></td></tr>
-                {% for staff in staffs %}
-                    <tr>
-                        <td>{{ staff.name }}</td>
-                        <td>{{ staff.surname }}</td>
-                        {% for session in sessions %}
-                            {% set break = false %}
-                            <td>
-                                {% for attendance in staff.attendances %}
-                                    {% if not break and attendance.session.equals(session) %}
-                                        {{ attendance.used ? 'X' : 'F' }}
-                                        {# TODO: Poner boton #}
-                                        {% set break = true %}
-                                    {% endif %}
-                                {% endfor %}
-                            </td>
-                        {% endfor %}
-                    </tr>
-                {% endfor %}
+                </tbody>
             </table>
         </div>
     </div>

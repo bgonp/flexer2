@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Service;
+namespace App\Utils;
 
 use App\Entity\Course;
 
-class CourseService
+class CourseName
 {
-    public function getFullName(Course $course): string
+    public static function get(Course $course): string
     {
         return implode(' ', [
             // TODO: Provisional, va mal si hay más de un día o se especifica número de semana

@@ -6,6 +6,7 @@ namespace App\Repository;
 
 use App\DQL\PaginableQuery;
 use App\Entity\Course;
+use App\Entity\Listing;
 use App\Entity\School;
 use App\Entity\Season;
 use Doctrine\Persistence\ManagerRegistry;
@@ -38,6 +39,17 @@ class SeasonRepository extends BaseRepository
     }
 
     /** @return Season[] */
+    public function findBySchool(School $school): array
+    {
+        return $this->createQueryBuilder('s')
+            ->orderBy('s.initDate', 'DESC')
+            ->addOrderBy('s.finishDate', 'DESC')
+            ->where('s.school = :school')
+            ->setParameter('school', $school)
+            ->getQuery()->execute();
+    }
+
+    /** @return Season[] */
     public function findByCourseWithPeriods(Course $course): array
     {
         return $this->createQueryBuilder('s')
@@ -46,6 +58,20 @@ class SeasonRepository extends BaseRepository
             ->join('p.sessions', 'se')
             ->where('se.course = :course')
             ->setParameter('course', $course)
+            ->orderBy('s.initDate', 'DESC')
+            ->addOrderBy('p.initDate', 'DESC')
+            ->getQuery()->execute();
+    }
+
+    /** @return Season[] */
+    public function findByListingWithPeriods(Listing $listing): array
+    {
+        return $this->createQueryBuilder('s')
+            ->select('s', 'p')
+            ->join('s.periods', 'p')
+            ->join('p.sessions', 'se')
+            ->where('se.listing = :listing')
+            ->setParameter('listing', $listing)
             ->orderBy('s.initDate', 'DESC')
             ->addOrderBy('p.initDate', 'DESC')
             ->getQuery()->execute();

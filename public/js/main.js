@@ -98,6 +98,29 @@
         return element
     }
 
+    const createTableRow = (cells) => {
+        const tr = document.createElement('tr')
+        for (const cell of cells) {
+            const td = document.createElement('td')
+            const content = document.createElement(cell.type)
+            td.className = 'align-middle'
+            if (cell.html) content.innerHTML = cell.html
+            if (cell.href) content.href = cell.href
+            if (cell.class) content.className = cell.class
+            if (cell.name) content.name = cell.name
+            if (cell.value) content.value = cell.value
+            if (cell.api) {
+                content.classList.add('api-caller')
+                content.dataset.href = cell.api.href
+                content.dataset.callback = cell.api.callback
+                content.addEventListener('click', () => handleResponse(content))
+            }
+            td.appendChild(content)
+            tr.appendChild(td)
+        }
+        return tr
+    }
+
     const actions = {
         showCandidates: (candidates) => {
             const list = document.getElementById('family-candidates')
@@ -165,6 +188,34 @@
                     button.dataset.href = button.dataset.href.replace('/remove_holiday', '/add_holiday')
                     button.classList.remove('is-holiday')
                 }
+            }
+        },
+
+        showCourses: (courses) => {
+            const list = document.getElementById('courses-candidates')
+            list.innerHTML = ''
+            for (const course of courses) {
+                list.appendChild(createTableRow([
+                    {type: 'a', html: course.name, href: `/course/${course.id}`},
+                    {type: 'a', html: course.school.name, href: `/school/${course.school.id}`},
+                    {type: 'button', html: '<i class="fa fa-plus"></i>', name: 'course_id', value: course.id, class: 'btn btn-sm',
+                        api: {href: `/api/listing/${currentIds[0]}/add_course`, callback: 'updateCourses'}
+                    }
+                ]))
+            }
+        },
+
+        updateCourses: (courses) => {
+            const list = document.querySelector('#courses-list tbody')
+            list.innerHTML = ''
+            for (const course of courses) {
+                list.appendChild(createTableRow([
+                    {type: 'a', html: course.name, href: `/course/${course.id}`},
+                    {type: 'a', html: course.school.name, href: `/school/${course.school.id}`},
+                    {type: 'button', html: '<i class="fa fa-times"></i>', name: 'course_id', value: course.id, class: 'btn btn-sm',
+                        api: {href: `/api/listing/${currentIds[0]}/remove_course`, callback: 'updateCourses'}
+                    }
+                ]))
             }
         }
     }

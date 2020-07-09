@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Crear tarifa{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-6">
+            <h2>Crear tarifa</h2>
+            <form action="{{ path('rate_new') }}" method="post" class="mb-2">
+                {% include 'common/field.html.twig' with
+                    {type: 'select', entity: 'rate', name: 'school', label: 'Escuela', options: schools, value: school, required: true} only %}
+
+                {% include 'common/field.html.twig' with
+                    {type: 'text', entity: 'rate', name: 'name', label: 'Nombre', value: name, required: true} only %}
+
+                {% include 'common/field.html.twig' with
+                    {type: 'number', entity: 'rate', name: 'amount', label: 'Precio', value: amount, required: true} only %}
+
+                {% include 'common/field.html.twig' with
+                    {type: 'checkbox', entity: 'rate', name: 'available', label: 'Disponible', value: available} only %}
+
+                {% include 'common/field.html.twig' with
+                    {type: 'checkbox', entity: 'rate', name: 'spreadable', label: 'Propagable', value: spreadable} only %}
+
+                {% include 'common/field.html.twig' with
+                    {type: 'number', entity: 'rate', name: 'customersCount', label: 'Nº de alumnos', value: customersCount} only %}
+
+                {% include 'common/field.html.twig' with
+                    {type: 'number', entity: 'rate', name: 'periodsCount', label: 'Nº de periodos', value: periodsCount} only %}
+
+                {% include 'common/field.html.twig' with
+                    {type: 'number', entity: 'rate', name: 'coursesCount', label: 'Nº de cursos', value: coursesCount} only %}
+
+                <button type="submit" class="btn btn-primary btn-block">Guardar</button>
+            </form>
+            <a href="{{ path('rate_index') }}">Volver a la lista</a>
+        </div>
+    </div>
+{% endblock %}

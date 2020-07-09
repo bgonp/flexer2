@@ -27,10 +27,7 @@ class MainResolver implements ArgumentValueResolverInterface
     public function supports(Request $request, ArgumentMetadata $argument): bool
     {
         $reflectionClass = new \ReflectionClass($argument->getType());
-        $extendsBase = $reflectionClass->isSubclassOf(Base::class);
-        $name = strtolower($reflectionClass->getShortName());
-
-        if (!$extendsBase || ($name !== $argument->getName() && 'familiar' !== $argument->getName())) {
+        if (!$reflectionClass->isSubclassOf(Base::class)) {
             return false;
         }
         $this->name = $argument->getName();
@@ -45,7 +42,7 @@ class MainResolver implements ArgumentValueResolverInterface
                 try {
                     $id = Uuid::fromString($id)->toRfc4122();
                 } catch (\InvalidArgumentException $e) {
-                    throw new HttpException(404, 'ID incorrecta');
+                    throw new HttpException(404, 'ID incorrecta '.$id);
                 }
             }
 

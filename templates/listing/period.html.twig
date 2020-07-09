@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Listado{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <h2>Listado</h2>
+            <table class="table table-sm table-hover">
+                <tr>
+                    <th colspan="5">Alumnos</th>
+                    <th colspan="{{ sessions|length }}">{{ period.name }}</th>
+                </tr>
+                <tr>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Apellidos</th>
+                    <th scope="col">Nacimiento</th>
+                    <th scope="col">E-mail</th>
+                    <th scope="col">Teléfono</th>
+                    {% for session in sessions %}
+                        <th scope="col">{{ session.day|getDay }}</th>
+                    {% endfor %}
+                </tr>
+                {% for customer in customers %}
+                    {% include 'listing/customerRow.html.twig' with {customer: customer, sessions: sessions} only %}
+                {% endfor %}
+                <tr><td colspan="{{ sessions|length + 2 }}"><strong>Profesores</strong></td></tr>
+                {% for staff in staffs %}
+                    {% include 'listing/customerRow.html.twig' with {customer: staff, sessions: sessions} only %}
+                {% endfor %}
+            </table>
+            <a href="{{ path('listing_edit', {listing_id: listing.id}) }}">Volver al listado</a>
+        </div>
+    </div>
+{% endblock %}

@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Entity\Customer;
 use App\Exception\Common\PageOutOfBoundsException;
+use App\Repository\AssignmentRepository;
 use App\Repository\CustomerRepository;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Symfony\Component\HttpFoundation\Request;
@@ -92,8 +93,12 @@ class CustomerController extends BaseController
     }
 
     /** @Route("/{customer_id}", name="customer_edit", methods={"GET", "POST"}) */
-    public function edit(Request $request, Customer $customer, CustomerRepository $customerRepository): Response
-    {
+    public function edit(
+        Request $request,
+        Customer $customer,
+        CustomerRepository $customerRepository,
+        AssignmentRepository $assignmentRepository
+    ): Response {
         if (!$this->canView($customer)) {
             return $this->redirectToRoute('customer_index');
         }
@@ -118,6 +123,7 @@ class CustomerController extends BaseController
         return $this->render('customer/edit.html.twig', [
             'customer' => $customer,
             'familiars' => $customer->getFamily() ? $customerRepository->findByFamiliar($customer) : [],
+            'assignments' => $assignmentRepository->findActiveByCustomerWithCourse($customer),
             'canEdit' => $this->canEdit($customer),
         ]);
     }

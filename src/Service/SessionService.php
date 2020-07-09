@@ -24,7 +24,7 @@ class SessionService
 
     private CourseRepository $courseRepository;
 
-    private ?\DateInterval $interval = null;
+    private static \DateInterval $interval;
 
     public function __construct(
         SessionRepository $sessionRepository,
@@ -47,12 +47,12 @@ class SessionService
         }
 
         // TODO: Optimizar toda la lógica...
-        if (!$this->interval) {
-            $this->interval = $interval = new \DateInterval('P1D');
+        if (!isset(self::$interval)) {
+            self::$interval = new \DateInterval('P1D');
         }
 
         foreach ($season->getPeriods() as $period) {
-            $dates = new \DatePeriod($period->getInitDate(), $this->interval, $period->getFinishDate());
+            $dates = new \DatePeriod($period->getInitDate(), self::$interval, $period->getFinishDate());
             foreach ($dates as $date) {
                 if (
                     (!$course->getInitDate() || $date >= $course->getInitDate()) &&

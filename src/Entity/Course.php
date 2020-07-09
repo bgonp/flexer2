@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Utils\CourseName;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
-class Course extends Base
+class Course extends Base implements \JsonSerializable
 {
     private School $school;
 
@@ -33,7 +34,7 @@ class Course extends Base
 
     private ?int $duration = null;
 
-    private ?Listing $listing = null;
+    private Listing $listing;
 
     /** @var Collection|Session[] */
     private Collection $sessions;
@@ -46,6 +47,7 @@ class Course extends Base
         parent::__construct();
         $this->sessions = new ArrayCollection();
         $this->assignments = new ArrayCollection();
+        $this->listing = new Listing();
     }
 
     public function getSchool(): School
@@ -219,7 +221,7 @@ class Course extends Base
         return $this->listing;
     }
 
-    public function setListing(?Listing $listing): self
+    public function setListing(Listing $listing): self
     {
         $this->listing = $listing;
 
@@ -230,5 +232,24 @@ class Course extends Base
     public function getAssignments(): Collection
     {
         return $this->assignments;
+    }
+
+    public function JsonSerialize(): array
+    {
+        return [
+            'id' => $this->id,
+            'name' => CourseName::get($this),
+            'active' => $this->isActive,
+            'initDate' => $this->initDate,
+            'finishDate' => $this->finishDate,
+            'time' => $this->time,
+            'duration' => $this->duration,
+            'listing' => $this->listing->getId(),
+            'school' => ['id' => $this->school->getId(), 'name' => $this->school->getName()],
+            'place' => ['id' => $this->place->getId(), 'name' => $this->place->getName()],
+            'discipline' => ['id' => $this->discipline->getId(), 'name' => $this->discipline->getName()],
+            'level' => ['id' => $this->level->getId(), 'name' => $this->level->getName()],
+            'age' => ['id' => $this->age->getId(), 'name' => $this->age->getName()],
+        ];
     }
 }

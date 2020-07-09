@@ -8,18 +8,12 @@ use App\Entity\Course;
 use App\Entity\Customer;
 use App\Entity\Named;
 use App\Exception\Common\ObjectOfClassNotSupportedException;
-use App\Service\CourseService;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
+use App\Utils\CourseName;
 
 class FullNameExtension extends AbstractExtension
 {
-    private CourseService $courseService;
-
-    public function __construct(CourseService $courseService)
-    {
-        $this->courseService = $courseService;
-    }
 
     public function getFilters()
     {
@@ -33,7 +27,7 @@ class FullNameExtension extends AbstractExtension
         }
 
         if ($object instanceof Course) {
-            return $this->courseService->getFullName($object);
+            return CourseName::get($object);
         }
 
         if ($object instanceof Named) {

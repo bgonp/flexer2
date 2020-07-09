@@ -32,7 +32,7 @@
             <ul>
                 {% for listing in listings %}
                     <li>
-                        <a href="{{ path('listing_edit', {listing_id: listing.id|encodeUuid, period_id: period.id|encodeUuid}) }}">
+                        <a href="{{ path('listing_show', {listing_id: listing.id|encodeUuid, period_id: period.id|encodeUuid}) }}">
                             {% for course in listing.courses %}
                                 <span>{{ course|fullname }}</span>
                             {% endfor %}

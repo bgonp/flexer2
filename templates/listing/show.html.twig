@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Listado{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <h2>Listado <a href="{{ path('period_edit', {period_id: period.id}) }}">{{ period.name }} ({{ period.initDate|showDate }} - {{ period.finishDate|showDate }})</a></h2>
+            <table>
+                <tr>
+                    <th colspan="2">Alumnos</th>
+                    <th colspan="{{ sessions|length }}">{{ period.name }}</th>
+                </tr>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Apellidos</th>
+                    {% for session in sessions %}
+                        <th>{{ session.day|getDay }}</th>
+                    {% endfor %}
+                </tr>
+                {% for customer in customers %}
+                    <tr>
+                        <td>{{ customer.name }}</td>
+                        <td>{{ customer.surname }}</td>
+                        {% for session in sessions %}
+                            {% set break = false %}
+                            <td>
+                                {% for attendance in customer.attendances %}
+                                    {% if not break and attendance.session.equals(session) %}
+                                        {{ attendance.used ? 'X' : 'F' }}
+                                        {# TODO: Poner boton #}
+                                        {% set break = true %}
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+                <tr><td colspan="{{ sessions|length + 2 }}"><strong>Profesores</strong></td></tr>
+                {% for staff in staffs %}
+                    <tr>
+                        <td>{{ staff.name }}</td>
+                        <td>{{ staff.surname }}</td>
+                        {% for session in sessions %}
+                            {% set break = false %}
+                            <td>
+                                {% for attendance in staff.attendances %}
+                                    {% if not break and attendance.session.equals(session) %}
+                                        {{ attendance.used ? 'X' : 'F' }}
+                                        {# TODO: Poner boton #}
+                                        {% set break = true %}
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </table>
+            <a href="{{ path('listing_edit', {listing_id: listing.id}) }}">Volver al listado</a>
+        </div>
+    </div>
+{% endblock %}

@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Course;
+use App\Entity\Listing;
 use App\Exception\Common\PageOutOfBoundsException;
 use App\Repository\AgeRepository;
+use App\Repository\AssignmentRepository;
 use App\Repository\CourseRepository;
 use App\Repository\DisciplineRepository;
 use App\Repository\LevelRepository;
@@ -133,7 +135,8 @@ class CourseController extends BaseController
         DisciplineRepository $disciplineRepository,
         LevelRepository $levelRepository,
         AgeRepository $ageRepository,
-        SeasonRepository $seasonRepository
+        SeasonRepository $seasonRepository,
+        AssignmentRepository $assignmentRepository
     ): Response {
         if (!$this->canView($course)) {
             return $this->redirectToRoute('course_index', ['type' => 'active']);
@@ -175,6 +178,7 @@ class CourseController extends BaseController
             'levels' => $levelRepository->findAll(),
             'ages' => $ageRepository->findAll(),
             'seasons' => $seasonRepository->findByCourseWithPeriods($course),
+            'assignments' => $assignmentRepository->findActiveByCourseWithCustomer($course),
             'canEdit' => $this->canEdit($course),
         ]);
     }

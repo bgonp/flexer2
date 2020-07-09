@@ -31,6 +31,10 @@ class CustomerApiController extends BaseController
     /** @Route("/{customer_id}/add_familiar", name="api_add_familiar", methods={"POST"}) */
     public function add(Customer $customer, Customer $familiar, FamilyService $familyService): JsonResponse
     {
+        if (!$this->canEdit($customer, false) || !$this->canEdit($familiar, false)) {
+            return new JsonResponse([], JsonResponse::HTTP_FORBIDDEN);
+        }
+
         try {
             $family = $familyService->setCustomersAsFamily($customer, $familiar);
         } catch (CustomerAlreadyHasFamilyException | CustomersAlreadyHasTheirOwnFamilyException $e) {
@@ -43,6 +47,10 @@ class CustomerApiController extends BaseController
     /** @Route("/{customer_id}/remove_familiar", name="api_remove_familiar", methods={"POST"}) */
     public function remove(Customer $customer, Customer $familiar, FamilyService $familyService): JsonResponse
     {
+        if (!$this->canEdit($customer, false) || !$this->canEdit($familiar, false)) {
+            return new JsonResponse([], JsonResponse::HTTP_FORBIDDEN);
+        }
+
         $family = $familyService->subtractCustomerFromFamily($familiar);
 
         return new JsonResponse(

@@ -1,0 +1,19 @@
+<tr>
+    <td><a href="{{ path('customer_edit', {customer_id: customer.id|encodeUuid}) }}">{{ customer.name }}</a></td>
+    <td><a href="{{ path('customer_edit', {customer_id: customer.id|encodeUuid}) }}">{{ customer.surname }}</a></td>
+    <td>{{ customer.birthdate|showDate }}</td>
+    <td><a href="mailto:{{ customer.email }}" target="_blank">{{ customer.email }}</a></td>
+    <td><a href="tel:{{ customer.phone }}" target="_blank">{{ customer.phone }}</a></td>
+    {% for session in sessions %}
+        {% set break = false %}
+        <td>
+            {% for attendance in customer.attendances %}
+                {% if not break and attendance.session.equals(session) %}
+                    {{ attendance.used ? 'X' : 'F' }}
+                    {# TODO: Poner boton #}
+                    {% set break = true %}
+                {% endif %}
+            {% endfor %}
+        </td>
+    {% endfor %}
+</tr>

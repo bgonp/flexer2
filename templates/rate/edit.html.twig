@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Editar tarifa{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-6">
+            <h2>Editar tarifa</h2>
+            <form action="{{ path('rate_edit', {rate_id: rate.id|encodeUuid}) }}" method="post" class="mb-2">
+                {% include 'common/field.html.twig' with
+                    {type: 'select', entity: 'rate', name: 'school', label: 'Escuela', options: schools, value: rate.school, required: true} only %}
+
+                {% include 'common/field.html.twig' with
+                    {type: 'text', entity: 'rate', name: 'name', label: 'Nombre', value: rate.name, required: true} only %}
+
+                {% include 'common/field.html.twig' with
+                    {type: 'number', entity: 'rate', name: 'amount', label: 'Precio', value: rate.amount, required: true} only %}
+
+                {% include 'common/field.html.twig' with
+                    {type: 'checkbox', entity: 'rate', name: 'available', label: 'Disponible', value: rate.available} only %}
+
+                {% include 'common/field.html.twig' with
+                    {type: 'checkbox', entity: 'rate', name: 'spreadable', label: 'Propagable', value: rate.spreadable} only %}
+
+                {% include 'common/field.html.twig' with
+                    {type: 'number', entity: 'rate', name: 'customersCount', label: 'Nº de alumnos', value: rate.customersCount} only %}
+
+                {% include 'common/field.html.twig' with
+                    {type: 'number', entity: 'rate', name: 'periodsCount', label: 'Nº de periodos', value: rate.periodsCount} only %}
+
+                {% include 'common/field.html.twig' with
+                    {type: 'number', entity: 'rate', name: 'coursesCount', label: 'Nº de cursos', value: rate.coursesCount} only %}
+
+                {% if canEdit %}
+                    <button type="submit" class="btn btn-primary btn-block">Editar</button>
+                    <a href="{{ path('rate_delete', {rate_id: rate.id|encodeUuid}) }}" class="btn btn-danger btn-block confirmable">Borrar</a>
+                {% endif %}
+            </form>
+            <a href="{{ path('rate_index') }}">Volver a la lista</a>
+        </div>
+    </div>
+{% endblock %}

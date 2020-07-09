@@ -1,7 +1,8 @@
 {% if type == 'checkbox' %}
     <div class="form-check">
+        <input name="{{ name }}" type="hidden" value="0" />
         <input id="{{ entity }}-{{ name }}" name="{{ name }}" type="checkbox" class="form-check-input"
-            {% if required is defined %}required{% endif %}{% if value %} checked{% endif %}/>
+               {% if required is defined %}required{% endif %}{% if value %} checked{% endif %} value="1" />
         <label class="form-check-label" for="{{ entity }}-{{ name }}">{{ label }}</label>
     </div>
 {% else %}
